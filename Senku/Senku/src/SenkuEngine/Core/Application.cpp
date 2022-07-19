@@ -1,11 +1,13 @@
 #include "PrecompiledHeader.h"
 #include "Application.h"
+#include "Log.h"
 
 namespace Senku
 {
 	Application* Application::s_AppInstance = nullptr;
 	Application::Application()
 	{
+		LOG_INFO("Creating App");
 		s_AppInstance = this;
 
 		// todo: create window
@@ -15,6 +17,7 @@ namespace Senku
 
 	Application::~Application()
 	{
+		LOG_INFO("Destroying App");
 	}
 
 	void Application::Run()
@@ -39,7 +42,7 @@ namespace Senku
 
 int main(int argc, char** argv)
 {
-	// todo: init logger 
+	Senku::Log::Init();
 
 	// todo: creating app like in hazel engine
 

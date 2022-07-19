@@ -27,12 +27,18 @@
     <ClInclude Include="Senku\src\PrecompiledHeader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Senku\src\SenkuEngine\Core\Log.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Senku\src\SenkuEngine\Core\Application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Senku\src\PrecompiledHeader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Senku\src\SenkuEngine\Core\Log.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
