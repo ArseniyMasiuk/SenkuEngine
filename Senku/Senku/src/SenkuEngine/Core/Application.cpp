@@ -4,20 +4,26 @@
 
 namespace Senku
 {
-	Application* Application::s_AppInstance = nullptr;
+	std::shared_ptr <Application> Application::s_AppInstance = nullptr;
 	Application::Application()
 	{
 		LOG_INFO("Creating App");
-		s_AppInstance = this;
+		s_AppInstance.reset(this);
 
-		// todo: create window
+		// todo: add ApplicationSpecification
+		m_Window = Window::Create(WindowProps("Sandbox app", 1200, 800));
 
-		// create graphic context, only OpenGL but i will pretent that there would be another so will add apstractions
+		// create graphic context, only OpenGL but i will pretent that there would be another so will add abstractions
 	}
 
 	Application::~Application()
 	{
 		LOG_INFO("Destroying App");
+	}
+
+	void Application::Close()
+	{
+		m_Running = false;
 	}
 
 	void Application::Run()

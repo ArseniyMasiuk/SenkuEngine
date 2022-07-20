@@ -1,5 +1,6 @@
 #pragma once
-
+#include "Base.h"
+#include "Window.h"
 
 int main(int argc, char** argv);
 
@@ -12,6 +13,10 @@ namespace Senku
 		~Application();
 
 
+		void Close();
+
+		static std::shared_ptr <Application> Get() { return s_AppInstance; }
+
 	private:
 		// events
 
@@ -22,10 +27,11 @@ namespace Senku
 	private:
 		//members
 		bool m_Running = true;
+		Scope<Window> m_Window;
 
 	private:
 
-		static Application* s_AppInstance;
+		static std::shared_ptr <Application> s_AppInstance;
 		friend int ::main(int argc, char** argv);
 
 	};
