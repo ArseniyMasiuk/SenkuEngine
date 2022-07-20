@@ -56,6 +56,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Senku\Senku\src;$(SolutionDir)Senku\Senku\dependencies\GLFW\include;$(SolutionDir)Senku\Senku\dependencies\spdlog;$(SolutionDir)Senku\Senku\dependencies\glew-2.1.0\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>GLEW_STATIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -73,6 +74,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Senku\Senku\src;$(SolutionDir)Senku\Senku\dependencies\GLFW\include;$(SolutionDir)Senku\Senku\dependencies\spdlog;$(SolutionDir)Senku\Senku\dependencies\glew-2.1.0\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>GLEW_STATIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -83,6 +85,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Senku\src\Platform\Windows\WindowsInput.h" />
     <ClInclude Include="Senku\src\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="Senku\src\PrecompiledHeader.h" />
     <ClInclude Include="Senku\src\SenkuEngine.h" />
@@ -92,8 +95,15 @@
     <ClInclude Include="Senku\src\SenkuEngine\Core\Log.h" />
     <ClInclude Include="Senku\src\SenkuEngine\Core\PlatformDetection.h" />
     <ClInclude Include="Senku\src\SenkuEngine\Core\Window.h" />
+    <ClInclude Include="Senku\src\SenkuEngine\EventSystem\ApplicationEvent.h" />
+    <ClInclude Include="Senku\src\SenkuEngine\EventSystem\EventsHandler.h" />
+    <ClInclude Include="Senku\src\SenkuEngine\EventSystem\KeyCodes.h" />
+    <ClInclude Include="Senku\src\SenkuEngine\EventSystem\KeyEvent.h" />
+    <ClInclude Include="Senku\src\SenkuEngine\EventSystem\MouseCodes.h" />
+    <ClInclude Include="Senku\src\SenkuEngine\EventSystem\MouseEvent.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Senku\src\Platform\Windows\WindowsInput.cpp" />
     <ClCompile Include="Senku\src\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="Senku\src\PrecompiledHeader.cpp" />
     <ClCompile Include="Senku\src\SenkuEngine\Core\Application.cpp" />

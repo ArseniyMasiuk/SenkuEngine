@@ -2,12 +2,16 @@
 #include <GL\glew.h>
 
 #include "WindowsWindow.h"
-
+#include "WindowsInput.h"
 
 
 
 namespace Senku
 {
+	static void GLFWErrorCallback(int error, const char* description)
+	{
+		LOG_ERROR("GLFW Error: {0}. Description: {1}", error, description);
+	}
 
 	WindowsWindow::WindowsWindow(const WindowProps & props)
 	{
@@ -16,9 +20,17 @@ namespace Senku
 	WindowsWindow::~WindowsWindow()
 	{
 		Shutdown();
+		// probably should be somewhere else
+		glfwTerminate();
 	}
+
 	void WindowsWindow::OnUpdate()
 	{
+		/* Poll for and process events */
+		glfwPollEvents();
+
+		/* Swap front and back buffers */
+		glfwSwapBuffers(m_Window);
 	}
 	uint32_t WindowsWindow::GetWidth() const
 	{
@@ -30,21 +42,27 @@ namespace Senku
 	}
 	void WindowsWindow::SetVSync(bool enabled)
 	{
+		if (enabled)
+			glfwSwapInterval(1);
+		else
+			glfwSwapInterval(0);
+		m_Data.VSync = enabled;
 	}
 	bool WindowsWindow::IsVSync() const
 	{
-		return false;
+		return m_Data.VSync;
 	}
 	void * WindowsWindow::GetNativeWindow() const
 	{
-		return nullptr;
+		return m_Window;
 	}
 	void WindowsWindow::Init(const WindowProps & props)
 	{
+		LOG_INFO("Init Window");
 		m_Data.Title = props.Title;
 		m_Data.Width = props.Width;
 		m_Data.Height = props.Height;
-		//m_Data.eventsHandler.GetInstance();
+		m_Data.eventsHandler.GetInstance();
 
 		if (!glfwInit())
 		{
@@ -77,7 +95,6 @@ namespace Senku
 			return;
 		}
 
-
 		// here is error spdlog\spdlog\fmt\bundled\core.h(1706): error C4996: 'fmt::v8::detail::arg_mapper<Context>::map': was declared deprecated
 		// todo: fix it
 		//LOG_INFO("Open GL Info:");
@@ -97,7 +114,7 @@ namespace Senku
 		SetVSync(false);
 
 		// creating callbacks to recieve window events (key pressed-released-typed, mouse events window events etc...)
-		//SetEventsCallback();
+		SetEventsCallback();
 
 		glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
@@ -110,13 +127,108 @@ namespace Senku
 		//basicaly with firs call we create it 
 		//SubsciberInfo info(&WindowGLFW::ProcessEvents, this);
 
-		//EventsHandler::GetInstance().SubscribeForEvent(EventCategory::EventCategoryApplication, BIND_EVENT_FN(WindowGLFW::ProcessEventWindowResize));
-		//EventsHandler::GetInstance().SubscribeForEvent(EventCategory(EventCategory::EventCategoryKeyboard | EventCategory::EventCategoryInput), BIND_EVENT_FN(WindowGLFW::ProcessEventKeyboardEvent));
+		//EventsHandler::GetInstance().SubscribeForEvent(EventCategory::EventCategoryApplication, BIND_EVENT_FN(WindowsWindow::ProcessEventWindowResize));
+		//EventsHandler::GetInstance().SubscribeForEvent(EventCategory(EventCategory::EventCategoryKeyboard | EventCategory::EventCategoryInput), BIND_EVENT_FN(WindowsWindow::ProcessEventKeyboardEvent));
 	}
 
 	void WindowsWindow::Shutdown()
 	{
 		LOG_INFO("Destroying window");
-		glfwTerminate();
+		glfwDestroyWindow(m_Window);
+	}
+	void WindowsWindow::SetEventsCallback()
+	{
+		LOG_INFO("Setting up callbacks to GLFW in Window class");
+		glfwSetErrorCallback(GLFWErrorCallback);
+
+		glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height)
+		{
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+			data.Width = width;
+			data.Height = height;
+
+			WindowResizeEvent event(width, height);
+			data.eventsHandler.PublishEvent(event);
+		});
+
+
+		glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* window)
+		{
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+			WindowCloseEvent event;
+			data.eventsHandler.PublishEvent(event);
+		});
+
+		glfwSetKeyCallback(m_Window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
+		{
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+
+			switch (action)
+			{
+			case GLFW_PRESS:
+			{
+				KeyPressedEvent event(key, 0);
+				data.eventsHandler.PublishEvent(event);
+				break;
+			}
+			case GLFW_RELEASE:
+			{
+				KeyReleasedEvent event(key);
+				data.eventsHandler.PublishEvent(event);
+				break;
+			}
+			case GLFW_REPEAT:
+			{
+				KeyPressedEvent event(key, 1);
+				data.eventsHandler.PublishEvent(event);
+				break;
+			}
+			}
+		});
+
+		glfwSetCharCallback(m_Window, [](GLFWwindow* window, unsigned int keycode)
+		{
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+
+			KeyTypedEvent event(keycode);
+			data.eventsHandler.PublishEvent(event);
+		});
+
+		glfwSetMouseButtonCallback(m_Window, [](GLFWwindow* window, int button, int action, int mods)
+		{
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+
+			switch (action)
+			{
+			case GLFW_PRESS:
+			{
+				MouseButtonPressedEvent event(button);
+				data.eventsHandler.PublishEvent(event);
+				break;
+			}
+			case GLFW_RELEASE:
+			{
+				MouseButtonReleasedEvent event(button);
+				data.eventsHandler.PublishEvent(event);
+				break;
+			}
+			}
+		});
+
+		glfwSetScrollCallback(m_Window, [](GLFWwindow* window, double xOffset, double yOffset)
+		{
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+
+			MouseScrolledEvent event((float)xOffset, (float)yOffset);
+			data.eventsHandler.PublishEvent(event);
+		});
+
+		glfwSetCursorPosCallback(m_Window, [](GLFWwindow* window, double xPos, double yPos)
+		{
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+
+			MouseMovedEvent event((float)xPos, (float)yPos);
+			data.eventsHandler.PublishEvent(event);
+		});
 	}
 }

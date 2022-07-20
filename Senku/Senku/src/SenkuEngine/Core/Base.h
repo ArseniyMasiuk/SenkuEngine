@@ -4,6 +4,9 @@
 
 #include "Log.h"
 #include "Assert.h"
+#include "SenkuEngine\EventSystem\ApplicationEvent.h"
+#include "SenkuEngine\EventSystem\KeyEvent.h"
+#include "SenkuEngine\EventSystem\MouseEvent.h"
 
 namespace Senku
 {

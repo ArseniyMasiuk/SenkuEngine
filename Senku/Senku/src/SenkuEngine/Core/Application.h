@@ -15,10 +15,13 @@ namespace Senku
 
 		void Close();
 
-		static std::shared_ptr <Application> Get() { return s_AppInstance; }
-
+		static Application* Get() { return s_AppInstance; }
+		Window& GetWindow() { return *m_Window; }
 	private:
 		// events
+		void OnWindowResize(Event& e);
+		void OnWindowClose(Event& e);
+		void OnKeyboardKeyPressed(Event& e);
 
 	private:
 
@@ -31,7 +34,7 @@ namespace Senku
 
 	private:
 
-		static std::shared_ptr <Application> s_AppInstance;
+		static Application* s_AppInstance;
 		friend int ::main(int argc, char** argv);
 
 	};

@@ -12,10 +12,7 @@ namespace Senku
 
 	public:
 		WindowsWindow(const WindowProps& props);
-		~WindowsWindow();
-
-	private:
-		//events
+		~WindowsWindow() override;
 
 	public:
 
@@ -33,6 +30,7 @@ namespace Senku
 		void Init(const WindowProps& props);
 		void Shutdown();
 
+		void SetEventsCallback();
 	private:
 
 		GLFWwindow* m_Window;
@@ -43,7 +41,7 @@ namespace Senku
 			unsigned int Width, Height;
 			bool VSync;
 
-			//EventsHandler& eventsHandler = EventsHandler::GetInstance();
+			EventsHandler& eventsHandler = EventsHandler::GetInstance();
 		};
 
 		WindowData m_Data;
