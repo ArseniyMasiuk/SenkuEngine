@@ -34,11 +34,11 @@ namespace Senku
 	}
 	uint32_t WindowsWindow::GetWidth() const
 	{
-		return uint32_t();
+		return m_Data.Width;
 	}
 	uint32_t WindowsWindow::GetHeight() const
 	{
-		return uint32_t();
+		return m_Data.Height;
 	}
 	void WindowsWindow::SetVSync(bool enabled)
 	{
@@ -63,6 +63,7 @@ namespace Senku
 		m_Data.Width = props.Width;
 		m_Data.Height = props.Height;
 		m_Data.eventsHandler.GetInstance();
+
 
 		if (!glfwInit())
 		{

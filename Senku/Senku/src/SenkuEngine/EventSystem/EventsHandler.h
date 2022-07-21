@@ -60,10 +60,6 @@ class EventsHandler
 	std::map < int, std::vector<EventCallbackFn>> m_Subscribers;
 public:
 	
-	void asd(Event&){}
-
-	
-
 	static EventsHandler& GetInstance() { static EventsHandler instance; return instance; };
 
 	void SubscribeForEvent(EventCategory eventCategory, const EventCallbackFn& callBack)

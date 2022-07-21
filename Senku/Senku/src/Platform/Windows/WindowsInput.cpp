@@ -7,9 +7,6 @@
 //maybe there is better place to to locate it but for now let it be here
 namespace Senku
 {
-
-	Input* Input::s_Instance = new WindowsInput();//nullptr;
-
 	bool WindowsInput::IsKeyPressedImpl(int keycode)
 	{
 		GLFWwindow* window = static_cast<GLFWwindow*>(Application::Get()->GetWindow().GetNativeWindow());

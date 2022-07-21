@@ -9,7 +9,7 @@ namespace Senku
 	class Application
 	{
 	public:
-		Application();
+		Application(const WindowProps& prop);
 		~Application();
 
 
@@ -39,4 +39,7 @@ namespace Senku
 
 	};
 
+	// will add later some properties
+	// should be created in user scope
+	Application* CreateApplication();
 }

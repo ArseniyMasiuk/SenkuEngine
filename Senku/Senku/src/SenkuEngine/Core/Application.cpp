@@ -1,25 +1,22 @@
 #include "PrecompiledHeader.h"
 #include "Application.h"
 #include "Log.h"
+#include "Input.h"
 
 // should be move to some rendere part
 #include <GL\glew.h>
-
-// depends on platform
-//todo: should be changed
-#include "Platform\Windows\WindowsInput.h"
 
 
 namespace Senku
 {
 	Application* Application::s_AppInstance = nullptr;
-	Application::Application()
+	Application::Application(const WindowProps& prop)
 	{
 		LOG_INFO("Creating App");
 		s_AppInstance = this;
 
 		// todo: add ApplicationSpecification
-		m_Window = Window::Create(WindowProps("Sandbox app", 1200, 800));
+		m_Window = Window::Create(prop);
 
 		// create graphic context, only OpenGL but i will pretent that there would be another so will add abstractions
 
@@ -88,32 +85,5 @@ namespace Senku
 			m_Window->OnUpdate();
 		}
 	}
-
-}
-
-
-
-
-
-
-
-int main(int argc, char** argv)
-{
-	Senku::Log::Init();
-
-	// todo: creating app like in hazel engine
-
-	Senku::Application* app = new Senku::Application();
-
-
-
-	// run app
-	app->Run();
-	delete app;
-	//app.reset();
-	
-
-	//system("pause");
-	return 0;
 
 }

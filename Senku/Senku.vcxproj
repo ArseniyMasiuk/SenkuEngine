@@ -85,6 +85,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Senku\Sandbox\SandboxApp.h" />
     <ClInclude Include="Senku\src\Platform\Windows\WindowsInput.h" />
     <ClInclude Include="Senku\src\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="Senku\src\PrecompiledHeader.h" />
@@ -92,6 +93,8 @@
     <ClInclude Include="Senku\src\SenkuEngine\Core\Application.h" />
     <ClInclude Include="Senku\src\SenkuEngine\Core\Assert.h" />
     <ClInclude Include="Senku\src\SenkuEngine\Core\Base.h" />
+    <ClInclude Include="Senku\src\SenkuEngine\Core\EntryPoint.h" />
+    <ClInclude Include="Senku\src\SenkuEngine\Core\Input.h" />
     <ClInclude Include="Senku\src\SenkuEngine\Core\Log.h" />
     <ClInclude Include="Senku\src\SenkuEngine\Core\PlatformDetection.h" />
     <ClInclude Include="Senku\src\SenkuEngine\Core\Window.h" />
@@ -103,10 +106,12 @@
     <ClInclude Include="Senku\src\SenkuEngine\EventSystem\MouseEvent.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Senku\Sandbox\SandboxApp.cpp" />
     <ClCompile Include="Senku\src\Platform\Windows\WindowsInput.cpp" />
     <ClCompile Include="Senku\src\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="Senku\src\PrecompiledHeader.cpp" />
     <ClCompile Include="Senku\src\SenkuEngine\Core\Application.cpp" />
+    <ClCompile Include="Senku\src\SenkuEngine\Core\Input.cpp" />
     <ClCompile Include="Senku\src\SenkuEngine\Core\Log.cpp" />
     <ClCompile Include="Senku\src\SenkuEngine\Core\Window.cpp" />
   </ItemGroup>
