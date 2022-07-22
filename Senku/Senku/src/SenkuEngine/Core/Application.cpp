@@ -28,9 +28,10 @@ namespace Senku
 
 		// todo: add some extra separation becasue resize events and close events has same event category but different event type
 		// so they will be called twice for each event
-		EventsHandler::GetInstance().SubscribeForEvent(EventCategory::EventCategoryApplication, BIND_EVENT_FN(Application::OnWindowClose));
-		EventsHandler::GetInstance().SubscribeForEvent(EventCategory::EventCategoryApplication, BIND_EVENT_FN(Application::OnWindowResize));
+		//EventsHandler::GetInstance().SubscribeForEvent(EventCategory::EventCategoryApplication, BIND_EVENT_FN(Application::OnWindowClose));
+		//EventsHandler::GetInstance().SubscribeForEvent(EventCategory::EventCategoryApplication, BIND_EVENT_FN(Application::OnWindowResize));
 		EventsHandler::GetInstance().SubscribeForEvent(EventCategory(EventCategory::EventCategoryKeyboard | EventCategory::EventCategoryInput), BIND_EVENT_FN(Application::OnKeyboardKeyPressed));
+		EventsHandler::GetInstance().SubscribeForEvents(BIND_EVENT_FN(Application::OnEvent));
 
 	}
 
@@ -39,32 +40,40 @@ namespace Senku
 		LOG_INFO("Destroying App");
 	}
 
+	void Application::PushLayer(Layer * layer)
+	{
+		m_LayerStack.PushLayer(layer);
+	}
+
 	void Application::Close()
 	{
 		m_Running = false;
 	}
 
-	void Application::OnWindowResize(Event & e)
+	void Application::OnEvent(Event & e)
 	{
+		//WindowClose, WindowResize, WindowFocus, WindowLostFocus, WindowMoved,
+		if (e.GetEventType() == EventType::WindowClose)
+			Close();
+
+
+		// todo: change viewport resolution. There sould be renderer that handle it
 		if (e.GetEventType() == EventType::WindowResize)
 		{
 			WindowResizeEvent& event = (WindowResizeEvent&)e;
-			//m_Window->m_Data.Width = event.GetWidth();
-			//m_Data.Height = event.GetHeight();
-			LOG_INFO("Window resize {0}x{1}", event.GetWidth(), event.GetHeight());
-
-			// todo: should be moved to renderer
 			glViewport(0, 0, event.GetWidth(), event.GetHeight());
 		}
-	}
 
-	void Application::OnWindowClose(Event & e)
-	{
-		if (e.GetEventType() == EventType::WindowClose)
+		// todo: pass events to layers
+
+		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); it++)
 		{
-			LOG_INFO("Close Event handled. \n Closing window ...");
-			m_Running = false;
+
+			if ((*it)->OnEvent(e))
+				break;
+			
 		}
+
 	}
 
 	void Application::OnKeyboardKeyPressed(Event & e)
@@ -80,6 +89,14 @@ namespace Senku
 	{
 		while (m_Running)
 		{
+			glClearColor(0.1f, 0.0f, 0.0f, 0.0f);
+			glClearDepth(1.0f);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+			for (auto it = m_LayerStack.begin(); it != m_LayerStack.end(); it++)
+			{
+				(*it)->OnUpdate();
+			}
 
 
 			m_Window->OnUpdate();

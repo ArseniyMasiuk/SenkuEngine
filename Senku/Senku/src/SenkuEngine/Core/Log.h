@@ -21,4 +21,5 @@ namespace Senku
 #define LOG_ERROR(...) Senku::Log::GetLogger()->error(__VA_ARGS__)
 #define LOG_WARN(...) Senku::Log::GetLogger()->warn(__VA_ARGS__)
 #define LOG_INFO(...) Senku::Log::GetLogger()->info(__VA_ARGS__)
+#define LOG_TRACE(...) Senku::Log::GetLogger()->trace(__VA_ARGS__)
 //#define GAME_ENGINE_FATAL(...) Log::GetLogger()->fatal(__VA_ARGS__)

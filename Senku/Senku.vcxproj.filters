@@ -72,6 +72,15 @@
     <ClInclude Include="Senku\src\SenkuEngine\Core\EntryPoint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Senku\src\SenkuEngine\Core\Layer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Senku\src\SenkuEngine\Core\LayerStack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Senku\Sandbox\SandboxLayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Senku\src\SenkuEngine\Core\Application.cpp">
@@ -96,6 +105,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Senku\Sandbox\SandboxApp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Senku\src\SenkuEngine\Core\Layer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Senku\src\SenkuEngine\Core\LayerStack.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Senku\Sandbox\SandboxLayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

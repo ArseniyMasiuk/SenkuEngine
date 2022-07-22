@@ -38,6 +38,12 @@ public:
 		return (GetCategoryFlags() & category) > 1;
 	}
 
+	virtual ~Event() = default;
+
+public:
+
+	//bool Handled = false;
+
 };
 
 // Hazel engine by Cherno, i stole it from there )) a bit later will investigate all this big brain move, for now i dont understand all from this line
@@ -46,6 +52,26 @@ public:
 #define BIND_EVENT_FN(fn) [this](auto&&... args) -> decltype(auto) { return this->fn(std::forward<decltype(args)>(args)...); }
 
 using EventCallbackFn = std::function<void(Event&)>;
+
+
+//class EventDispatcher
+//{
+//public:
+//
+//	// F will be deduced by the compiler
+//	template<typename T, typename F>
+//	static bool Dispatch(const F& func, Event& m_Event)
+//	{
+//		if (m_Event.GetEventType() == T::GetStaticType())
+//		{
+//			m_Event.Handled |= func(static_cast<T&>(m_Event));
+//			return true;
+//		}
+//		return false;
+//	}
+//private:
+//	
+//};
 
 
 struct Subscription
@@ -73,16 +99,36 @@ public:
 		auto inserted = m_Subscribers.insert(std::make_pair(eventCategory, std::vector<EventCallbackFn> {callBack}));
 	}
 
+	void SubscribeForEvents(const EventCallbackFn& callBack)
+	{
+		// since i want to add lauers i want event handler to deliver to all layers based on their place in stack from top to bottom
+		// and it will be habdled in application function
+		// so for now i will add function that subscribes for all events
+
+		// but i will keep function that allows to subscribe for specific events, maybe it will be helpfull in the future
+		auto inserted = m_Subscribers.insert(std::make_pair(EventCategory::None, std::vector<EventCallbackFn> {callBack}));
+	}
+
+
 	void PublishEvent(Event& e)
 	{
-		auto listOfSubscribers = m_Subscribers.find(e.GetCategoryFlags());
-		if (listOfSubscribers != m_Subscribers.end())
+
+		for (auto it = m_Subscribers.begin(); it != m_Subscribers.end(); ++it)
 		{
-			for (auto it = listOfSubscribers->second.begin(); it != listOfSubscribers->second.end(); ++it)
-				(*it)(e);
+			if (it->first == EventCategory::None)
+			{
+				for (auto it : it->second)
+					(it)(e);
+			}
+			
+			if (it->first == e.GetCategoryFlags())
+			{
+				for (auto it : it->second)
+					(it)(e);
+			}
+			//else
+			//	std::cout << "There is no subscribers for event: " << e.ToString() << std::endl;
 		}
-		//else
-		//	std::cout << "There is no subscribers for event: " << e.ToString() << std::endl;
 	}
 	
 };

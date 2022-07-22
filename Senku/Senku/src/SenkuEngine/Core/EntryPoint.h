@@ -2,7 +2,7 @@
 
 #include "Application.h"
 
-extern 	Senku::Application* Senku::CreateApplication();
+extern Senku::Application* Senku::CreateApplication();
 
 
 int main(int argc, char** argv)

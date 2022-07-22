@@ -1,6 +1,7 @@
 #pragma once
 #include "Base.h"
 #include "Window.h"
+#include "LayerStack.h"
 
 int main(int argc, char** argv);
 
@@ -12,6 +13,8 @@ namespace Senku
 		Application(const WindowProps& prop);
 		~Application();
 
+	public:
+		void PushLayer(Layer* layer);
 
 		void Close();
 
@@ -19,8 +22,7 @@ namespace Senku
 		Window& GetWindow() { return *m_Window; }
 	private:
 		// events
-		void OnWindowResize(Event& e);
-		void OnWindowClose(Event& e);
+		void OnEvent(Event& e);
 		void OnKeyboardKeyPressed(Event& e);
 
 	private:
@@ -31,6 +33,8 @@ namespace Senku
 		//members
 		bool m_Running = true;
 		Scope<Window> m_Window;
+
+		LayerStack m_LayerStack;
 
 	private:
 

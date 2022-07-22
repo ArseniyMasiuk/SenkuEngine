@@ -117,7 +117,7 @@ namespace Senku
 		// creating callbacks to recieve window events (key pressed-released-typed, mouse events window events etc...)
 		SetEventsCallback();
 
-		glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		//glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 
 		glEnable(GL_DEBUG_OUTPUT);
