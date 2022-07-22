@@ -15,117 +15,117 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Senku\src\SenkuEngine\Core\Application.h">
+    <ClInclude Include="src\Platform\OpenGL\OpenGLContrext.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Senku\src\SenkuEngine\Core\Assert.h">
+    <ClInclude Include="src\Platform\Windows\WindowsInput.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Senku\src\SenkuEngine.h">
+    <ClInclude Include="src\Platform\Windows\WindowsWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Senku\src\PrecompiledHeader.h">
+    <ClInclude Include="src\SenkuEngine\Core\Application.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Senku\src\SenkuEngine\Core\Log.h">
+    <ClInclude Include="src\SenkuEngine\Core\Assert.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Senku\src\SenkuEngine\Core\Window.h">
+    <ClInclude Include="src\SenkuEngine\Core\Base.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Senku\src\SenkuEngine\Core\Base.h">
+    <ClInclude Include="src\SenkuEngine\Core\EntryPoint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Senku\src\SenkuEngine\Core\PlatformDetection.h">
+    <ClInclude Include="src\SenkuEngine\Core\Input.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Senku\src\Platform\Windows\WindowsWindow.h">
+    <ClInclude Include="src\SenkuEngine\Core\Layer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Senku\src\SenkuEngine\EventSystem\ApplicationEvent.h">
+    <ClInclude Include="src\SenkuEngine\Core\LayerStack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Senku\src\SenkuEngine\EventSystem\EventsHandler.h">
+    <ClInclude Include="src\SenkuEngine\Core\Log.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Senku\src\SenkuEngine\EventSystem\KeyCodes.h">
+    <ClInclude Include="src\SenkuEngine\Core\PlatformDetection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Senku\src\SenkuEngine\EventSystem\KeyEvent.h">
+    <ClInclude Include="src\SenkuEngine\Core\Window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Senku\src\SenkuEngine\EventSystem\MouseCodes.h">
+    <ClInclude Include="src\SenkuEngine\EventSystem\ApplicationEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Senku\src\SenkuEngine\EventSystem\MouseEvent.h">
+    <ClInclude Include="src\SenkuEngine\EventSystem\EventsHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Senku\src\Platform\Windows\WindowsInput.h">
+    <ClInclude Include="src\SenkuEngine\EventSystem\KeyCodes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Senku\src\SenkuEngine\Core\Input.h">
+    <ClInclude Include="src\SenkuEngine\EventSystem\KeyEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Senku\Sandbox\SandboxApp.h">
+    <ClInclude Include="src\SenkuEngine\EventSystem\MouseCodes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Senku\src\SenkuEngine\Core\EntryPoint.h">
+    <ClInclude Include="src\SenkuEngine\EventSystem\MouseEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Senku\src\SenkuEngine\Core\Layer.h">
+    <ClInclude Include="src\SenkuEngine\Renderer\GraphicsContext.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Senku\src\SenkuEngine\Core\LayerStack.h">
+    <ClInclude Include="src\PrecompiledHeader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Senku\Sandbox\SandboxLayer.h">
+    <ClInclude Include="src\SenkuEngine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Senku\src\SenkuEngine\Renderer\GraphicsContext.h">
+    <ClInclude Include="Sandbox\SandboxApp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Senku\src\Platform\OpenGL\OpenGLContrext.h">
+    <ClInclude Include="Sandbox\SandboxLayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Senku\src\SenkuEngine\Core\Application.cpp">
+    <ClCompile Include="src\Platform\OpenGL\OpenGLContrext.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Senku\src\PrecompiledHeader.cpp">
+    <ClCompile Include="src\Platform\Windows\WindowsInput.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Senku\src\SenkuEngine\Core\Log.cpp">
+    <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Senku\src\SenkuEngine\Core\Window.cpp">
+    <ClCompile Include="src\SenkuEngine\Core\Application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Senku\src\Platform\Windows\WindowsWindow.cpp">
+    <ClCompile Include="src\SenkuEngine\Core\Input.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Senku\src\Platform\Windows\WindowsInput.cpp">
+    <ClCompile Include="src\SenkuEngine\Core\Layer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Senku\src\SenkuEngine\Core\Input.cpp">
+    <ClCompile Include="src\SenkuEngine\Core\LayerStack.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Senku\Sandbox\SandboxApp.cpp">
+    <ClCompile Include="src\SenkuEngine\Core\Log.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Senku\src\SenkuEngine\Core\Layer.cpp">
+    <ClCompile Include="src\SenkuEngine\Core\Window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Senku\src\SenkuEngine\Core\LayerStack.cpp">
+    <ClCompile Include="src\SenkuEngine\Renderer\GraphicsContext.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Senku\Sandbox\SandboxLayer.cpp">
+    <ClCompile Include="src\PrecompiledHeader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Senku\src\Platform\OpenGL\OpenGLContrext.cpp">
+    <ClCompile Include="Sandbox\SandboxApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Senku\src\SenkuEngine\Renderer\GraphicsContext.cpp">
+    <ClCompile Include="Sandbox\SandboxLayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

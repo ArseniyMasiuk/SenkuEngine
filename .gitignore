@@ -1,4 +1,5 @@
 **/bin
+**/intermediate
 **/x64
 */Debug
 */Release
