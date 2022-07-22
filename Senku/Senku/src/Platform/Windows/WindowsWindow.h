@@ -1,5 +1,6 @@
 #pragma once
 #include "SenkuEngine\Core\Window.h"
+#include "SenkuEngine\Renderer\GraphicsContext.h"
 
 #include <GLFW/glfw3.h>
 
@@ -34,6 +35,8 @@ namespace Senku
 	private:
 
 		GLFWwindow* m_Window;
+
+		Scope<GraphicsContext> m_GraphicsContext;
 
 		struct WindowData
 		{

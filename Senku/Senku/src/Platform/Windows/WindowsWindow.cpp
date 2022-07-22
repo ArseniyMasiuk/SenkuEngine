@@ -30,7 +30,7 @@ namespace Senku
 		glfwPollEvents();
 
 		/* Swap front and back buffers */
-		glfwSwapBuffers(m_Window);
+		m_GraphicsContext->SwapBuffers();
 	}
 	uint32_t WindowsWindow::GetWidth() const
 	{
@@ -64,6 +64,8 @@ namespace Senku
 		m_Data.Height = props.Height;
 		m_Data.eventsHandler.GetInstance();
 
+		
+
 
 		if (!glfwInit())
 		{
@@ -77,15 +79,17 @@ namespace Senku
 
 
 		/* Create a windowed mode window and its OpenGL context */
-		m_Window = glfwCreateWindow(props.Width, props.Height, props.Title.c_str(), NULL, NULL);
+		m_Window = glfwCreateWindow(props.Width, props.Height, props.Title.c_str(), nullptr, nullptr);
 		if (m_Window == NULL)
 		{
 			LOG_ERROR("Failed to create GLFW window");
 			glfwTerminate();
 		}
 
-		/* Make the window's context current */
-		glfwMakeContextCurrent(m_Window);
+
+		m_GraphicsContext = GraphicsContext::Create(m_Window);
+		m_GraphicsContext->Init();
+
 		//glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 		glfwSwapInterval(1); // vertical synchronization, investigate later what it is and how it works
 
@@ -96,12 +100,6 @@ namespace Senku
 			return;
 		}
 
-		// here is error spdlog\spdlog\fmt\bundled\core.h(1706): error C4996: 'fmt::v8::detail::arg_mapper<Context>::map': was declared deprecated
-		// todo: fix it
-		//LOG_INFO("Open GL Info:");
-		//LOG_INFO("Vendor:   {0}", glGetString(GL_VENDOR));
-		//LOG_INFO("Renderer: {0}", glGetString(GL_RENDERER));
-		//LOG_INFO("Version:  {0}", glGetString(GL_VERSION));
 
 		glViewport(0, 0, m_Data.Width, m_Data.Height);
 
@@ -115,12 +113,12 @@ namespace Senku
 		SetVSync(false);
 
 		// creating callbacks to recieve window events (key pressed-released-typed, mouse events window events etc...)
-		SetEventsCallback();
 
 		//glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 
 		glEnable(GL_DEBUG_OUTPUT);
+		SetEventsCallback();
 
 		//glDebugMessageCallback(MessageCallback, 0);
 

@@ -22,19 +22,19 @@ namespace Senku
 		return state == GLFW_PRESS;
 	}
 
-	float WindowsInput::GetMouseXImpl()
+	double WindowsInput::GetMouseXImpl()
 	{
 		auto[x, y] = GetMousePositionImpl(); // cool feature from c++17
 		return x;
 	}
 
-	float WindowsInput::GetMouseYImpl()
+	double WindowsInput::GetMouseYImpl()
 	{
 		auto[x, y] = GetMousePositionImpl();
 		return y;
 	}
 
-	std::pair<float, float> WindowsInput::GetMousePositionImpl()
+	std::pair<double, double> WindowsInput::GetMousePositionImpl()
 	{
 		GLFWwindow* window = static_cast<GLFWwindow*>(Application::Get()->GetWindow().GetNativeWindow());
 		double xPos, yPos;
