@@ -1,3 +1,4 @@
+#include "PrecompiledHeader.h"
 #include "Input.h"
 #include "Platform\Windows\WindowsInput.h"
 namespace Senku

@@ -57,6 +57,8 @@
       <AdditionalIncludeDirectories>$(SolutionDir)Senku\Senku\src;$(SolutionDir)Senku\Senku\dependencies\GLFW\include;$(SolutionDir)Senku\Senku\dependencies\spdlog;$(SolutionDir)Senku\Senku\dependencies\glew-2.1.0\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>GLEW_STATIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>PrecompiledHeader.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -75,6 +77,8 @@
       <AdditionalIncludeDirectories>$(SolutionDir)Senku\Senku\src;$(SolutionDir)Senku\Senku\dependencies\GLFW\include;$(SolutionDir)Senku\Senku\dependencies\spdlog;$(SolutionDir)Senku\Senku\dependencies\glew-2.1.0\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>GLEW_STATIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>PrecompiledHeader.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -116,7 +120,10 @@
     <ClCompile Include="Senku\src\Platform\OpenGL\OpenGLContrext.cpp" />
     <ClCompile Include="Senku\src\Platform\Windows\WindowsInput.cpp" />
     <ClCompile Include="Senku\src\Platform\Windows\WindowsWindow.cpp" />
-    <ClCompile Include="Senku\src\PrecompiledHeader.cpp" />
+    <ClCompile Include="Senku\src\PrecompiledHeader.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="Senku\src\SenkuEngine\Core\Application.cpp" />
     <ClCompile Include="Senku\src\SenkuEngine\Core\Input.cpp" />
     <ClCompile Include="Senku\src\SenkuEngine\Core\Layer.cpp" />
