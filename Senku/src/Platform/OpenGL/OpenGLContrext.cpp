@@ -18,10 +18,10 @@ namespace Senku
 		/* Make the window's context current */
 		glfwMakeContextCurrent(m_Window);
 
-		//LOG_INFO("OpenGL Info:");
-		//LOG_INFO("  Vendor: {0}", glGetString(GL_VENDOR));
-		//LOG_INFO("  Renderer: {0}", glGetString(GL_RENDERER));
-		//LOG_INFO("  Version: {0}", glGetString(GL_VERSION));
+		LOG_INFO("OpenGL Info:");
+		LOG_INFO("Vendor: {0}", reinterpret_cast<const char*>(glGetString(GL_VENDOR)));
+		LOG_INFO("Renderer: {0}", reinterpret_cast<const char*>(glGetString(GL_RENDERER)));
+		LOG_INFO("Version: {0}", reinterpret_cast<const char*>(glGetString(GL_VERSION)));
 	}
 
 	void OpenGLContext::SwapBuffers()
