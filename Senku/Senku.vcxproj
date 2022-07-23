@@ -94,6 +94,7 @@
     <ClInclude Include="Sandbox\SandboxApp.h" />
     <ClInclude Include="Sandbox\SandboxLayer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContrext.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h" />
     <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\PrecompiledHeader.h" />
@@ -115,11 +116,13 @@
     <ClInclude Include="src\SenkuEngine\EventSystem\MouseCodes.h" />
     <ClInclude Include="src\SenkuEngine\EventSystem\MouseEvent.h" />
     <ClInclude Include="src\SenkuEngine\Renderer\GraphicsContext.h" />
+    <ClInclude Include="src\SenkuEngine\Renderer\Shader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sandbox\SandboxApp.cpp" />
     <ClCompile Include="Sandbox\SandboxLayer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLContrext.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="src\PrecompiledHeader.cpp">
@@ -133,6 +136,7 @@
     <ClCompile Include="src\SenkuEngine\Core\Log.cpp" />
     <ClCompile Include="src\SenkuEngine\Core\Window.cpp" />
     <ClCompile Include="src\SenkuEngine\Renderer\GraphicsContext.cpp" />
+    <ClCompile Include="src\SenkuEngine\Renderer\Shader.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
