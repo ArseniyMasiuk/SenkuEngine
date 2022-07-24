@@ -1,8 +1,8 @@
 #include "PrecompiledHeader.h"
 #include "SandboxLayer.h"
 
+#include "SenkuEngine\Renderer\Renderer.h"
 
-#include <GL\glew.h>
 
 SandBoxLayer::SandBoxLayer()
 {
@@ -96,21 +96,20 @@ void SandBoxLayer::OnUpdate()
 {
 	//LOG_TRACE("SandboxLayerUpdating");
 
-	glClearColor(0.1f, 0.2f, 0.2f, 0.0f);
-	glClearDepth(1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	Senku::RenderCommand::ClearColor({ 0.1f, 0.2f, 0.2f, 0.0f });
+	Senku::RenderCommand::Clear();
+
+	Senku::Renderer::BeginScene(); // todo:: set up cameras light shaders all stuff that should be common
+
+	m_Shader->Bind();
+	Senku::Renderer::Submit(m_VertexArray);
+
+	Senku::Renderer::EndScene();
 	/*if (Senku::Input::IsKeyPressed(Senku::Key::A))
 	{
 		m_Shader->setUniform4f("u_Color", 0.1f, 0.7f, 0.4f, 0.8f);
 	}*/
-
-	//glBindVertexArray(m_VertexArray);
-	m_VertexArray->Bind();
-	glDrawElements(GL_TRIANGLES, m_VertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
-
-	// shader. For now will use default shader
-
 
 }
 

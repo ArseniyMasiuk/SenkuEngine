@@ -4,7 +4,7 @@
 #include "WindowsWindow.h"
 #include "WindowsInput.h"
 
-
+#include "SenkuEngine\Renderer\Renderer.h"
 
 namespace Senku
 {
@@ -64,9 +64,6 @@ namespace Senku
 		m_Data.Height = props.Height;
 		m_Data.eventsHandler.GetInstance();
 
-		
-
-
 		if (!glfwInit())
 		{
 			LOG_ERROR("Cant inicialize GLFW");
@@ -90,6 +87,13 @@ namespace Senku
 		m_GraphicsContext = GraphicsContext::Create(m_Window);
 		m_GraphicsContext->Init();
 
+		Renderer::Init();
+
+
+		// todo: where exactly view port should be seted in initial load???
+		// Renderer:: view port
+		//glViewport(0, 0, m_Data.Width, m_Data.Height);
+
 		//glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 		glfwSwapInterval(1); // vertical synchronization, investigate later what it is and how it works
 
@@ -101,14 +105,6 @@ namespace Senku
 		}
 
 
-		glViewport(0, 0, m_Data.Width, m_Data.Height);
-
-		// configure global opengl state
-		// -----------------------------
-		glEnable(GL_DEPTH_TEST);
-
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 		SetVSync(true);
 
@@ -117,17 +113,7 @@ namespace Senku
 		//glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 
-		glEnable(GL_DEBUG_OUTPUT);
 		SetEventsCallback();
-
-		//glDebugMessageCallback(MessageCallback, 0);
-
-		//creating hooks to recieve events
-		//basicaly with firs call we create it 
-		//SubsciberInfo info(&WindowGLFW::ProcessEvents, this);
-
-		//EventsHandler::GetInstance().SubscribeForEvent(EventCategory::EventCategoryApplication, BIND_EVENT_FN(WindowsWindow::ProcessEventWindowResize));
-		//EventsHandler::GetInstance().SubscribeForEvent(EventCategory(EventCategory::EventCategoryKeyboard | EventCategory::EventCategoryInput), BIND_EVENT_FN(WindowsWindow::ProcessEventKeyboardEvent));
 	}
 
 	void WindowsWindow::Shutdown()
