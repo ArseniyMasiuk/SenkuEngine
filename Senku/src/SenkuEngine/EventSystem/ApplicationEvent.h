@@ -2,39 +2,42 @@
 #include <sstream>
 #include "EventsHandler.h"
 
-class WindowResizeEvent : public Event
+namespace Senku
 {
-public:
-	WindowResizeEvent(const unsigned int width, const unsigned int height)
-	:m_Width(width),m_Height(height){}
-
-	unsigned int GetWidth() const { return m_Width; }
-	unsigned int GetHeight() const { return m_Height; }
-
-	virtual int GetCategoryFlags() const override { return EventCategory::EventCategoryApplication; }
-	virtual EventType GetEventType() const override { return EventType::WindowResize; }
-	std::string ToString() const override
+	class WindowResizeEvent : public Event
 	{
-		std::stringstream ss;
-		ss << "WindowResizeEvent: " << m_Width << ", " << m_Height;
-		return ss.str();
-	}
+	public:
+		WindowResizeEvent(const unsigned int width, const unsigned int height)
+			:m_Width(width), m_Height(height) {}
 
-private:
-	unsigned int m_Width, m_Height;
-};
+		unsigned int GetWidth() const { return m_Width; }
+		unsigned int GetHeight() const { return m_Height; }
 
-class WindowCloseEvent : public Event
-{
-public:
-	WindowCloseEvent() = default;
+		virtual int GetCategoryFlags() const override { return EventCategory::EventCategoryApplication; }
+		virtual EventType GetEventType() const override { return EventType::WindowResize; }
+		std::string ToString() const override
+		{
+			std::stringstream ss;
+			ss << "WindowResizeEvent: " << m_Width << ", " << m_Height;
+			return ss.str();
+		}
 
-	virtual int GetCategoryFlags() const override { return EventCategory::EventCategoryApplication; }
-	virtual EventType GetEventType() const override { return EventType::WindowClose; }
-	std::string ToString() const override
+	private:
+		unsigned int m_Width, m_Height;
+	};
+
+	class WindowCloseEvent : public Event
 	{
-		std::stringstream ss;
-		ss << "WindowCloseEvent";
-		return ss.str();
-	}
-};
+	public:
+		WindowCloseEvent() = default;
+
+		virtual int GetCategoryFlags() const override { return EventCategory::EventCategoryApplication; }
+		virtual EventType GetEventType() const override { return EventType::WindowClose; }
+		std::string ToString() const override
+		{
+			std::stringstream ss;
+			ss << "WindowCloseEvent";
+			return ss.str();
+		}
+	};
+}

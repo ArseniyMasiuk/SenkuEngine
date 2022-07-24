@@ -57,11 +57,11 @@ namespace Senku
 	public:
 
 		// set uniform
-		//void setUniformMat4(const std::string& name, const glm::mat4 & matrix);
-		void setUniform4f(const std::string& name, float v1, float v2, float v3, float v4);
-		void setUniform1i(const std::string& name, int val);
-		//void setUniform3fv(const std::string& name, glm::vec3 val);
-		void setUniform1f(const std::string& name, float val);
+		//virtual void setUniformMat4(const std::string& name, const glm::mat4 & matrix) override;
+		virtual void setUniform4f(const std::string& name, float v1, float v2, float v3, float v4) override;
+		virtual void setUniform1i(const std::string& name, int val) override;
+		//virtual void setUniform3fv(const std::string& name, glm::vec3 val) override;
+		virtual void setUniform1f(const std::string& name, float val) override;
 
 	private:
 

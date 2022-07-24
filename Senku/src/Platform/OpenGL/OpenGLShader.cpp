@@ -66,8 +66,6 @@ namespace Senku
 			if (kEvent.GetKeyCode() == Key::B)
 				setUniform4f("u_Color", 0.0f, 0.0f, 1.0f, 0.1f);
 		}
-		else
-			std::cout << "Shader handled: " << e.ToString() << std::endl;
 	}
 	void OpenGLShader::setUniform4f(const std::string & name, float v1, float v2, float v3, float v4)
 	{

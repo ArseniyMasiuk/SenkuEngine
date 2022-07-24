@@ -17,5 +17,5 @@ public:
 	virtual void OnDetach() override;
 	virtual void OnUpdate(/*Timestep ts*/) override;
 	
-	virtual bool OnEvent(Event& event) override;
+	virtual bool OnEvent(Senku::Event& event) override;
 };

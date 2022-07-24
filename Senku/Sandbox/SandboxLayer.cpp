@@ -85,6 +85,11 @@ void SandBoxLayer::OnUpdate()
 	glClearDepth(1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	if (Senku::Input::IsKeyPressed(Senku::Key::A))
+	{
+		m_Shader->setUniform4f("u_Color", 0.1f, 0.7f, 0.4f, 0.8f);
+	}
+
 	glBindVertexArray(m_VertexArray);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
@@ -93,7 +98,9 @@ void SandBoxLayer::OnUpdate()
 
 }
 
-bool SandBoxLayer::OnEvent(Event & event)
+bool SandBoxLayer::OnEvent(Senku::Event & event)
 {
+
+
 	return false;
 }
