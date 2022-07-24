@@ -110,7 +110,7 @@ namespace Senku
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		glfwSetWindowUserPointer(m_Window, &m_Data);
-		SetVSync(false);
+		SetVSync(true);
 
 		// creating callbacks to recieve window events (key pressed-released-typed, mouse events window events etc...)
 
