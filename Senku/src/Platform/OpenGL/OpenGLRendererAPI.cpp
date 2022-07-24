@@ -29,6 +29,7 @@ namespace Senku
 	void OpenGLRendererAPI::Init()
 	{
 		{
+			// todo: investigae why error occurs
 			// todo: add ifdef debug
 			//glEnable(GL_DEBUG_OUTPUT);
 			//glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
