@@ -33,6 +33,7 @@ namespace Senku
 
 
 	OpenGLIndexBuffer::OpenGLIndexBuffer(uint32_t* indecies, uint32_t count)
+		:m_Count(count)
 	{
 		ASSERT(sizeof(unsigned int) == sizeof(GLuint));
 

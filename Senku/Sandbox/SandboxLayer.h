@@ -4,14 +4,12 @@
 
 #include "SenkuEngine\Renderer\Shader.h"
 #include "SenkuEngine\Renderer\Buffer.h"
-
+#include "SenkuEngine\Renderer\VertexArray.h"
 
 
 class SandBoxLayer : public Senku::Layer
 {
-	unsigned int m_VertexArray;
-	Senku::Ref<Senku::VertexBuffer> m_VertexBuffer;
-	Senku::Ref<Senku::IndexBuffer> m_IndexBuffer;
+	Senku::Ref<Senku::VertexArray> m_VertexArray;
 	
 	Senku::Ref<Senku::Shader> m_Shader;
 public:

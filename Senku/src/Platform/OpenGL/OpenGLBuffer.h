@@ -31,10 +31,11 @@ namespace Senku
 		virtual void Bind() const override;
 		virtual void Unbind() const override;
 
+		virtual uint32_t GetCount() const override { return m_Count; };
 
 	public:
 
-		// todo:: add count var
+		uint32_t m_Count;
 		unsigned int m_RendererID;
 	};
 }
