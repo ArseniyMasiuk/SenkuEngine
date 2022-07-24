@@ -93,6 +93,8 @@
   <ItemGroup>
     <ClInclude Include="Sandbox\SandboxApp.h" />
     <ClInclude Include="Sandbox\SandboxLayer.h" />
+    <ClInclude Include="src\Platform\OpenGL\DebugAsist.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContrext.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h" />
     <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
@@ -115,12 +117,14 @@
     <ClInclude Include="src\SenkuEngine\EventSystem\KeyEvent.h" />
     <ClInclude Include="src\SenkuEngine\EventSystem\MouseCodes.h" />
     <ClInclude Include="src\SenkuEngine\EventSystem\MouseEvent.h" />
+    <ClInclude Include="src\SenkuEngine\Renderer\Buffer.h" />
     <ClInclude Include="src\SenkuEngine\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\SenkuEngine\Renderer\Shader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sandbox\SandboxApp.cpp" />
     <ClCompile Include="Sandbox\SandboxLayer.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLContrext.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />
@@ -135,6 +139,7 @@
     <ClCompile Include="src\SenkuEngine\Core\LayerStack.cpp" />
     <ClCompile Include="src\SenkuEngine\Core\Log.cpp" />
     <ClCompile Include="src\SenkuEngine\Core\Window.cpp" />
+    <ClCompile Include="src\SenkuEngine\Renderer\Buffer.cpp" />
     <ClCompile Include="src\SenkuEngine\Renderer\GraphicsContext.cpp" />
     <ClCompile Include="src\SenkuEngine\Renderer\Shader.cpp" />
   </ItemGroup>

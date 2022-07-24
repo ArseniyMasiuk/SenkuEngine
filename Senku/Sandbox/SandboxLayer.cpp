@@ -10,8 +10,6 @@ SandBoxLayer::SandBoxLayer()
 	glGenVertexArrays(1, &m_VertexArray);
 	glBindVertexArray(m_VertexArray);
 
-	glGenBuffers(1, &m_VertexBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, m_VertexBuffer);
 
 	float vertecies[3 * 4] =
 	{
@@ -21,32 +19,39 @@ SandBoxLayer::SandBoxLayer()
 		-0.5f, 0.5f, 0.0f
 	};
 
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertecies), vertecies, GL_STATIC_DRAW);
+	m_VertexBuffer = Senku::VertexBuffer::Create(vertecies, sizeof(vertecies));
+
+	m_VertexBuffer->Bind();
+
 
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, nullptr);
 
-	glGenBuffers(1, &m_IndexBuffer);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IndexBuffer);
 
-	unsigned int indecies[6] = 
+
+	unsigned int indecies[6] =
 	{
 		0, 1, 2,
 		0, 2, 3
 	};
+	m_IndexBuffer = Senku::IndexBuffer::Create(indecies, 6);
 
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indecies), indecies, GL_STATIC_DRAW);
+	m_IndexBuffer->Bind();
+
+	/*
+
+	*/
+
 
 	std::string vertexShader = R"(
 #version 330 core
-layout (location = 0) in vec3 aPos; // the position variable has attribute position 0
+layout (location = 0) in vec3 aPos;
   
-out vec4 vertexColor; // specify a color output to the fragment shader
+out vec4 vertexPosition; 
 
 void main()
 {
-    gl_Position = vec4(aPos, 1.0); // see how we directly give a vec3 to vec4's constructor
-    vertexColor = vec4(0.5, 0.0, 0.0, 1.0); // set the output variable to a dark-red color
+    gl_Position = vec4(aPos, 1.0);
 }
 )";
 
@@ -54,7 +59,7 @@ void main()
 #version 330 core
 out vec4 FragColor;
   
-in vec4 vertexColor; // the input variable from the vertex shader (same name and same type)  
+in vec4 vertexPosition;
 uniform vec4 u_Color;
 void main()
 {

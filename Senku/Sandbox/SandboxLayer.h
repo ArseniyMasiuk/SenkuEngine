@@ -2,12 +2,16 @@
 #include "SenkuEngine.h"
 
 
-#include "Platform\OpenGL\OpenGLShader.h"
+#include "SenkuEngine\Renderer\Shader.h"
+#include "SenkuEngine\Renderer\Buffer.h"
+
 
 
 class SandBoxLayer : public Senku::Layer
 {
-	unsigned int m_VertexArray, m_VertexBuffer, m_IndexBuffer;
+	unsigned int m_VertexArray;
+	Senku::Ref<Senku::VertexBuffer> m_VertexBuffer;
+	Senku::Ref<Senku::IndexBuffer> m_IndexBuffer;
 	
 	Senku::Ref<Senku::Shader> m_Shader;
 public:
