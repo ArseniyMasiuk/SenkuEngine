@@ -1,7 +1,7 @@
 #include "PrecompiledHeader.h"
 #include "OpenGLShader.h"
 
-
+#include "glm\gtc\type_ptr.hpp"
 
 namespace Senku
 {
@@ -80,20 +80,15 @@ namespace Senku
 		GLCall(glUniform1f(GetUniformLocation(name.c_str()), val));
 	}
 
-	//void OpenGLShader::setUniformMat4(const std::string & name, const glm::mat4 & matrix)
-	//{
-	//	/*
-	//	int modelLoc = glGetUniformLocation(shaderLoader.getShader(), "model");
-	//	ASSERT(modelLoc != -1);
-	//	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-	//	*/
-	//	GLCall(glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(matrix)));
-	//}
+	void OpenGLShader::setUniformMat4(const std::string & name, const glm::mat4 & matrix)
+	{
+		GLCall(glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(matrix)));
+	}
 
-	//void OpenGLShader::setUniform3fv(const std::string & name, glm::vec3 val)
-	//{
-	//	GLCall(glUniform3fv(GetUniformLocation(name.c_str()), 1, glm::value_ptr(val)));
-	//}
+	void OpenGLShader::setUniform3fv(const std::string & name, glm::vec3 val)
+	{
+		GLCall(glUniform3fv(GetUniformLocation(name.c_str()), 1, glm::value_ptr(val)));
+	}
 
 	int OpenGLShader::GetUniformLocation(const std::string & name)
 	{

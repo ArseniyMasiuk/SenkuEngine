@@ -74,6 +74,7 @@ namespace Senku
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0); // version of opengl
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // enabling core profile means that we have to create vertex array object by ourselves
 
+		//glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
 
 		/* Create a windowed mode window and its OpenGL context */
 		m_Window = glfwCreateWindow(props.Width, props.Height, props.Title.c_str(), nullptr, nullptr);
@@ -110,7 +111,7 @@ namespace Senku
 
 		// creating callbacks to recieve window events (key pressed-released-typed, mouse events window events etc...)
 
-		//glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 
 		SetEventsCallback();

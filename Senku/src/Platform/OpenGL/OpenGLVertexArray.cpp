@@ -32,11 +32,11 @@ namespace Senku
 		GLCall(glGenVertexArrays(1, &m_RendererID));
 		GLCall(glBindVertexArray(m_RendererID));
 
-		LOG_INFO("Creating Vertex Array. ID = {0}", m_RendererID);
+		//LOG_INFO("Creating Vertex Array. ID = {0}", m_RendererID);
 	}
 	OpenGLVertexArray::~OpenGLVertexArray()
 	{
-		LOG_INFO("Deleting Vertex Array. ID = {0}", m_RendererID);
+		//LOG_INFO("Deleting Vertex Array. ID = {0}", m_RendererID);
 		GLCall(glDeleteVertexArrays(1, &m_RendererID));
 	}
 	void OpenGLVertexArray::Bind() const

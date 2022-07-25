@@ -2,7 +2,8 @@
 #include "SandboxLayer.h"
 
 #include "SenkuEngine\Renderer\Renderer.h"
-
+#include "glm\ext\quaternion_transform.hpp"
+#include "glm\ext\matrix_transform.hpp"
 
 SandBoxLayer::SandBoxLayer()
 {
@@ -55,9 +56,13 @@ layout (location = 1) in vec4 aColor;
   
 out vec4 vertexPosition; 
 out vec4 color;
+
+uniform mat4 u_ViewProjMat;
+uniform mat4 u_Model;
+
 void main()
 {
-    gl_Position = vec4(aPos, 1.0);
+    gl_Position = u_ViewProjMat * u_Model *vec4(aPos, 1.0);
 	color = aColor;
 }
 )";
@@ -92,18 +97,19 @@ void SandBoxLayer::OnDetach()
 {
 }
 
-void SandBoxLayer::OnUpdate()
+void SandBoxLayer::OnUpdate(float timeStep)
 {
 	//LOG_TRACE("SandboxLayerUpdating");
 
+	m_Camera.UpdateCameraPosition(timeStep);
 
 	Senku::RenderCommand::ClearColor({ 0.1f, 0.2f, 0.2f, 0.0f });
 	Senku::RenderCommand::Clear();
 
-	Senku::Renderer::BeginScene(); // todo:: set up cameras light shaders all stuff that should be common
+	Senku::Renderer::BeginScene(m_Camera); // todo:: set up cameras light shaders all stuff that should be common
 
-	m_Shader->Bind();
-	Senku::Renderer::Submit(m_VertexArray);
+	Senku::Renderer::Submit(m_VertexArray, m_Shader);
+	Senku::Renderer::Submit(m_VertexArray, m_Shader, glm::mat4() = glm::translate(glm::mat4(1), glm::vec3(1,1,0)));
 
 	Senku::Renderer::EndScene();
 	/*if (Senku::Input::IsKeyPressed(Senku::Key::A))

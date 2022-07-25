@@ -11,7 +11,7 @@ namespace Senku
 
 		virtual void OnAttach() {}
 		virtual void OnDetach() {}
-		virtual void OnUpdate(/*Timestep ts*/) {}
+		virtual void OnUpdate(/*Timestep ts*/float timeStep) {}
 		//virtual void OnImGuiRender() {}
 		virtual bool OnEvent(Event& event) { return false; }
 

@@ -22,7 +22,7 @@ public:
 
 Senku::Application* Senku::CreateApplication()
 {
-	Senku::WindowProps props("Sandbox Application", 800, 600);
+	Senku::WindowProps props("Sandbox Application", 1600, 800);
 	Senku::Application* app = new SandboxApp(props);
 
 	return app;

@@ -3,9 +3,7 @@
 #include "Log.h"
 #include "Input.h"
 
-// should be move to some rendere part
-#include <GL\glew.h>
-
+#include "SenkuEngine\Renderer\Renderer.h"
 
 namespace Senku
 {
@@ -61,17 +59,15 @@ namespace Senku
 		if (e.GetEventType() == EventType::WindowResize)
 		{
 			WindowResizeEvent& event = (WindowResizeEvent&)e;
-			glViewport(0, 0, event.GetWidth(), event.GetHeight());
+			RenderCommand::SetViewPort(0, 0, event.GetWidth(), event.GetHeight());
 		}
 
 		// todo: pass events to layers
 
 		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); it++)
 		{
-
 			if ((*it)->OnEvent(e))
 				break;
-			
 		}
 
 	}
@@ -87,11 +83,22 @@ namespace Senku
 
 	void Application::Run()
 	{
+		// some timer
+		auto tp1 = std::chrono::system_clock::now();
+		auto tp2 = std::chrono::system_clock::now();
+
+
 		while (m_Running)
 		{
+
+			tp2 = std::chrono::system_clock::now();
+			std::chrono::duration<float> elapsedTime = tp2 - tp1;
+			tp1 = tp2;
+			float fElapsedTime = elapsedTime.count();
+
 			for (auto it = m_LayerStack.begin(); it != m_LayerStack.end(); it++)
 			{
-				(*it)->OnUpdate();
+				(*it)->OnUpdate(fElapsedTime);
 			}
 
 

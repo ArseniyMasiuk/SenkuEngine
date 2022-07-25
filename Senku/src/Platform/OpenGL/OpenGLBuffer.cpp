@@ -14,11 +14,11 @@ namespace Senku
 		//seletc or bind buffer
 		GLCall(glBindBuffer(GL_ARRAY_BUFFER, m_RendererID));
 		GLCall(glBufferData(GL_ARRAY_BUFFER, size/*size of array*/, vertecies/*array*/, GL_STATIC_DRAW));
-		LOG_INFO("Creating Vertex Buffer. ID = {0}", m_RendererID);
+		//LOG_INFO("Creating Vertex Buffer. ID = {0}", m_RendererID);
 	}
 	OpenGLVertexBuffer::~OpenGLVertexBuffer()
 	{
-		LOG_INFO("Deleting Vertex Buffer. ID = {0}", m_RendererID);
+		//LOG_INFO("Deleting Vertex Buffer. ID = {0}", m_RendererID);
 		GLCall(glDeleteBuffers(1, &m_RendererID));
 	}
 	void OpenGLVertexBuffer::Bind() const
@@ -42,12 +42,12 @@ namespace Senku
 		GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID));
 		GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32_t), indecies/*array*/, GL_STATIC_DRAW));
 
-		LOG_INFO("Creating Index Buffer. ID = {0}", m_RendererID);
+		//LOG_INFO("Creating Index Buffer. ID = {0}", m_RendererID);
 	}
 
 	OpenGLIndexBuffer::~OpenGLIndexBuffer()
 	{
-		LOG_INFO("Deleting Index Buffer. ID = {0}", m_RendererID);
+		//LOG_INFO("Deleting Index Buffer. ID = {0}", m_RendererID);
 		GLCall(glDeleteBuffers(1, &m_RendererID));
 	}
 
