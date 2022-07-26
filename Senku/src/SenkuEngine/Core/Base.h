@@ -1,7 +1,6 @@
 #pragma once
 #include "PlatformDetection.h"
 
-#include "Log.h"
 #include "Assert.h"
 #include "SenkuEngine\EventSystem\ApplicationEvent.h"
 #include "SenkuEngine\EventSystem\KeyEvent.h"

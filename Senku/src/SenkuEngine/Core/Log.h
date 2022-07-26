@@ -1,5 +1,6 @@
 #pragma once
 #include "spdlog\spdlog.h"
+#include "Base.h"
 //#include <spdlog\fmt\bundled\format.h>
 //#include <spdlog\fmt\ostr.h>
 //#include <spdlog\fmt\xchar.h>
@@ -14,10 +15,10 @@ namespace Senku
 		//~Log();
 		static void Init();
 
-		inline static std::shared_ptr<spdlog::logger> GetLogger() { return s_Logger; }
+		static Ref<spdlog::logger>& GetLogger() { return s_Logger; }
 
 	private:
-		static std::shared_ptr<spdlog::logger> s_Logger;
+		static Ref<spdlog::logger> s_Logger;
 	};
 
 

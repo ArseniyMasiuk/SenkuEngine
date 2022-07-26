@@ -12,7 +12,7 @@ namespace Senku
 	public:
 		static void Init();
 		static void ShutDown();
-		static void BeginScene(const Camera& camera); // todo: will take all data that need for scene eg camera, shader, and so on
+		static void BeginScene(const Ref<PerspectiveCamera>& camera); // todo: will take all data that need for scene eg camera, shader, and so on
 		static void EndScene();
 
 		static void WindowResize(uint32_t width, uint32_t height);

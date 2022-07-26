@@ -14,7 +14,10 @@ class SandBoxLayer : public Senku::Layer
 	Senku::Ref<Senku::VertexArray> m_VertexArray;
 	
 	Senku::Ref<Senku::Shader> m_Shader;
-	Senku::Camera m_Camera;
+	Senku::Ref<Senku::PerspectiveCamera> m_Camera;
+
+	std::vector<glm::mat4> transform;
+
 public:
 	SandBoxLayer();
 

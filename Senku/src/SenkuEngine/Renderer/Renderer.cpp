@@ -14,9 +14,9 @@ namespace Senku
 	void Renderer::ShutDown()
 	{
 	}
-	void Renderer::BeginScene(const Camera& camera)
+	void Renderer::BeginScene(const Ref<PerspectiveCamera>& camera)
 	{
-		s_SceneData->ViewProjectionMatrix = camera.GetViewProjectionMatrix();
+		s_SceneData->ViewProjectionMatrix = camera->GetViewProjectionMatrix();
 	}
 	void Renderer::EndScene()
 	{
@@ -28,7 +28,7 @@ namespace Senku
 	void Renderer::Submit(const Ref<VertexArray>& vertexArray, const Ref<Shader>& shader, const glm::mat4& transform /*= glm::mat4(1.0f)*/)
 	{
 		shader->Bind();
-		shader->setUniformMat4("u_ViewProjMat", s_SceneData->ViewProjectionMatrix);
+		shader->setUniformMat4("u_ViewProjMat", s_SceneData->ViewProjectionMatrix); // sould be done only once after binding it basicaly while rendering whole scene
 		shader->setUniformMat4("u_Model", transform);
 
 

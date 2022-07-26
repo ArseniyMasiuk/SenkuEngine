@@ -1,11 +1,12 @@
 #include "PrecompiledHeader.h"
-#include "Log.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 
+
+#include "Log.h"
 namespace Senku
 {
 
-	std::shared_ptr<spdlog::logger> Log::s_Logger = nullptr;
+	Ref<spdlog::logger> Log::s_Logger;
 
 	//Log::Log()
 	//{

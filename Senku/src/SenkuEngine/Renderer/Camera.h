@@ -4,11 +4,14 @@
 
 namespace Senku
 {
-	class Camera
+	class PerspectiveCamera
 	{
 	public:
-		Camera();
-		~Camera();
+		PerspectiveCamera(float fieldOfView, float aspectRation, float zNear, float zFar);
+		~PerspectiveCamera();
+
+		const glm::vec3& GetPosition() const { return m_Position; }
+		void SetPosition(const glm::vec3& position) { m_Position = position; RecalculateViewMatrix(); }
 
 		const glm::mat4& GetProjectionMatrix() const { return m_ProjectionMatrix; }
 		const glm::mat4& GetViewMatrix() const { return m_ViewMatrix; }
@@ -21,6 +24,9 @@ namespace Senku
 		void OnMouseScrollEvent(Event& e);
 
 	private:
+		void RecalculateViewMatrix();
+
+	private:
 
 		glm::vec3 m_Position;
 		glm::vec3 cameraFront;
@@ -31,12 +37,18 @@ namespace Senku
 
 		glm::mat4 m_ViewProjectionMatrix;
 
-		float cameraSpeed = 2.5f;
+		float m_AspectRation;
+		float m_Far = 10000.0f;
+		float m_Near = 0.1f;
+		float m_FieldOfView = 45.0f;
+
 		float yaw = 90.0f;
 		float pitch = 0;
 
-		float fildOfView = 45.0f;
 
+
+
+		float cameraSpeed = 2.5f;
 		float lastX, lastY;
 		bool firstMouse = true;
 	};

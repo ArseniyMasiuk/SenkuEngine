@@ -9,7 +9,8 @@
 
 namespace Senku
 {
-	Camera::Camera()
+	PerspectiveCamera::PerspectiveCamera(float fieldOfView, float aspectRation, float zNear, float zFar)
+		:m_FieldOfView(fieldOfView), m_AspectRation(aspectRation), m_Far(zFar), m_Near(zNear)
 	{
 		m_Position = glm::vec3(0.0f, 0.0f, -3.0f);
 		cameraFront = glm::vec3(0.0f, 0.0f, 1.0f);
@@ -17,25 +18,20 @@ namespace Senku
 
 		m_ViewMatrix = glm::mat4(1.0f);
 
-		float width = Application::Get()->GetWindow().GetWidth();
-		float height = Application::Get()->GetWindow().GetHeight();
+		RecalculateViewMatrix();
 
-		m_ViewMatrix = glm::lookAt(m_Position, m_Position + cameraFront, cameraUp);
-		m_ProjectionMatrix = glm::perspective(glm::radians(fildOfView), width / height, 0.1f, 10000.0f);
-
-		m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
 		EventsHandler::GetInstance().SubscribeForEvent(EventCategory(EventCategory::EventCategoryMouse | EventCategory::EventCategoryInput),
-			BIND_EVENT_FN(Camera::OnMouseEventHandler));
-		
-		EventsHandler::GetInstance().SubscribeForEvent(EventCategory(EventCategory::EventCategoryMouse | EventCategory::EventCategoryInput), BIND_EVENT_FN(Camera::OnMouseScrollEvent));
-		EventsHandler::GetInstance().SubscribeForEvent(EventCategory::EventCategoryApplication, BIND_EVENT_FN(Camera::ProcessEventWindowResize));
+			BIND_EVENT_FN(PerspectiveCamera::OnMouseEventHandler));
+
+		EventsHandler::GetInstance().SubscribeForEvent(EventCategory(EventCategory::EventCategoryMouse | EventCategory::EventCategoryInput), BIND_EVENT_FN(PerspectiveCamera::OnMouseScrollEvent));
+		EventsHandler::GetInstance().SubscribeForEvent(EventCategory::EventCategoryApplication, BIND_EVENT_FN(PerspectiveCamera::ProcessEventWindowResize));
 	}
 
-	Camera::~Camera()
+	PerspectiveCamera::~PerspectiveCamera()
 	{
 	}
 
-	void Camera::UpdateCameraPosition(float timeStep)
+	void PerspectiveCamera::UpdateCameraPosition(float timeStep)
 	{
 		float delta = cameraSpeed * timeStep;
 
@@ -61,11 +57,10 @@ namespace Senku
 			m_Position += glm::normalize(glm::cross(cameraFront, cameraUp)) * delta;
 
 		//update matricies
-		m_ViewMatrix = glm::lookAt(m_Position, m_Position + cameraFront, cameraUp);
-		m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
+		RecalculateViewMatrix();
 	}
 
-	void Camera::OnMouseEventHandler(Event & e)
+	void PerspectiveCamera::OnMouseEventHandler(Event & e)
 	{
 		if (e.GetEventType() == EventType::MouseMoved)
 		{
@@ -113,49 +108,58 @@ namespace Senku
 			direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
 			cameraFront = glm::normalize(direction);
 
-			m_ViewMatrix = glm::lookAt(m_Position, m_Position + cameraFront, cameraUp);
-			m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
+			RecalculateViewMatrix();
 		}
 	}
 
-	void Camera::ProcessEventWindowResize(Event & e)
+	void PerspectiveCamera::ProcessEventWindowResize(Event & e)
 	{
 		if (e.GetEventType() == EventType::WindowResize)
 		{
 			WindowResizeEvent& eventResize = (WindowResizeEvent&)e;
 
-			m_ProjectionMatrix = glm::perspective(glm::radians(45.0f), (float)eventResize.GetWidth() / (float)eventResize.GetHeight(), 0.1f, 10000.0f);
+			m_AspectRation = (float)eventResize.GetWidth() / (float)eventResize.GetHeight();
+			RecalculateViewMatrix();
 		}
 	}
 
-	void Camera::OnMouseScrollEvent(Event & e)
+	void PerspectiveCamera::OnMouseScrollEvent(Event & e)
 	{
 		if (e.GetEventType() == EventType::MouseScrolled)
 		{
 			MouseScrolledEvent& eventScroll = (MouseScrolledEvent&)e;
 			float offset = eventScroll.GetOffsetY();
 			LOG_INFO("scroll offset {0}", offset);
-			fildOfView += offset;
-			if (fildOfView > 120.0f)
-				fildOfView = 120.0f;
+			m_FieldOfView += offset;
+			if (m_FieldOfView > 120.0f)
+				m_FieldOfView = 120.0f;
 
-			if (fildOfView < 20.0f)
-				fildOfView = 20.0f;
+			if (m_FieldOfView < 20.0f)
+				m_FieldOfView = 20.0f;
 
-			float width = Application::Get()->GetWindow().GetWidth();
-			float height = Application::Get()->GetWindow().GetHeight();
-
-			m_ProjectionMatrix = glm::perspective(glm::radians(fildOfView),
-				width / height,
-				0.1f,
-				100.0f);
+			RecalculateViewMatrix();
 		}
 	}
 
+	void PerspectiveCamera::RecalculateViewMatrix()
+	{
+		float width = static_cast<float>(Application::Get()->GetWindow().GetWidth());
+		float height = static_cast<float>(Application::Get()->GetWindow().GetHeight());
+
+		m_ViewMatrix = glm::lookAt(m_Position, m_Position + cameraFront, cameraUp);
+		m_ProjectionMatrix = glm::perspective(glm::radians(m_FieldOfView), m_AspectRation, m_Near, m_Far);
+
+		m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
+	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	OrthographicCamera::OrthographicCamera(float left, float right, float bottom, float top)
-		: m_ProjectionMatrix(glm::ortho(left, right, bottom, top, -1.0f, 1.0f)), m_ViewMatrix(1.0f)
+		
 	{
+		m_ProjectionMatrix = glm::ortho(left, right, bottom, top, -1.0f, 1.0f);
+		m_ViewMatrix = glm::mat4(1.0f);
 
 		m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
 	}
