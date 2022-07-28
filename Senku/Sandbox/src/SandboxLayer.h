@@ -2,11 +2,6 @@
 #include "SenkuEngine.h"
 
 
-#include "SenkuEngine\Renderer\Shader.h"
-#include "SenkuEngine\Renderer\Buffer.h"
-#include "SenkuEngine\Renderer\VertexArray.h"
-
-#include "SenkuEngine\Renderer\Camera.h"
 
 
 class SandBoxLayer : public Senku::Layer
@@ -17,6 +12,11 @@ class SandBoxLayer : public Senku::Layer
 	Senku::Ref<Senku::PerspectiveCamera> m_Camera;
 
 	std::vector<glm::mat4> transform;
+
+	Senku::Ref<Senku::Texture2D> texture;
+
+
+	Senku::Ref<Senku::Material> m_Material;
 
 public:
 	SandBoxLayer();

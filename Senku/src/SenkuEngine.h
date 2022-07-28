@@ -7,3 +7,10 @@
 #include "SenkuEngine\Core\Layer.h"
 #include "SenkuEngine\Renderer\Shader.h"
 
+
+#include "SenkuEngine\Renderer\Buffer.h"
+#include "SenkuEngine\Renderer\VertexArray.h"
+#include "SenkuEngine\Renderer\Texture.h"
+#include "SenkuEngine\Renderer\Material.h"
+
+#include "SenkuEngine\Renderer\Camera.h"

@@ -56,7 +56,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Senku\src;$(SolutionDir)Senku\dependencies\GLFW\include;$(SolutionDir)Senku\dependencies\spdlog;$(SolutionDir)Senku\dependencies\glew-2.1.0\include;$(SolutionDir)Senku\dependencies\GLM</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Senku\src;$(SolutionDir)Senku\dependencies\GLFW\include;$(SolutionDir)Senku\dependencies\spdlog;$(SolutionDir)Senku\dependencies\glew-2.1.0\include;$(SolutionDir)Senku\dependencies\GLM;$(SolutionDir)\Senku\dependencies\stb</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>GLEW_STATIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -76,7 +76,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Senku\src;$(SolutionDir)Senku\dependencies\GLFW\include;$(SolutionDir)Senku\dependencies\spdlog;$(SolutionDir)Senku\dependencies\glew-2.1.0\include;$(SolutionDir)Senku\dependencies\GLM</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Senku\src;$(SolutionDir)Senku\dependencies\GLFW\include;$(SolutionDir)Senku\dependencies\spdlog;$(SolutionDir)Senku\dependencies\glew-2.1.0\include;$(SolutionDir)Senku\dependencies\GLM;$(SolutionDir)\Senku\dependencies\stb</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>GLEW_STATIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -91,13 +91,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Sandbox\SandboxApp.h" />
-    <ClInclude Include="Sandbox\SandboxLayer.h" />
+    <ClInclude Include="dependencies\stb\stb_image.h" />
+    <ClInclude Include="Sandbox\src\SandboxApp.h" />
+    <ClInclude Include="Sandbox\src\SandboxLayer.h" />
     <ClInclude Include="src\Platform\OpenGL\DebugAsist.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContrext.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLTexture.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h" />
     <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
@@ -122,19 +124,23 @@
     <ClInclude Include="src\SenkuEngine\Renderer\Buffer.h" />
     <ClInclude Include="src\SenkuEngine\Renderer\Camera.h" />
     <ClInclude Include="src\SenkuEngine\Renderer\GraphicsContext.h" />
+    <ClInclude Include="src\SenkuEngine\Renderer\Material.h" />
     <ClInclude Include="src\SenkuEngine\Renderer\RenderCommand.h" />
     <ClInclude Include="src\SenkuEngine\Renderer\Renderer.h" />
     <ClInclude Include="src\SenkuEngine\Renderer\RendererAPI.h" />
     <ClInclude Include="src\SenkuEngine\Renderer\Shader.h" />
+    <ClInclude Include="src\SenkuEngine\Renderer\Texture.h" />
     <ClInclude Include="src\SenkuEngine\Renderer\VertexArray.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Sandbox\SandboxApp.cpp" />
-    <ClCompile Include="Sandbox\SandboxLayer.cpp" />
+    <ClCompile Include="dependencies\stb\stb_image.cpp" />
+    <ClCompile Include="Sandbox\src\SandboxApp.cpp" />
+    <ClCompile Include="Sandbox\src\SandboxLayer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLContrext.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLTexture.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
@@ -151,10 +157,12 @@
     <ClCompile Include="src\SenkuEngine\Renderer\Buffer.cpp" />
     <ClCompile Include="src\SenkuEngine\Renderer\Camera.cpp" />
     <ClCompile Include="src\SenkuEngine\Renderer\GraphicsContext.cpp" />
+    <ClCompile Include="src\SenkuEngine\Renderer\Material.cpp" />
     <ClCompile Include="src\SenkuEngine\Renderer\RenderCommand.cpp" />
     <ClCompile Include="src\SenkuEngine\Renderer\Renderer.cpp" />
     <ClCompile Include="src\SenkuEngine\Renderer\RendererAPI.cpp" />
     <ClCompile Include="src\SenkuEngine\Renderer\Shader.cpp" />
+    <ClCompile Include="src\SenkuEngine\Renderer\Texture.cpp" />
     <ClCompile Include="src\SenkuEngine\Renderer\VertexArray.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

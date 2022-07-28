@@ -25,9 +25,10 @@ namespace Senku
 	{
 		RenderCommand::SetViewPort(0, 0, width, height);
 	}
-	void Renderer::Submit(const Ref<VertexArray>& vertexArray, const Ref<Shader>& shader, const glm::mat4& transform /*= glm::mat4(1.0f)*/)
+	void Renderer::Submit(const Ref<Material>& material, const Ref<VertexArray>& vertexArray, const glm::mat4& transform /*= glm::mat4(1.0f)*/)
 	{
-		shader->Bind();
+		material->Bind();
+		const Ref<Shader> shader = material->GetShader();
 		shader->setUniformMat4("u_ViewProjMat", s_SceneData->ViewProjectionMatrix); // sould be done only once after binding it basicaly while rendering whole scene
 		shader->setUniformMat4("u_Model", transform);
 

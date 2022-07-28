@@ -35,7 +35,7 @@ SandBoxLayer::SandBoxLayer()
 		Senku::BufferLayout layout =
 		{
 			{Senku::ShaderDataType::Float3, "aPos"},
-			{Senku::ShaderDataType::Float4, "aColor"}
+			{Senku::ShaderDataType::Float2, "aTexCoord"}
 		};
 		vertexBuffer->SetLayout(layout);
 	}
@@ -51,42 +51,8 @@ SandBoxLayer::SandBoxLayer()
 
 
 
-	std::string vertexShader = R"(
-#version 330 core
-layout (location = 0) in vec3 aPos;
-layout (location = 1) in vec4 aColor;
-  
-out vec4 vertexPosition; 
-out vec4 color;
 
-uniform mat4 u_ViewProjMat;
-uniform mat4 u_Model;
-
-void main()
-{
-    gl_Position = u_ViewProjMat * u_Model *vec4(aPos, 1.0);
-	color = aColor;
-}
-)";
-
-	std::string fragmentShader = R"(
-#version 330 core
-out vec4 FragColor;
-  
-in vec4 vertexPosition;
-
-
-in vec4 color;
-
-void main()
-{
-    FragColor = color;
-} 
-
-		)";
-
-
-	m_Shader = Senku::Shader::Create("Shader", vertexShader, fragmentShader);
+	m_Shader = Senku::Shader::Create("Sandbox/assets/shaders/basicShader.glsl");
 
 	m_Shader->Bind();
 
@@ -97,6 +63,16 @@ void main()
 			glm::mat4 model = glm::translate(glm::mat4(1), glm::vec3(i, j, 0)) * glm::scale(glm::mat4(1), glm::vec3(0.2, 0.2, 0.2));
 			transform.push_back(model);
 		}
+
+
+	texture = Senku::Texture2D::Create("Sandbox/assets/textures/default.jpg");
+	//texture = Senku::Texture2D::Create("C:\\Users\\Arseniy Masiuk\\Desktop\\Private_data\\copy\\Hazel\\Hazel-master\\Sandbox\\assets\\textures\\ChernoLogo.png");
+
+
+	m_Material = Senku::CreateRef<Senku::Material>(m_Shader);
+	m_Material->AddTexture(texture, Senku::Material::TextureType::eAlbedo);
+
+
 
 }
 
@@ -122,9 +98,9 @@ void SandBoxLayer::OnUpdate(float timeStep)
 	for (int i = 0; i < transform.size(); i++)
 	{
 
-		transform[i] = glm::rotate(transform[i], glm::radians(90.0f * timeStep), glm::vec3(1, 0, 0));
+		//transform[i] = glm::rotate(transform[i], glm::radians(90.0f * timeStep), glm::vec3(1, 0, 0));
 
-		Senku::Renderer::Submit(m_VertexArray, m_Shader, transform[i]);
+		Senku::Renderer::Submit(m_Material, m_VertexArray, transform[i]);
 	}
 
 	Senku::Renderer::EndScene();
@@ -171,16 +147,15 @@ bool loadShape(std::string path, std::vector<float>& positions, std::vector<uint
 
 		if (line[0] == 'v')
 		{
-			float x, y, z, c1, c2, c3;
-			s >> junk >> x >> y >> z >> c1>> c2>> c3;
+			float x, y, z, c1, c2;
+			s >> junk >> x >> y >> z >> c1>> c2;
 			positions.push_back(x);
 			positions.push_back(y);
 			positions.push_back(z);
 
 			positions.push_back(c1);
 			positions.push_back(c2);
-			positions.push_back(c3);
-			positions.push_back(1.0f);
+
 
 
 		}
