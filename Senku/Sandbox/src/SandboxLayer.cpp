@@ -18,59 +18,44 @@ SandBoxLayer::SandBoxLayer()
 	m_Camera->SetPosition(glm::vec3(0, 0, -5));
 
 
+	Senku::ModelLoader loader;
 
-	std::vector<float> vertecies;
-	std::vector<uint32_t> indecies;
+	loader.LoadModel("C:/Users/Arseniy Masiuk/Desktop/Private_data/models/New folder/Cerberus_by_Andrew_Maximov/Cerberus_LP.FBX");
 
-	loadShape("C:\\Users\\Arseniy Masiuk\\Desktop\\Private_data\\copy\\engine\\GameEngine\\res\\obj\\cube.obj", vertecies, indecies);
+	Senku::Model model = loader.GetModels()[0];
 
 	m_VertexArray = Senku::VertexArray::Create();
 
 	Senku::Ref<Senku::VertexBuffer> vertexBuffer;
-	vertexBuffer = Senku::VertexBuffer::Create(vertecies.data(), vertecies.size() * sizeof(float));
+	vertexBuffer = Senku::VertexBuffer::Create((float*)(model.vertecies.data()), model.vertecies.size() * sizeof(Senku::Vertex));
 
 	vertexBuffer->Bind();
 	{
-
 		Senku::BufferLayout layout =
 		{
 			{Senku::ShaderDataType::Float3, "aPos"},
+			{Senku::ShaderDataType::Float3, "aNormal"},
 			{Senku::ShaderDataType::Float2, "aTexCoord"}
 		};
 		vertexBuffer->SetLayout(layout);
 	}
 	m_VertexArray->AddVertexBuffer(vertexBuffer);
-	
-
 
 	Senku::Ref<Senku::IndexBuffer> indexBuffer;
-	indexBuffer = Senku::IndexBuffer::Create(indecies.data(), indecies.size());
-	
-	
+	indexBuffer = Senku::IndexBuffer::Create(model.indices.data(), model.indices.size());
+
+
 	m_VertexArray->SetIndexBuffer(indexBuffer);
 
 
-
-
 	m_Shader = Senku::Shader::Create("Sandbox/assets/shaders/basicShader.glsl");
-
-	m_Shader->Bind();
-
-
-	for (int i = 0; i < 5; i++)
-		for (int j = 0; j < 5; j++)
-		{
-			glm::mat4 model = glm::translate(glm::mat4(1), glm::vec3(i, j, 0)) * glm::scale(glm::mat4(1), glm::vec3(0.2, 0.2, 0.2));
-			transform.push_back(model);
-		}
-
 
 	texture = Senku::Texture2D::Create("Sandbox/assets/textures/default.jpg");
 	//texture = Senku::Texture2D::Create("C:\\Users\\Arseniy Masiuk\\Desktop\\Private_data\\copy\\Hazel\\Hazel-master\\Sandbox\\assets\\textures\\ChernoLogo.png");
 
 
-	m_Material = Senku::CreateRef<Senku::Material>(m_Shader);
-	m_Material->AddTexture(texture, Senku::Material::TextureType::eAlbedo);
+	m_Material = Senku::CreateRef<Senku::MaterialInstance>(m_Shader);
+	m_Material->AddTexture(texture, Senku::MaterialInstance::TextureType::eAlbedo);
 
 
 
@@ -95,13 +80,10 @@ void SandBoxLayer::OnUpdate(float timeStep)
 
 	Senku::Renderer::BeginScene(m_Camera); // todo:: set up cameras light shaders all stuff that should be common
 
-	for (int i = 0; i < transform.size(); i++)
-	{
+	glm::mat4 model = glm::scale(glm::mat4(1), glm::vec3(0.2, 0.2, 0.2)) * glm::rotate(glm::mat4(1.0f), glm::radians(-90.f), glm::vec3(1, 0, 0));
 
-		//transform[i] = glm::rotate(transform[i], glm::radians(90.0f * timeStep), glm::vec3(1, 0, 0));
+	Senku::Renderer::Submit(m_Material, m_VertexArray, model);
 
-		Senku::Renderer::Submit(m_Material, m_VertexArray, transform[i]);
-	}
 
 	Senku::Renderer::EndScene();
 	/*if (Senku::Input::IsKeyPressed(Senku::Key::A))

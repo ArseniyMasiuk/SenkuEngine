@@ -6,8 +6,11 @@
 namespace Senku
 {
 
-	class Material
+
+
+	class MaterialInstance
 	{
+	public:
 		// base things
 		// Wavefront Material Template Library (MTL)
 		// https://www.loc.gov/preservation/digital/formats/fdd/fdd000508.shtml
@@ -23,12 +26,12 @@ namespace Senku
 			// int illumination; // docs says that this is ignored but i wilk keep it for now maybe it will be in use later
 		};
 
-	public:
+	
 
 		enum TextureType : uint32_t { eAlbedo = 1, eNormal, eRoughness, eMetalness/*, eHeight, eAmbientOclustion, eRefraction*/ }; // probably will not need all of the but it will be good to have all of them here
 
 	public:
-		Material(Ref<Shader>& shader);
+		MaterialInstance(Ref<Shader>& shader);
 
 		void SetShader(const Ref<Shader>& shader);
 		const Ref<Shader> GetShader() { return m_Shader; };
@@ -42,7 +45,6 @@ namespace Senku
 	private:
 
 		std::unordered_map<TextureType, Ref<Texture2D>> m_Textures;
-		Ref<Texture2D> m_Texture;
 		Ref<Shader>& m_Shader;
 
 		// for easier set up

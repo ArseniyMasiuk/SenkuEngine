@@ -16,7 +16,7 @@ class SandBoxLayer : public Senku::Layer
 	Senku::Ref<Senku::Texture2D> texture;
 
 
-	Senku::Ref<Senku::Material> m_Material;
+	Senku::Ref<Senku::MaterialInstance> m_Material;
 
 public:
 	SandBoxLayer();

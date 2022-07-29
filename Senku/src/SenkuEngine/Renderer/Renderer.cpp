@@ -25,7 +25,7 @@ namespace Senku
 	{
 		RenderCommand::SetViewPort(0, 0, width, height);
 	}
-	void Renderer::Submit(const Ref<Material>& material, const Ref<VertexArray>& vertexArray, const glm::mat4& transform /*= glm::mat4(1.0f)*/)
+	void Renderer::Submit(const Ref<MaterialInstance>& material, const Ref<VertexArray>& vertexArray, const glm::mat4& transform /*= glm::mat4(1.0f)*/)
 	{
 		material->Bind();
 		const Ref<Shader> shader = material->GetShader();

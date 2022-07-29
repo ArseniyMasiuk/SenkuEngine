@@ -12,5 +12,7 @@
 #include "SenkuEngine\Renderer\VertexArray.h"
 #include "SenkuEngine\Renderer\Texture.h"
 #include "SenkuEngine\Renderer\Material.h"
+#include "SenkuEngine\Scene\ModelLoader.h"
+
 
 #include "SenkuEngine\Renderer\Camera.h"

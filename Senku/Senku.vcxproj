@@ -56,7 +56,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Senku\src;$(SolutionDir)Senku\dependencies\GLFW\include;$(SolutionDir)Senku\dependencies\spdlog;$(SolutionDir)Senku\dependencies\glew-2.1.0\include;$(SolutionDir)Senku\dependencies\GLM;$(SolutionDir)\Senku\dependencies\stb</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Senku\src;$(SolutionDir)Senku\dependencies\GLFW\include;$(SolutionDir)Senku\dependencies\spdlog;$(SolutionDir)Senku\dependencies\glew-2.1.0\include;$(SolutionDir)Senku\dependencies\GLM;$(SolutionDir)\Senku\dependencies\stb;$(SolutionDir)\Senku\dependencies\assimp\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>GLEW_STATIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -64,9 +64,12 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;User32.lib;Gdi32.lib;Shell32.lib;glew32s.lib;</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)Senku\dependencies\glew-2.1.0\lib;$(SolutionDir)Senku\dependencies\GLFW\lib-vc2017;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>assimp-vc141-mtd.lib;glfw3.lib;opengl32.lib;User32.lib;Gdi32.lib;Shell32.lib;glew32s.lib;</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Senku\dependencies\glew-2.1.0\lib;$(SolutionDir)Senku\dependencies\GLFW\lib-vc2017;$(SolutionDir)Senku\dependencies\assimp\lib64_Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>copy "$(SolutionDir)Senku\dependencies\assimp\lib64_Debug\assimp-vc141-mtd.dll" "$(SolutionDir)bin\$(Platform)\$(Configuration)\assimp-vc141-mtd.dll"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -76,7 +79,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Senku\src;$(SolutionDir)Senku\dependencies\GLFW\include;$(SolutionDir)Senku\dependencies\spdlog;$(SolutionDir)Senku\dependencies\glew-2.1.0\include;$(SolutionDir)Senku\dependencies\GLM;$(SolutionDir)\Senku\dependencies\stb</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Senku\src;$(SolutionDir)Senku\dependencies\GLFW\include;$(SolutionDir)Senku\dependencies\spdlog;$(SolutionDir)Senku\dependencies\glew-2.1.0\include;$(SolutionDir)Senku\dependencies\GLM;$(SolutionDir)\Senku\dependencies\stb;$(SolutionDir)\Senku\dependencies\assimp\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>GLEW_STATIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -86,9 +89,12 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;User32.lib;Gdi32.lib;Shell32.lib;glew32s.lib;</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)Senku\dependencies\glew-2.1.0\lib;$(SolutionDir)Senku\dependencies\GLFW\lib-vc2017;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>assimp-vc141-mt.lib;glfw3.lib;opengl32.lib;User32.lib;Gdi32.lib;Shell32.lib;glew32s.lib;</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Senku\dependencies\glew-2.1.0\lib;$(SolutionDir)Senku\dependencies\GLFW\lib-vc2017;$(SolutionDir)Senku\dependencies\assimp\lib64_Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>copy "$(SolutionDir)Senku\dependencies\assimp\lib64_Release\assimp-vc141-mt.dll" "$(SolutionDir)bin\$(Platform)\$(Configuration)\assimp-vc141-mt.dll"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="dependencies\stb\stb_image.h" />
@@ -131,6 +137,7 @@
     <ClInclude Include="src\SenkuEngine\Renderer\Shader.h" />
     <ClInclude Include="src\SenkuEngine\Renderer\Texture.h" />
     <ClInclude Include="src\SenkuEngine\Renderer\VertexArray.h" />
+    <ClInclude Include="src\SenkuEngine\Scene\ModelLoader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dependencies\stb\stb_image.cpp" />
@@ -164,6 +171,7 @@
     <ClCompile Include="src\SenkuEngine\Renderer\Shader.cpp" />
     <ClCompile Include="src\SenkuEngine\Renderer\Texture.cpp" />
     <ClCompile Include="src\SenkuEngine\Renderer\VertexArray.cpp" />
+    <ClCompile Include="src\SenkuEngine\Scene\ModelLoader.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
