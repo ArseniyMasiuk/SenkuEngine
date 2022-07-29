@@ -2,7 +2,6 @@
 #include "Shader.h"
 #include "Texture.h"
 
-
 namespace Senku
 {
 

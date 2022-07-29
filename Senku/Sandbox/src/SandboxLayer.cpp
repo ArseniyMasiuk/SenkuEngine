@@ -13,14 +13,14 @@ SandBoxLayer::SandBoxLayer()
 
 	float width = static_cast<float>(Senku::Application::Get()->GetWindow().GetWidth());
 	float height = static_cast<float>(Senku::Application::Get()->GetWindow().GetHeight());
-	m_Camera = Senku::CreateRef<Senku::PerspectiveCamera>(45.0f, width / height, 0.1f, 10000.0f);
+	m_Camera = Senku::CreateRef<Senku::PerspectiveCamera>(45.0f, width / height, 0.01f, 10000.0f);
 
 	m_Camera->SetPosition(glm::vec3(0, 0, -5));
 
 
 	Senku::ModelLoader loader;
-
-	loader.LoadModel("C:/Users/Arseniy Masiuk/Desktop/Private_data/models/New folder/Cerberus_by_Andrew_Maximov/Cerberus_LP.FBX");
+	//loader.LoadModel("Sandbox/assets/meshes/cube/untitled.obj");
+	loader.LoadModel("Sandbox/assets/meshes/Cerberus_by_Andrew_Maximov/Cerberus_LP.FBX");
 
 	Senku::Model model = loader.GetModels()[0];
 
@@ -50,15 +50,13 @@ SandBoxLayer::SandBoxLayer()
 
 	m_Shader = Senku::Shader::Create("Sandbox/assets/shaders/basicShader.glsl");
 
-	texture = Senku::Texture2D::Create("Sandbox/assets/textures/default.jpg");
-	//texture = Senku::Texture2D::Create("C:\\Users\\Arseniy Masiuk\\Desktop\\Private_data\\copy\\Hazel\\Hazel-master\\Sandbox\\assets\\textures\\ChernoLogo.png");
+	//texture = Senku::Texture2D::Create("Sandbox/assets/textures/default.jpg");
+	texture = Senku::Texture2D::Create("Sandbox/assets/meshes/Cerberus_by_Andrew_Maximov/Textures/Cerberus_A.tga");
 
 
 	m_Material = Senku::CreateRef<Senku::MaterialInstance>(m_Shader);
 	m_Material->AddTexture(texture, Senku::MaterialInstance::TextureType::eAlbedo);
-
-
-
+	m_Material->mlt = model.mlt;
 }
 
 void SandBoxLayer::OnAttach()
@@ -80,7 +78,7 @@ void SandBoxLayer::OnUpdate(float timeStep)
 
 	Senku::Renderer::BeginScene(m_Camera); // todo:: set up cameras light shaders all stuff that should be common
 
-	glm::mat4 model = glm::scale(glm::mat4(1), glm::vec3(0.2, 0.2, 0.2)) * glm::rotate(glm::mat4(1.0f), glm::radians(-90.f), glm::vec3(1, 0, 0));
+	glm::mat4 model = glm::scale(glm::mat4(1), glm::vec3(0.1, 0.1, 0.1)) * glm::rotate(glm::mat4(1.0f), glm::radians(-90.f), glm::vec3(1, 0, 0));
 
 	Senku::Renderer::Submit(m_Material, m_VertexArray, model);
 
@@ -96,60 +94,33 @@ void SandBoxLayer::OnUpdate(float timeStep)
 bool SandBoxLayer::OnEvent(Senku::Event & event)
 {
 
+	if (Senku::Input::IsKeyPressed(Senku::Key::D1))
+		m_Material->mlt.baseColor = glm::vec3(1.0f, 0.0f, 0.0f);
+
+
+	if (Senku::Input::IsKeyPressed(Senku::Key::D2))
+		m_Material->mlt.baseColor = glm::vec3(0.0f, 1.0f, 0.0f);
+
+
+	if (Senku::Input::IsKeyPressed(Senku::Key::D3))
+		m_Material->mlt.baseColor = glm::vec3(0.0f, 0.0f, 1.0f);
+
+	if (Senku::Input::IsKeyPressed(Senku::Key::D4))
+	{
+		if (m_Material->mlt.dissolve < 0.0f)
+			m_Material->mlt.dissolve = 0.0f;
+		else
+			m_Material->mlt.dissolve -= 0.01f;
+	}
+		
+
+	if (Senku::Input::IsKeyPressed(Senku::Key::D5))
+	{
+		if (m_Material->mlt.dissolve > 1.0f)
+			m_Material->mlt.dissolve = 1.0f;
+		else
+		m_Material->mlt.dissolve += 0.01f ;
+	}
 
 	return false;
-}
-
-
-
-
-bool loadShape(std::string path, std::vector<float>& positions, std::vector<uint32_t>& indexies)
-{
-	//load from file
-	std::ifstream f;
-	f.open(path, std::ios::in);
-	if (!f.is_open())
-	{
-		std::cout << "Cant load file by path: " << path << std::endl;
-		return false;
-	}
-
-	// Local cache of verts
-	//std::vector<vector3d> verts;
-
-	while (!f.eof())
-	{
-		char line[128];
-		f.getline(line, 128);
-
-		std::strstream s;
-		s << line;
-
-		char junk;
-
-		if (line[0] == 'v')
-		{
-			float x, y, z, c1, c2;
-			s >> junk >> x >> y >> z >> c1>> c2;
-			positions.push_back(x);
-			positions.push_back(y);
-			positions.push_back(z);
-
-			positions.push_back(c1);
-			positions.push_back(c2);
-
-
-
-		}
-
-		if (line[0] == 'f')
-		{
-			int f[3];
-			s >> junk >> f[0] >> f[1] >> f[2];
-			indexies.push_back(f[0] - 1);
-			indexies.push_back(f[1] - 1);
-			indexies.push_back(f[2] - 1);
-		}
-	}
-	return true;
 }

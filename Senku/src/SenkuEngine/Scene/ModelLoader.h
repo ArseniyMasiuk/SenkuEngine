@@ -14,19 +14,19 @@ namespace Senku
 		glm::vec2 textureCoordinates{ 0.0f };
 	};
 
-	struct s_Texture
+	/*struct s_Texture
 	{
 		MaterialInstance::TextureType type;
 		std::string path;
 
-	};
+	};*/
 
 	struct Model
 	{
 		std::vector<Vertex> vertecies;
 		std::vector<uint32_t> indices;
 		MaterialInstance::GeneralMLT mlt;
-		std::vector<s_Texture> textures;
+		//std::vector<s_Texture> textures;
 	};
 
 	class ModelLoader
@@ -53,13 +53,11 @@ namespace Senku
 		void ProcessNode(aiNode * node, const aiScene * scene);
 		void ProcessMesh(aiMesh * mesh, const aiScene * scene);
 
-		std::vector<s_Texture> loadMaterialTextures(aiMaterial *mat, aiTextureType type, MaterialInstance::TextureType mateialType);
+		//std::vector<s_Texture> loadMaterialTextures(aiMaterial *mat, aiTextureType type, MaterialInstance::TextureType mateialType);
 
 
 		std::vector<Model> models;
 		std::string directory;
-
-		std::vector<s_Texture> textures_loaded; // temp storage
 	};
 
 }

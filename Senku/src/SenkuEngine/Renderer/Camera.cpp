@@ -35,6 +35,9 @@ namespace Senku
 	{
 		float delta = cameraSpeed * timeStep;
 
+		if(Input::IsKeyPressed(Key::LeftShift))
+			delta = (cameraSpeed + 3) * timeStep;
+
 		if (Input::IsKeyPressed(Key::Left))
 			cameraSpeed = 2.5f;
 

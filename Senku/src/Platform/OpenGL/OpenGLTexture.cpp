@@ -13,7 +13,7 @@ namespace Senku
 
 		int width, height, channels;
 
-		stbi_set_flip_vertically_on_load(1);
+		//stbi_set_flip_vertically_on_load(1);
 
 		stbi_uc *buffer;
 		buffer = stbi_load(path.c_str(), &width, &height, &channels, 0);
@@ -22,11 +22,8 @@ namespace Senku
 			LOG_ERROR("Cant load texture by path {0}", path);
 		else
 		{
-
-
 			m_Width = width;
 			m_Height = height;
-
 
 			GLenum internalFormat = 0, dataFormat = 0;
 			if (channels == 4)
@@ -64,7 +61,6 @@ namespace Senku
 
 	OpenGLTexture2D::~OpenGLTexture2D()
 	{
-		LOG_WARN("Deleting texture");
 		GLCall(glDeleteTextures(1, &m_RendererID));
 	}
 

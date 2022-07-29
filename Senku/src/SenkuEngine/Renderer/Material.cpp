@@ -1,5 +1,7 @@
 #include "PrecompiledHeader.h"
 #include "Material.h"
+#include "SenkuEngine\Core\Base.h"
+
 
 namespace Senku
 {
@@ -24,13 +26,22 @@ namespace Senku
 	{
 		m_Shader->Bind();
 
+		// set general material data to uniforms
+		m_Shader->setUniform3fv("u_Material.baseColor", mlt.baseColor);
+		m_Shader->setUniform1f("u_Material.dissolve",mlt.dissolve);
+
+		int textureMask = 0; // each bit represent binded slot for texture
 		int textureSlot = 0;
 		for (auto texture : m_Textures)
 		{
 			m_Shader->setUniform1i(GetUniformNameForTexture(texture.first), textureSlot); // will run through loop and will set all textures to appropriate uniforms and will bind textures to slots
 			texture.second->Bind(textureSlot);
+
+			textureMask = textureMask | BIT(textureSlot);
 			textureSlot++;
 		}
+
+		m_Shader->setUniform1i("u_TextureMask", textureMask);
 	}
 
 	const char* MaterialInstance::GetUniformNameForTexture(TextureType type)

@@ -14,26 +14,15 @@ namespace Senku
 			auto lastDot = filepath.rfind('.');
 			auto count = lastDot == std::string::npos ? filepath.size() - lastSlash : lastDot - lastSlash;
 			m_Name = filepath.substr(lastSlash, count);
-
 		}
 
 		ShaderPrograSource source = parseShader(filepath);
-
 		m_rendererID = createShader(source.vertexSource, source.fragmentSource);
-		//glUseProgram(m_rendererID);
-
-		EventsHandler::GetInstance().SubscribeForEvent(EventCategory(EventCategory::EventCategoryKeyboard | EventCategory::EventCategoryInput), BIND_EVENT_FN(OpenGLShader::HandleEvent));
-
-
 	}
 	OpenGLShader::OpenGLShader(const std::string & name, const std::string & vertexSource, const std::string & fragmentSource)
 	{
 		m_Name = name;
-
 		m_rendererID = createShader(vertexSource, fragmentSource);
-		//glUseProgram(m_rendererID);
-
-		EventsHandler::GetInstance().SubscribeForEvent(EventCategory(EventCategory::EventCategoryKeyboard | EventCategory::EventCategoryInput), BIND_EVENT_FN(OpenGLShader::HandleEvent));
 	}
 	OpenGLShader::~OpenGLShader()
 	{
@@ -51,22 +40,7 @@ namespace Senku
 	{
 		return m_Name;
 	}
-	void OpenGLShader::HandleEvent(Event & e)
-	{
-		if (e.GetEventType() == EventType::KeyPressed)
-		{
-			KeyPressedEvent& kEvent = dynamic_cast<KeyPressedEvent&>(e);
 
-			if (kEvent.GetKeyCode() == Key::R)
-				setUniform4f("u_Color", 1.0f, 0.0f, 0.0f, 0.1f);
-
-			if (kEvent.GetKeyCode() == Key::G)
-				setUniform4f("u_Color", 0.0f, 1.0f, 0.0f, 0.1f);
-
-			if (kEvent.GetKeyCode() == Key::B)
-				setUniform4f("u_Color", 0.0f, 0.0f, 1.0f, 0.1f);
-		}
-	}
 	void OpenGLShader::setUniform4f(const std::string & name, float v1, float v2, float v3, float v4)
 	{
 		GLCall(glUniform4f(GetUniformLocation(name.c_str()), v1, v2, v3, v4));

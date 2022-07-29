@@ -22,9 +22,34 @@ out vec4 FragColor;
   
 in vec2 texCoord;
 
+
+struct Material
+{
+	vec3 baseColor;
+	vec3 ambient;
+	vec3 diffuse;
+	vec3 specular;
+	float shininess; //specularHighlights
+	float dissolve;
+};
+
+
+uniform int u_TextureMask; // each bit represent binded slot for texture
+uniform Material u_Material;
+
+
 uniform sampler2D u_textureAlbedo;
 
 void main()
 {
-    FragColor = texture(u_textureAlbedo, texCoord);//vec4(texCoord, 0.0, 1.0);
+	vec4 resultColor;
+
+	if(u_TextureMask == 0)
+		resultColor = vec4(u_Material.baseColor, 1.0);
+	else
+		resultColor = texture(u_textureAlbedo, texCoord);
+
+	resultColor = resultColor * u_Material.dissolve;
+
+    FragColor = resultColor;
 } 

@@ -107,11 +107,46 @@ namespace Senku
 		if (AI_SUCCESS != material->Get(AI_MATKEY_SHININESS, shininess))
 			LOG_ERROR("Failed to load material");
 
+
+
 		model.mlt.ambinet = glm::vec3(ambient.r, ambient.g, ambient.b);
 		model.mlt.diffuse = glm::vec3(diffuse.r, diffuse.g, diffuse.b);
 		model.mlt.specular = glm::vec3(specular.r, specular.g, specular.b);
 		model.mlt.specularHighlights = shininess;
 
+		/*
+		std::map<aiTextureType, std::vector<s_Texture>> loaded_textures;
+
+		aiTextureType assipTextureTypes[21] =
+		{
+			aiTextureType_DIFFUSE,
+			aiTextureType_SPECULAR,
+			aiTextureType_AMBIENT,
+			aiTextureType_EMISSIVE,
+			aiTextureType_HEIGHT,
+			aiTextureType_NORMALS,
+			aiTextureType_SHININESS,
+			aiTextureType_OPACITY,
+			aiTextureType_DISPLACEMENT,
+			aiTextureType_LIGHTMAP,
+			aiTextureType_REFLECTION,
+			aiTextureType_BASE_COLOR,
+			aiTextureType_NORMAL_CAMERA,
+			aiTextureType_EMISSION_COLOR,
+			aiTextureType_METALNESS,
+			aiTextureType_DIFFUSE_ROUGHNESS,
+			aiTextureType_AMBIENT_OCCLUSION,
+			aiTextureType_SHEEN,
+			aiTextureType_CLEARCOAT,
+			aiTextureType_TRANSMISSION,
+			aiTextureType_UNKNOWN
+		};
+
+		for (int i = 0; i < 21; i++)
+		{
+			std::vector<s_Texture> maps = loadMaterialTextures(material, assipTextureTypes[i], MaterialInstance::TextureType::eRoughness);
+			loaded_textures.insert(std::pair<aiTextureType, std::vector<s_Texture>>(assipTextureTypes[i], maps));
+		}
 
 		// 1. diffuse maps
 		std::vector<s_Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, MaterialInstance::TextureType::eRoughness);
@@ -140,11 +175,12 @@ namespace Senku
 		//std::vector<s_Texture> heightMaps = loadMaterialTextures(material, aiTextureType_BASE_COLOR, MaterialInstance::TextureType::eAlbedo); // aiTextureType_AMBIENT
 		//model.textures.insert(model.textures.end(), heightMaps.begin(), heightMaps.end());
 
-
+		*/
 		models.push_back(model);
 		
 	}
-	std::vector<s_Texture> ModelLoader::loadMaterialTextures(aiMaterial * mat, aiTextureType type, MaterialInstance::TextureType mateialType)
+	
+	/*std::vector<s_Texture> ModelLoader::loadMaterialTextures(aiMaterial * mat, aiTextureType type, MaterialInstance::TextureType mateialType)
 	{
 		std::vector<s_Texture> textures;
 		for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
@@ -172,5 +208,5 @@ namespace Senku
 			}
 		}
 		return textures;
-	}
+	}*/
 }

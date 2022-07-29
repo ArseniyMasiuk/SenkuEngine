@@ -2,15 +2,21 @@
 #include "PlatformDetection.h"
 
 #include "Assert.h"
-#include "SenkuEngine\EventSystem\ApplicationEvent.h"
-#include "SenkuEngine\EventSystem\KeyEvent.h"
-#include "SenkuEngine\EventSystem\MouseEvent.h"
-#include "SenkuEngine\Core\Input.h"
+
 
 #include <memory>
 
 namespace Senku
 {
+
+	// Hazel engine by Cherno, i stole it from there )) a bit later will investigate all this big brain move, for now i dont understand all from this line
+
+// todo: make sure that subscribed object still exist
+#define BIND_EVENT_FN(fn) [this](auto&&... args) -> decltype(auto) { return this->fn(std::forward<decltype(args)>(args)...); }
+
+#define BIT(x) (1<<x)
+
+
 	// not my code stole it from hazel 
 	template<typename T>
 	using Scope = std::unique_ptr<T>;
@@ -28,3 +34,9 @@ namespace Senku
 		return std::make_shared<T>(std::forward<Args>(args)...);
 	}
 }
+
+
+#include "SenkuEngine\EventSystem\KeyEvent.h"
+#include "SenkuEngine\EventSystem\MouseEvent.h"
+#include "SenkuEngine\Core\Input.h"
+#include "SenkuEngine\EventSystem\ApplicationEvent.h"

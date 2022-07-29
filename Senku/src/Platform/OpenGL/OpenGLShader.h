@@ -21,11 +21,6 @@ namespace Senku
 		virtual void UnBind() const override;
 
 		virtual const std::string& GetName() override;
-	private:
-
-		//events
-		void HandleEvent(Event& e);
-
 	public:
 
 		// set uniform
