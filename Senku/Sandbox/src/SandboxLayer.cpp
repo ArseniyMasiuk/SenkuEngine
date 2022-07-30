@@ -5,6 +5,8 @@
 #include "glm\ext\quaternion_transform.hpp"
 #include "glm\ext\matrix_transform.hpp"
 
+#include "ImGui\imgui.h"
+
 
 SandBoxLayer::SandBoxLayer()
 	:Layer("SandBoxLayer")
@@ -126,4 +128,10 @@ bool SandBoxLayer::OnEvent(Senku::Event & event)
 
 void SandBoxLayer::OnImGuiRender()
 {
+	static bool show = true;
+	ImGui::ShowDemoWindow(&show);
+
+	ImGui::Begin("Hello, world!");
+	ImGui::Text("This is some useful text.");
+	ImGui::End();
 }

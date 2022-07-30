@@ -31,7 +31,8 @@ namespace Senku
 		EventsHandler::GetInstance().SubscribeForEvent(EventCategory(EventCategory::EventCategoryKeyboard | EventCategory::EventCategoryInput), BIND_EVENT_FN(Application::OnKeyboardKeyPressed));
 		EventsHandler::GetInstance().SubscribeForEvents(BIND_EVENT_FN(Application::OnEvent));
 
-		m_ImGuiLayer.reset(new ImGuiLayer());
+		m_ImGuiLayer = new ImGuiLayer();
+		PushOverlay((Layer*)(m_ImGuiLayer));
 
 	}
 

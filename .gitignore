@@ -4,5 +4,5 @@
 */Debug
 */Release
 .vs/
-
+imgui.ini
 *.bak

@@ -38,7 +38,7 @@ namespace Senku
 
 		LayerStack m_LayerStack;
 
-		Ref<ImGuiLayer> m_ImGuiLayer;
+		ImGuiLayer* m_ImGuiLayer;
 
 	private:
 

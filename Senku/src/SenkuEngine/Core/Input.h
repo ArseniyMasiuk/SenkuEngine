@@ -26,7 +26,7 @@ namespace Senku
 
 	private:
 
-		static Input* s_Instance;
+		static Ref<Input> s_Instance;
 	};
 
 
