@@ -127,6 +127,7 @@
     <ClInclude Include="src\SenkuEngine\EventSystem\KeyEvent.h" />
     <ClInclude Include="src\SenkuEngine\EventSystem\MouseCodes.h" />
     <ClInclude Include="src\SenkuEngine\EventSystem\MouseEvent.h" />
+    <ClInclude Include="src\SenkuEngine\ImGui\ImGuiLayer.h" />
     <ClInclude Include="src\SenkuEngine\Renderer\Buffer.h" />
     <ClInclude Include="src\SenkuEngine\Renderer\Camera.h" />
     <ClInclude Include="src\SenkuEngine\Renderer\GraphicsContext.h" />
@@ -161,6 +162,7 @@
     <ClCompile Include="src\SenkuEngine\Core\LayerStack.cpp" />
     <ClCompile Include="src\SenkuEngine\Core\Log.cpp" />
     <ClCompile Include="src\SenkuEngine\Core\Window.cpp" />
+    <ClCompile Include="src\SenkuEngine\ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="src\SenkuEngine\Renderer\Buffer.cpp" />
     <ClCompile Include="src\SenkuEngine\Renderer\Camera.cpp" />
     <ClCompile Include="src\SenkuEngine\Renderer\GraphicsContext.cpp" />

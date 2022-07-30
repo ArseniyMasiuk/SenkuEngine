@@ -2,6 +2,7 @@
 #include "Base.h"
 #include "Window.h"
 #include "LayerStack.h"
+#include "SenkuEngine\ImGui\ImGuiLayer.h"
 
 int main(int argc, char** argv);
 
@@ -15,6 +16,7 @@ namespace Senku
 
 	public:
 		void PushLayer(Layer* layer);
+		void PushOverlay(Layer* layer);
 
 		void Close();
 
@@ -35,6 +37,8 @@ namespace Senku
 		Scope<Window> m_Window;
 
 		LayerStack m_LayerStack;
+
+		Ref<ImGuiLayer> m_ImGuiLayer;
 
 	private:
 

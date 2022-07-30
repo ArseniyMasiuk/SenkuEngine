@@ -26,4 +26,6 @@ public:
 	virtual void OnUpdate(/*Timestep ts*/float timeStep) override;
 	
 	virtual bool OnEvent(Senku::Event& event) override;
+
+	virtual void OnImGuiRender() override;
 };

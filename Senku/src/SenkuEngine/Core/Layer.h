@@ -12,7 +12,7 @@ namespace Senku
 		virtual void OnAttach() {}
 		virtual void OnDetach() {}
 		virtual void OnUpdate(/*Timestep ts*/float timeStep) {}
-		//virtual void OnImGuiRender() {}
+		virtual void OnImGuiRender() {}
 		virtual bool OnEvent(Event& event) { return false; }
 
 		const std::string& GetName() const { return m_DebugName; }

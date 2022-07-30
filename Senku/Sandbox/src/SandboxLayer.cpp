@@ -6,9 +6,8 @@
 #include "glm\ext\matrix_transform.hpp"
 
 
-bool loadShape(std::string path, std::vector<float>& positions, std::vector<uint32_t>& indexies);
-
 SandBoxLayer::SandBoxLayer()
+	:Layer("SandBoxLayer")
 {
 
 	float width = static_cast<float>(Senku::Application::Get()->GetWindow().GetWidth());
@@ -123,4 +122,8 @@ bool SandBoxLayer::OnEvent(Senku::Event & event)
 	}
 
 	return false;
+}
+
+void SandBoxLayer::OnImGuiRender()
+{
 }

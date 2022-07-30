@@ -31,6 +31,8 @@ namespace Senku
 		EventsHandler::GetInstance().SubscribeForEvent(EventCategory(EventCategory::EventCategoryKeyboard | EventCategory::EventCategoryInput), BIND_EVENT_FN(Application::OnKeyboardKeyPressed));
 		EventsHandler::GetInstance().SubscribeForEvents(BIND_EVENT_FN(Application::OnEvent));
 
+		m_ImGuiLayer.reset(new ImGuiLayer());
+
 	}
 
 	Application::~Application()
@@ -41,6 +43,13 @@ namespace Senku
 	void Application::PushLayer(Layer * layer)
 	{
 		m_LayerStack.PushLayer(layer);
+		layer->OnAttach();
+	}
+
+	void Application::PushOverlay(Layer * layer)
+	{
+		m_LayerStack.PushOverlay(layer);
+		layer->OnAttach();
 	}
 
 	void Application::Close()
@@ -101,6 +110,12 @@ namespace Senku
 				(*it)->OnUpdate(fElapsedTime);
 			}
 
+			m_ImGuiLayer->Begin();
+			for (auto it = m_LayerStack.begin(); it != m_LayerStack.end(); it++)
+			{
+				(*it)->OnImGuiRender();
+			}
+			m_ImGuiLayer->End();
 
 			m_Window->OnUpdate();
 		}
