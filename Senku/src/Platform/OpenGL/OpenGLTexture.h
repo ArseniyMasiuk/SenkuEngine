@@ -13,6 +13,8 @@ namespace Senku
 			OpenGLTexture2D(const std::string& path);
 			~OpenGLTexture2D();
 
+			virtual uint32_t GetRendererID() override { return m_RendererID; };
+
 			virtual void Bind(uint32_t slot = 0) const override;
 			virtual void UnBind() const override;
 

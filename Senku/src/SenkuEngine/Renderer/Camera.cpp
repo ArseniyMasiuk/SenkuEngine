@@ -20,11 +20,11 @@ namespace Senku
 
 		RecalculateViewMatrix();
 
-		EventsHandler::GetInstance().SubscribeForEvent(EventCategory(EventCategory::EventCategoryMouse | EventCategory::EventCategoryInput),
-			BIND_EVENT_FN(PerspectiveCamera::OnMouseEventHandler));
+		//EventsHandler::GetInstance().SubscribeForEvent(EventCategory(EventCategory::EventCategoryMouse | EventCategory::EventCategoryInput),
+		//	BIND_EVENT_FN(PerspectiveCamera::OnMouseEventHandler));
 
-		EventsHandler::GetInstance().SubscribeForEvent(EventCategory(EventCategory::EventCategoryMouse | EventCategory::EventCategoryInput), BIND_EVENT_FN(PerspectiveCamera::OnMouseScrollEvent));
-		EventsHandler::GetInstance().SubscribeForEvent(EventCategory::EventCategoryApplication, BIND_EVENT_FN(PerspectiveCamera::ProcessEventWindowResize));
+		//EventsHandler::GetInstance().SubscribeForEvent(EventCategory(EventCategory::EventCategoryMouse | EventCategory::EventCategoryInput), BIND_EVENT_FN(PerspectiveCamera::OnMouseScrollEvent));
+		//EventsHandler::GetInstance().SubscribeForEvent(EventCategory::EventCategoryApplication, BIND_EVENT_FN(PerspectiveCamera::ProcessEventWindowResize));
 	}
 
 	PerspectiveCamera::~PerspectiveCamera()
@@ -61,6 +61,13 @@ namespace Senku
 
 		//update matricies
 		RecalculateViewMatrix();
+	}
+
+	void PerspectiveCamera::Resize(uint32_t width, uint32_t height)
+	{
+		m_AspectRation = static_cast<float>(width) / static_cast<float>(height);
+		RecalculateViewMatrix();
+
 	}
 
 	void PerspectiveCamera::OnMouseEventHandler(Event & e)

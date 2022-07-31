@@ -103,6 +103,7 @@
     <ClInclude Include="src\Platform\OpenGL\DebugAsist.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContrext.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLFrameBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLTexture.h" />
@@ -130,6 +131,7 @@
     <ClInclude Include="src\SenkuEngine\ImGui\ImGuiLayer.h" />
     <ClInclude Include="src\SenkuEngine\Renderer\Buffer.h" />
     <ClInclude Include="src\SenkuEngine\Renderer\Camera.h" />
+    <ClInclude Include="src\SenkuEngine\Renderer\FrameBuffer.h" />
     <ClInclude Include="src\SenkuEngine\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\SenkuEngine\Renderer\Material.h" />
     <ClInclude Include="src\SenkuEngine\Renderer\RenderCommand.h" />
@@ -146,6 +148,7 @@
     <ClCompile Include="Sandbox\src\SandboxLayer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLContrext.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLFrameBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLTexture.cpp" />
@@ -165,6 +168,7 @@
     <ClCompile Include="src\SenkuEngine\ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="src\SenkuEngine\Renderer\Buffer.cpp" />
     <ClCompile Include="src\SenkuEngine\Renderer\Camera.cpp" />
+    <ClCompile Include="src\SenkuEngine\Renderer\FrameBuffer.cpp" />
     <ClCompile Include="src\SenkuEngine\Renderer\GraphicsContext.cpp" />
     <ClCompile Include="src\SenkuEngine\Renderer\Material.cpp" />
     <ClCompile Include="src\SenkuEngine\Renderer\RenderCommand.cpp" />

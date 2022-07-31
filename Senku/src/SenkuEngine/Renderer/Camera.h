@@ -18,6 +18,8 @@ namespace Senku
 		const glm::mat4& GetViewProjectionMatrix() const { return m_ViewProjectionMatrix;}
 		void UpdateCameraPosition(float timeStep);
 
+		void Resize(uint32_t width, uint32_t height);
+
 	private:
 		void OnMouseEventHandler(Event& e);
 		void ProcessEventWindowResize(Event& e);
