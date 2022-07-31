@@ -10,10 +10,6 @@
 SandBoxLayer::SandBoxLayer()
 	:Layer("SandBoxLayer")
 {
-
-	//std::string name = Senku::FileDialog::OpenFile();
-	std::string name2 = Senku::FileDialog::SaveFile();
-
 	float width = static_cast<float>(Senku::Application::Get()->GetWindow().GetWidth());
 	float height = static_cast<float>(Senku::Application::Get()->GetWindow().GetHeight());
 	m_Camera = Senku::CreateRef<Senku::PerspectiveCamera>(45.0f, width / height, 0.01f, 10000.0f);
@@ -23,7 +19,7 @@ SandBoxLayer::SandBoxLayer()
 
 	Senku::ModelLoader loader;
 	//loader.LoadModel("Sandbox/assets/meshes/cube/untitled.obj");
-	loader.LoadModel("Sandbox/assets/meshes/Cerberus_by_Andrew_Maximov/Cerberus_LP.FBX");
+	loader.LoadModel("assets/meshes/Cerberus_by_Andrew_Maximov/Cerberus_LP.FBX");
 
 	Senku::Model model = loader.GetModels()[0];
 
@@ -50,16 +46,16 @@ SandBoxLayer::SandBoxLayer()
 
 	vertexArray->SetIndexBuffer(indexBuffer);
 	m_VertexArrays.push_back(std::make_pair(Transform(), vertexArray));
-	m_VertexArrays.push_back(std::make_pair(Transform(), vertexArray));
-	m_VertexArrays.push_back(std::make_pair(Transform(),vertexArray));
+	//m_VertexArrays.push_back(std::make_pair(Transform(), vertexArray));
+	//m_VertexArrays.push_back(std::make_pair(Transform(),vertexArray));
 	m_Names.push_back("Cerberus.fbx");
-	m_Names.push_back("Cerberus1.fbx");
-	m_Names.push_back("Cerberus2.fbx");
+	//m_Names.push_back("Cerberus1.fbx");
+	//m_Names.push_back("Cerberus2.fbx");
 
-	m_Shader = Senku::Shader::Create("Sandbox/assets/shaders/basicShader.glsl");
+	m_Shader = Senku::Shader::Create("assets/shaders/basicShader.glsl");
 
 	//texture = Senku::Texture2D::Create("Sandbox/assets/textures/default.jpg");
-	texture = Senku::Texture2D::Create("Sandbox/assets/meshes/Cerberus_by_Andrew_Maximov/Textures/Cerberus_A.tga");
+	texture = Senku::Texture2D::Create("assets/meshes/Cerberus_by_Andrew_Maximov/Textures/Cerberus_A.tga");
 
 
 	m_Material = Senku::CreateRef<Senku::MaterialInstance>(m_Shader);
@@ -84,6 +80,15 @@ void SandBoxLayer::OnDetach()
 
 void SandBoxLayer::OnUpdate(float timeStep)
 {
+
+	// check resolution to change frame buffer
+	Senku::FrameBufferSpecification spec = m_FrameBuffer->GetSpecification();
+	if (m_ViewportSize != glm::vec2(spec.Width, spec.Height) && m_ViewportSize.x > 0.0f && m_ViewportSize.y > 0.0f)
+	{
+		m_FrameBuffer->Resize(m_ViewportSize.x, m_ViewportSize.y);
+		m_Camera->Resize(m_ViewportSize.x, m_ViewportSize.y);
+	}
+
 	m_Camera->UpdateCameraPosition(timeStep);
 
 	m_FrameBuffer->Bind();
@@ -241,11 +246,7 @@ void SandBoxLayer::OnImGuiRender()
 
 	ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
 	if (m_ViewportSize != *((glm::vec2*)(&viewportPanelSize)))
-	{
-		m_FrameBuffer->Resize(viewportPanelSize.x, viewportPanelSize.y);
-		m_Camera->Resize(viewportPanelSize.x, viewportPanelSize.y);
 		m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
-	}
 
 	unsigned long long id = m_FrameBuffer->GetColorAttachment();
 	ImGui::Image(reinterpret_cast<void*>(id), ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });

@@ -24,9 +24,9 @@ namespace Senku
 		virtual uint32_t GetColorAttachment() override { return m_ColorAttachment; }
 
 	private:
-		uint32_t m_RendererID;
+		uint32_t m_RendererID = 0;
 
-		uint32_t m_ColorAttachment, m_DepthAttachment, m_RenderAttachment;
+		uint32_t m_ColorAttachment = 0, m_DepthAttachment = 0, m_RenderAttachment = 0;
 
 		FrameBufferSpecification m_Specification;
 	};
