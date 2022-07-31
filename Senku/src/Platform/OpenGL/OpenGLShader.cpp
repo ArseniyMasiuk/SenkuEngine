@@ -7,6 +7,8 @@ namespace Senku
 {
 	OpenGLShader::OpenGLShader(const std::string & filepath)
 	{
+		LOG_INFO("Loading Shader Path: {}", filepath);
+
 		{
 			// Extract name from filepath
 			auto lastSlash = filepath.find_last_of("/\\");
@@ -26,6 +28,7 @@ namespace Senku
 	}
 	OpenGLShader::~OpenGLShader()
 	{
+		LOG_WARN("Deleting Shader ");
 		GLCall(glDeleteProgram(m_rendererID));
 	}
 	void OpenGLShader::Bind() const

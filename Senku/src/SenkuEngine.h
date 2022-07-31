@@ -17,3 +17,4 @@
 
 
 #include "SenkuEngine\Renderer\Camera.h"
+#include "SenkuEngine\Scene\Scene.h"

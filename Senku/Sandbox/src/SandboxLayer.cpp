@@ -10,64 +10,11 @@
 SandBoxLayer::SandBoxLayer()
 	:Layer("SandBoxLayer")
 {
-	float width = static_cast<float>(Senku::Application::Get()->GetWindow().GetWidth());
-	float height = static_cast<float>(Senku::Application::Get()->GetWindow().GetHeight());
-	m_Camera = Senku::CreateRef<Senku::PerspectiveCamera>(45.0f, width / height, 0.01f, 10000.0f);
-
-	m_Camera->SetPosition(glm::vec3(0, 0, -5));
-
-
-	Senku::ModelLoader loader;
-	//loader.LoadModel("Sandbox/assets/meshes/cube/untitled.obj");
-	loader.LoadModel("assets/meshes/Cerberus_by_Andrew_Maximov/Cerberus_LP.FBX");
-
-	Senku::Model model = loader.GetModels()[0];
-
-	Senku::Ref<Senku::VertexArray> vertexArray = Senku::VertexArray::Create();
-
-	Senku::Ref<Senku::VertexBuffer> vertexBuffer;
-	vertexBuffer = Senku::VertexBuffer::Create((float*)(model.vertecies.data()), model.vertecies.size() * sizeof(Senku::Vertex));
-
-	vertexBuffer->Bind();
-	{
-		Senku::BufferLayout layout =
-		{
-			{Senku::ShaderDataType::Float3, "aPos"},
-			{Senku::ShaderDataType::Float3, "aNormal"},
-			{Senku::ShaderDataType::Float2, "aTexCoord"}
-		};
-		vertexBuffer->SetLayout(layout);
-	}
-	vertexArray->AddVertexBuffer(vertexBuffer);
-
-	Senku::Ref<Senku::IndexBuffer> indexBuffer;
-	indexBuffer = Senku::IndexBuffer::Create(model.indices.data(), model.indices.size());
-
-
-	vertexArray->SetIndexBuffer(indexBuffer);
-	m_VertexArrays.push_back(std::make_pair(Transform(), vertexArray));
-	//m_VertexArrays.push_back(std::make_pair(Transform(), vertexArray));
-	//m_VertexArrays.push_back(std::make_pair(Transform(),vertexArray));
-	m_Names.push_back("Cerberus.fbx");
-	//m_Names.push_back("Cerberus1.fbx");
-	//m_Names.push_back("Cerberus2.fbx");
-
-	m_Shader = Senku::Shader::Create("assets/shaders/basicShader.glsl");
-
-	//texture = Senku::Texture2D::Create("Sandbox/assets/textures/default.jpg");
-	texture = Senku::Texture2D::Create("assets/meshes/Cerberus_by_Andrew_Maximov/Textures/Cerberus_A.tga");
-
-
-	m_Material = Senku::CreateRef<Senku::MaterialInstance>(m_Shader);
-	m_Material->AddTexture(texture, Senku::MaterialInstance::TextureType::eAlbedo);
-	m_Material->mlt = model.mlt;
-
 	Senku::FrameBufferSpecification spec;
-	spec.Width = width;
-	spec.Height = height;
+	spec.Width = static_cast<float>(Senku::Application::Get()->GetWindow().GetWidth());;
+	spec.Height = static_cast<float>(Senku::Application::Get()->GetWindow().GetHeight());
 
 	m_FrameBuffer = Senku::FrameBuffer::Create(spec);
-
 }
 
 void SandBoxLayer::OnAttach()
@@ -85,28 +32,14 @@ void SandBoxLayer::OnUpdate(float timeStep)
 	Senku::FrameBufferSpecification spec = m_FrameBuffer->GetSpecification();
 	if (m_ViewportSize != glm::vec2(spec.Width, spec.Height) && m_ViewportSize.x > 0.0f && m_ViewportSize.y > 0.0f)
 	{
-		m_FrameBuffer->Resize(m_ViewportSize.x, m_ViewportSize.y);
-		m_Camera->Resize(m_ViewportSize.x, m_ViewportSize.y);
+		m_FrameBuffer->Resize(static_cast<uint32_t>(m_ViewportSize.x), static_cast<uint32_t>(m_ViewportSize.y));
+		m_Scene.Resize(static_cast<uint32_t>(m_ViewportSize.x), static_cast<uint32_t>(m_ViewportSize.y));
 	}
 
-	m_Camera->UpdateCameraPosition(timeStep);
 
 	m_FrameBuffer->Bind();
 
-	Senku::RenderCommand::ClearColor({ 0.1f, 0.2f, 0.2f, 0.0f });
-	Senku::RenderCommand::Clear();
-
-	Senku::Renderer::BeginScene(m_Camera); // todo:: set up cameras light shaders all stuff that should be common
-
-	
-
-	//glm::mat4 model = glm::scale(glm::mat4(1), glm::vec3(0.1, 0.1, 0.1)) * glm::rotate(glm::mat4(1.0f), glm::radians(-90.f), glm::vec3(1, 0, 0));
-
-	for (auto it = m_VertexArrays.begin(); it != m_VertexArrays.end(); it++)
-	{
-		Senku::Renderer::Submit(m_Material, it->second, it->first.GetMatrix());
-	}
-
+	m_Scene.Render(timeStep);
 
 	Senku::Renderer::EndScene();
 
@@ -116,7 +49,7 @@ void SandBoxLayer::OnUpdate(float timeStep)
 bool SandBoxLayer::OnEvent(Senku::Event & event)
 {
 
-	if (Senku::Input::IsKeyPressed(Senku::Key::D1))
+	/*if (Senku::Input::IsKeyPressed(Senku::Key::D1))
 		m_Material->mlt.baseColor = glm::vec3(1.0f, 0.0f, 0.0f);
 
 
@@ -142,13 +75,10 @@ bool SandBoxLayer::OnEvent(Senku::Event & event)
 			m_Material->mlt.dissolve = 1.0f;
 		else
 		m_Material->mlt.dissolve += 0.01f ;
-	}
+	}*/
 
 	return false;
 }
-
-static void DrawVec3Control(const std::string& label, glm::vec3& values, float resetValue = 0.0f, float columnWidth = 100.0f);
-
 
 void SandBoxLayer::OnImGuiRender()
 {
@@ -258,115 +188,7 @@ void SandBoxLayer::OnImGuiRender()
 		ImGui::ShowDemoWindow(&m_ShowDemo);
 
 
-	ShowMeshesTree();
+	m_Scene.RenderImGui();
 
 	ImGui::End();
-}
-
-void SandBoxLayer::ShowMeshesTree()
-{
-	ImGui::Begin("Meshes");
-	static int item_current_idx = 0;
-
-	ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-	
-	if (ImGui::BeginListBox("##listbox", ImVec2(-FLT_MIN, viewportPanelSize.y)))
-	{
-		for (int n = 0; n < m_Names.size(); n++)
-		{
-			const bool is_selected = (item_current_idx == n);
-			if (ImGui::Selectable(m_Names[n].c_str(), is_selected))
-				item_current_idx = n;
-
-			// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
-			if (is_selected)
-				ImGui::SetItemDefaultFocus();
-		}
-		ImGui::EndListBox();
-	}
-	ImGui::End();
-
-	ShowMeshProperties(item_current_idx);
-}
-
-void SandBoxLayer::ShowMeshProperties(unsigned int index)
-{
-	ImGui::Begin("Properties");
-
-	Transform& tr = m_VertexArrays[index].first;
-
-	DrawVec3Control("Translation", tr.m_Translation);
-	glm::vec3 rotation = glm::degrees(tr.m_Rotation);
-	DrawVec3Control("Rotation", rotation);
-	tr.m_Rotation = glm::radians(rotation);
-	DrawVec3Control("Scale", tr.m_Scale, 1.0f);
-
-	ImGui::End();
-}
-
-
-static void DrawVec3Control(const std::string& label, glm::vec3& values, float resetValue /*= 0.0f*/, float columnWidth /*= 100.0f*/)
-{
-	ImGuiIO& io = ImGui::GetIO();
-	auto boldFont = io.Fonts->Fonts[0];
-
-	ImGui::PushID(label.c_str());
-
-	ImGui::Columns(2);
-	ImGui::SetColumnWidth(0, columnWidth);
-	ImGui::Text(label.c_str());
-	ImGui::NextColumn();
-
-	ImGui::PushMultiItemsWidths(3, ImGui::CalcItemWidth());
-	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 0 });
-
-	float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
-	ImVec2 buttonSize = { lineHeight + 3.0f, lineHeight };
-
-	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
-	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.9f, 0.2f, 0.2f, 1.0f });
-	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
-	ImGui::PushFont(boldFont);
-	if (ImGui::Button("X", buttonSize))
-		values.x = resetValue;
-	ImGui::PopFont();
-	ImGui::PopStyleColor(3);
-
-	ImGui::SameLine();
-	ImGui::DragFloat("##X", &values.x, 0.1f, 0.0f, 0.0f, "%.2f");
-	ImGui::PopItemWidth();
-	ImGui::SameLine();
-
-	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.2f, 0.7f, 0.2f, 1.0f });
-	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.3f, 0.8f, 0.3f, 1.0f });
-	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.2f, 0.7f, 0.2f, 1.0f });
-	ImGui::PushFont(boldFont);
-	if (ImGui::Button("Y", buttonSize))
-		values.y = resetValue;
-	ImGui::PopFont();
-	ImGui::PopStyleColor(3);
-
-	ImGui::SameLine();
-	ImGui::DragFloat("##Y", &values.y, 0.1f, 0.0f, 0.0f, "%.2f");
-	ImGui::PopItemWidth();
-	ImGui::SameLine();
-
-	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
-	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.2f, 0.35f, 0.9f, 1.0f });
-	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
-	ImGui::PushFont(boldFont);
-	if (ImGui::Button("Z", buttonSize))
-		values.z = resetValue;
-	ImGui::PopFont();
-	ImGui::PopStyleColor(3);
-
-	ImGui::SameLine();
-	ImGui::DragFloat("##Z", &values.z, 0.1f, 0.0f, 0.0f, "%.2f");
-	ImGui::PopItemWidth();
-
-	ImGui::PopStyleVar();
-
-	ImGui::Columns(1);
-
-	ImGui::PopID();
 }

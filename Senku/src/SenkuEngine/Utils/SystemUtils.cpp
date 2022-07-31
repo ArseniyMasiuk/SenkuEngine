@@ -22,8 +22,6 @@ namespace Senku
 	{
 		OPENFILENAME ofn;       // common dialog box structure
 		char szFile[260];       // buffer for file name
-		HWND hwnd;              // owner window
-		HANDLE hf;              // file handle
 
 		// Initialize OPENFILENAME
 		ZeroMemory(&ofn, sizeof(ofn));
@@ -53,8 +51,6 @@ namespace Senku
 	{
 		OPENFILENAME ofn;       // common dialog box structure
 		char szFile[260];       // buffer for file name
-		HWND hwnd;              // owner window
-		HANDLE hf;              // file handle
 
 		// Initialize OPENFILENAME
 		ZeroMemory(&ofn, sizeof(ofn));

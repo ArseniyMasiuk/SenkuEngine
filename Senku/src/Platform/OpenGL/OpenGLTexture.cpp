@@ -10,7 +10,7 @@ namespace Senku
 	OpenGLTexture2D::OpenGLTexture2D(const std::string & path)
 		:m_Path(path), m_Width(0), m_Height(0)
 	{
-
+		LOG_INFO("Creating txture from {}", path);
 		int width, height, channels;
 
 		//stbi_set_flip_vertically_on_load(1);
@@ -61,6 +61,7 @@ namespace Senku
 
 	OpenGLTexture2D::~OpenGLTexture2D()
 	{
+		LOG_WARN("Deleting texture");
 		GLCall(glDeleteTextures(1, &m_RendererID));
 	}
 

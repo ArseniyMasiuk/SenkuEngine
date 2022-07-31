@@ -89,7 +89,7 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>imgui-release.lib;assimp-vc141-mt.lib;glfw3.lib;opengl32.lib;User32.lib;Gdi32.lib;Shell32.lib;glew32s.lib;</AdditionalDependencies>
+      <AdditionalDependencies>comdlg32.lib;imgui-release.lib;assimp-vc141-mt.lib;glfw3.lib;opengl32.lib;User32.lib;Gdi32.lib;Shell32.lib;glew32s.lib;</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)Senku\dependencies\glew-2.1.0\lib;$(SolutionDir)Senku\dependencies\GLFW\lib-vc2017;$(SolutionDir)Senku\dependencies\ImGui\lib;$(SolutionDir)Senku\dependencies\assimp\lib64_Release</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
@@ -141,6 +141,7 @@
     <ClInclude Include="src\SenkuEngine\Renderer\Texture.h" />
     <ClInclude Include="src\SenkuEngine\Renderer\VertexArray.h" />
     <ClInclude Include="src\SenkuEngine\Scene\ModelLoader.h" />
+    <ClInclude Include="src\SenkuEngine\Scene\Scene.h" />
     <ClInclude Include="src\SenkuEngine\Utils\SystemUtils.h" />
   </ItemGroup>
   <ItemGroup>
@@ -179,6 +180,7 @@
     <ClCompile Include="src\SenkuEngine\Renderer\Texture.cpp" />
     <ClCompile Include="src\SenkuEngine\Renderer\VertexArray.cpp" />
     <ClCompile Include="src\SenkuEngine\Scene\ModelLoader.cpp" />
+    <ClCompile Include="src\SenkuEngine\Scene\Scene.cpp" />
     <ClCompile Include="src\SenkuEngine\Utils\SystemUtils.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

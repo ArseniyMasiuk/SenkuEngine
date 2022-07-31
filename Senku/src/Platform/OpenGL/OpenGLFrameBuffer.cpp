@@ -10,10 +10,12 @@ namespace Senku
 	OpenGLFrameBuffer::OpenGLFrameBuffer(const FrameBufferSpecification & specification)
 		:m_Specification(specification)
 	{
+		LOG_INFO("Creating Framebuffer");
 		Invalidate();
 	}
 	OpenGLFrameBuffer::~OpenGLFrameBuffer()
 	{
+		LOG_WARN("Deleting Framebuffer");
 		glDeleteFramebuffers(1, &m_RendererID);
 		glDeleteTextures(1, &m_ColorAttachment);
 		glDeleteTextures(1, &m_DepthAttachment);
