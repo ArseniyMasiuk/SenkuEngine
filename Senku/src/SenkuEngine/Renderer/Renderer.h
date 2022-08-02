@@ -27,6 +27,7 @@ namespace Senku
 		struct SceneData
 		{
 			glm::mat4 ViewProjectionMatrix;
+			glm::vec3 m_CameraPosition;
 		};
 
 		static Scope<SceneData> s_SceneData;

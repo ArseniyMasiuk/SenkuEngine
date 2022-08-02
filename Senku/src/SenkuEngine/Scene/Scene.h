@@ -5,6 +5,7 @@
 #include "SenkuEngine\Renderer\Shader.h"
 #include "SenkuEngine\Renderer\Buffer.h"
 #include "SenkuEngine\Renderer\VertexArray.h"
+#include "SenkuEngine\Renderer\Light.h"
 
 #include "glm\ext\quaternion_transform.hpp"
 #include "glm\ext\matrix_transform.hpp"
@@ -70,6 +71,8 @@ namespace Senku
 
 		Ref<Shader> m_Shader; // for now only one shader
 		Ref<PerspectiveCamera> m_Camera;
+		DirectLight dirLight;
 
+		Ref<Texture2D> defaultTexture;
 	};
 }

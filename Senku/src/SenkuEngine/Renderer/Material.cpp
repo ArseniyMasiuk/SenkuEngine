@@ -22,26 +22,44 @@ namespace Senku
 		m_Textures.insert(std::make_pair(type, texture));
 	}
 
+	bool MaterialInstance::GetTexture(Ref<Texture2D>& texture, TextureType type)
+	{
+		std::unordered_map<TextureType, Ref<Texture2D>>::iterator found = m_Textures.find(type);
+		if (found != m_Textures.end())
+		{
+			texture = found->second;
+			return true;
+		}
+		return false;
+	}
+
 	void MaterialInstance::Bind()
 	{
 		m_Shader->Bind();
 
-		// set general material data to uniforms
-		m_Shader->setUniform3fv("u_Material.baseColor", mlt.baseColor);
-		m_Shader->setUniform1f("u_Material.dissolve",mlt.dissolve);
-
-		int textureMask = 0; // each bit represent binded slot for texture
-		int textureSlot = 0;
-		for (auto texture : m_Textures)
+		if (m_Textures.empty())
 		{
-			m_Shader->setUniform1i(GetUniformNameForTexture(texture.first), textureSlot); // will run through loop and will set all textures to appropriate uniforms and will bind textures to slots
-			texture.second->Bind(textureSlot);
 
-			textureMask = textureMask | BIT(textureSlot);
-			textureSlot++;
+			// set general material data to uniforms
+			m_Shader->setUniform3fv("u_Material.baseColor", mlt.baseColor);
+			m_Shader->setUniform1f("u_Material.dissolve", mlt.dissolve);
 		}
+		else
+		{
 
-		m_Shader->setUniform1i("u_TextureMask", textureMask);
+			int textureMask = 0; // each bit represent binded slot for texture
+			int textureSlot = 0;
+			for (auto texture : m_Textures)
+			{
+				textureMask = textureMask | BIT(texture.first);
+				m_Shader->setUniform1i(GetUniformNameForTexture(texture.first), textureSlot); // will run through loop and will set all textures to appropriate uniforms and will bind textures to slots
+				texture.second->Bind(textureSlot);
+
+				textureSlot++;
+			}
+
+			m_Shader->setUniform1i("u_TextureMask", textureMask);
+		}
 	}
 
 	const char* MaterialInstance::GetUniformNameForTexture(TextureType type)

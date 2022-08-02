@@ -25,9 +25,7 @@ namespace Senku
 			// int illumination; // docs says that this is ignored but i wilk keep it for now maybe it will be in use later
 		};
 
-	
-
-		enum TextureType : uint32_t { eAlbedo = 1, eNormal, eRoughness, eMetalness/*, eHeight, eAmbientOclustion, eRefraction*/ }; // probably will not need all of the but it will be good to have all of them here
+		enum TextureType : uint32_t { eAlbedo = 0, eNormal, eRoughness, eMetalness/*, eHeight, eAmbientOclustion, eRefraction*/ }; // probably will not need all of the but it will be good to have all of them here
 
 	public:
 		MaterialInstance(Ref<Shader>& shader);
@@ -36,7 +34,7 @@ namespace Senku
 		const Ref<Shader> GetShader() { return m_Shader; };
 
 		void AddTexture(Ref<Texture2D>& texture, TextureType type);
-
+		bool GetTexture(Ref<Texture2D>& td, TextureType type);
 
 
 		void Bind(); // should set up all material data to shader uniforms 

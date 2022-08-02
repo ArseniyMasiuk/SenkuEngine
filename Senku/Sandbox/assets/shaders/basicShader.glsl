@@ -37,19 +37,29 @@ struct Material
 uniform int u_TextureMask; // each bit represent binded slot for texture
 uniform Material u_Material;
 
+// each bit says if texture is binded or not
 
-uniform sampler2D u_textureAlbedo;
+uniform sampler2D u_textureAlbedo; //    00001
+uniform sampler2D u_TextureNormal; //    00010
+uniform sampler2D u_TextureRoughness; // 00100
+uniform sampler2D u_TextureMetalness; // 10000
+
+
 
 void main()
 {
 	vec4 resultColor;
 
-	if(u_TextureMask == 0)
-		resultColor = vec4(u_Material.baseColor, 1.0);
-	else
-		resultColor = texture(u_textureAlbedo, texCoord);
+	int albedoLoaded = (u_TextureMask & 1);
+	int normalLoaded = (u_TextureMask & 2);
 
-	resultColor = resultColor * u_Material.dissolve;
+	if(albedoLoaded == 1)
+		resultColor = texture(u_textureAlbedo, texCoord);
+	else
+		resultColor = vec4(u_Material.baseColor, 1.0);
+
+	
+	resultColor = resultColor * vec4(1.0, 1.0,1.0, u_Material.dissolve);
 
     FragColor = resultColor;
 } 

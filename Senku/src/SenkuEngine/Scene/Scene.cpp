@@ -20,7 +20,15 @@ namespace Senku
 		float height = static_cast<float>(Application::Get()->GetWindow().GetHeight());
 		m_Camera = CreateRef<PerspectiveCamera>(glm::vec3(0, 0, -5), 45.0f, width / height, 0.01f, 10000.0f);
 
-		m_Shader = Shader::Create("assets/shaders/basicShader.glsl"); // for now hardcoded since i have only one good shader
+		m_Shader = Shader::Create("Sandbox/assets/shaders/basicShader.glsl"); // for now hardcoded since i have only one good shader
+
+		// create default texture
+		defaultTexture = Texture2D::Create("Sandbox/assets/textures/default.jpg");
+
+		dirLight.m_Direction = glm::vec3(10.0f, 0.0f, 0.0f);
+		dirLight.m_Ambient = glm::vec3(0.3f, 0.3f, 0.3f);
+		dirLight.m_Diffuse= glm::vec3(1.5f, 1.5f, 1.5f);
+		dirLight.m_Specular = glm::vec3(1.5f, 1.5f, 1.5f);
 	}
 
 	void Scene::AddMesh(const std::string & path)
@@ -170,10 +178,79 @@ namespace Senku
 
 		if (m_Entities.size())
 		{
-			MaterialInstance::GeneralMLT& mlt = m_Entities[index].material->mlt;
+			Ref<MaterialInstance>& mlt = m_Entities[index].material;
+			if (ImGui::CollapsingHeader("Base material properties"))
+			{
 
-			ImGui::ColorEdit3("Base Color", glm::value_ptr(mlt.baseColor));
-			ImGui::DragFloat("Transparency (dissolve)", &mlt.dissolve, 0.005f, 0.0f, 1.0f, "%.3f");
+				//ImGui::ColorEdit3("Base Color", glm::value_ptr(mlt->mlt.baseColor));
+				ImGui::DragFloat("Transparency (dissolve)", &mlt->mlt.dissolve, 0.005f, 0.0f, 1.0f, "%.3f");
+				ImGui::Separator();
+			}
+
+			ImGui::Text("Textures");
+			{
+				if (ImGui::CollapsingHeader("Albedo"))//MaterialInstance::TextureType::eAlbedo;
+				{
+					unsigned int id = defaultTexture->GetRendererID();
+
+					Ref<Texture2D> textureAlbedo;
+					if (mlt->GetTexture(textureAlbedo, MaterialInstance::TextureType::eAlbedo))
+					{
+						id = textureAlbedo->GetRendererID();
+					}
+					ImGui::Image(reinterpret_cast<void*>(id), ImVec2{ 64.0f, 64.0f }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+					ImGui::SameLine();
+					{
+						ImGui::BeginGroup();
+						ImGui::ColorEdit3("Base Color", glm::value_ptr(mlt->mlt.baseColor));
+
+
+						if (ImGui::Button("Browse.."))
+						{
+							std::string filePath = FileDialog::OpenFile("Texture files (*.jpg, *.png, *.tga)\0*.tga;*.jpg;*.png\0");
+							if (!filePath.empty())
+							{
+								Ref<Texture2D> newTexture = Texture2D::Create(filePath);
+								mlt->AddTexture(newTexture, MaterialInstance::TextureType::eAlbedo);
+
+							}
+						}
+						
+						ImGui::EndGroup();
+					}
+
+				}
+				//MaterialInstance::TextureType::eNormal
+				if (ImGui::CollapsingHeader("Normals"))
+				{
+					unsigned int id = defaultTexture->GetRendererID();
+
+					Ref<Texture2D> textureNormal;
+					if (mlt->GetTexture(textureNormal, MaterialInstance::TextureType::eNormal))
+					{
+						id = textureNormal->GetRendererID();
+					}
+					ImGui::Image(reinterpret_cast<void*>(id), ImVec2{ 64.0f, 64.0f }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+					ImGui::SameLine();
+					{
+						ImGui::BeginGroup();
+						if (ImGui::Button("Browse.."))
+						{
+							std::string filePath = FileDialog::OpenFile("Texture files (*.jpg, *.png, *.tga)\0*.tga;*.jpg;*.png\0");
+							if (!filePath.empty())
+							{
+								Ref<Texture2D> newTexture = Texture2D::Create(filePath);
+								mlt->AddTexture(newTexture, MaterialInstance::TextureType::eNormal);
+
+							}
+						}
+						ImGui::EndGroup();
+					}
+				}
+				//MaterialInstance::TextureType::eMetalness;
+				//MaterialInstance::TextureType::eRoughness;
+			}
+
 		}
 		ImGui::End();
 	}

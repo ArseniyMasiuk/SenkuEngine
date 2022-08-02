@@ -78,7 +78,7 @@ namespace Senku
 
 			if (Input::IsKeyPressed(Key::LeftControl) && Input::IsMouseButtonPressed(Mouse::ButtonLeft)) // move in horizont plane // this work a bit wrong when cameta is looking from top to bottom
 			{
-				LOG_WARN("move by hosrizont");
+				//LOG_WARN("move by hosrizont");
 				m_Position -= (yoffset * delta* 0.7f)* glm::vec3(cameraFront.x, 0, cameraFront.z);
 				m_Position -= glm::normalize(glm::cross(glm::vec3(cameraFront.x, 0, cameraFront.z), cameraUp)) * (xoffset * delta* 0.7f);
 
@@ -92,7 +92,7 @@ namespace Senku
 			}
 			else if (Input::IsKeyPressed(Key::LeftShift) && Input::IsMouseButtonPressed(Mouse::ButtonLeft)) // move up and down
 			{
-				LOG_WARN("up and down");
+				//LOG_WARN("up and down");
 				m_Position -= (yoffset * delta * 0.7f)* glm::vec3(0, 1, 0);
 				m_Position -= glm::normalize(glm::cross(cameraFront, cameraUp)) * (xoffset * delta * 0.7f);
 
@@ -108,7 +108,7 @@ namespace Senku
 			}
 			else if (Input::IsMouseButtonPressed(Mouse::ButtonLeft)) // orbit movement
 			{
-				LOG_WARN(" orbit movement");
+				//LOG_WARN(" orbit movement");
 
 
 				pitch += xoffset * delta;

@@ -17,6 +17,7 @@ namespace Senku
 	void Renderer::BeginScene(const Ref<PerspectiveCamera>& camera)
 	{
 		s_SceneData->ViewProjectionMatrix = camera->GetViewProjectionMatrix();
+		s_SceneData->m_CameraPosition = camera->GetPosition();
 	}
 	void Renderer::EndScene()
 	{
