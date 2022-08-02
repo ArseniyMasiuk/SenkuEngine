@@ -16,7 +16,7 @@ namespace Senku
 		struct GeneralMLT
 		{
 			glm::vec3 baseColor{ 1.0f };
-			glm::vec3 ambinet{ 1.0f };			// Ka: specifies ambient color, to account for light that is scattered about the entire scene [see Wikipedia entry for Phong Reflection Model] using values between 0 and 1 for the RGB components.
+			glm::vec3 ambient{ 1.0f };			// Ka: specifies ambient color, to account for light that is scattered about the entire scene [see Wikipedia entry for Phong Reflection Model] using values between 0 and 1 for the RGB components.
 			glm::vec3 diffuse{ 1.0f };			// Kd: specifies diffuse color, which typically contributes most of the color to an object. In this example, Kd represents a grey color, which will get modified by a colored texture map specified in the map_Kd statement
 			glm::vec3 specular{ 1.0f };			// Ks: specifies specular color, the color seen where the surface is shiny and mirror-like
 			float specularHighlights = 1.0f;	// Ns: defines the focus of specular highlights in the material. Ns values normally range from 0 to 1000, with a high value resulting in a tight, concentrated highlight.

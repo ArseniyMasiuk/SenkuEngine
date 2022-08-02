@@ -109,7 +109,7 @@ namespace Senku
 
 
 
-		model.mlt.ambinet = glm::vec3(ambient.r, ambient.g, ambient.b);
+		model.mlt.ambient = glm::vec3(ambient.r, ambient.g, ambient.b);
 		model.mlt.diffuse = glm::vec3(diffuse.r, diffuse.g, diffuse.b);
 		model.mlt.specular = glm::vec3(specular.r, specular.g, specular.b);
 		model.mlt.specularHighlights = shininess;

@@ -66,6 +66,7 @@ namespace Senku
 		void ShowMeshProperties(unsigned int index);
 		void ShowMeshesTree();
 		void ShotMaterialProperties(unsigned int index);
+		void ShowEnvironmentPanel();
 
 		std::vector<Entity> m_Entities;
 

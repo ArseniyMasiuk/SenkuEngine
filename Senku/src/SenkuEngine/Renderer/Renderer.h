@@ -4,6 +4,7 @@
 #include "Camera.h"
 #include "Shader.h"
 #include "Material.h"
+#include "Light.h"
 
 namespace Senku
 {
@@ -13,7 +14,7 @@ namespace Senku
 	public:
 		static void Init();
 		static void ShutDown();
-		static void BeginScene(const Ref<PerspectiveCamera>& camera); // todo: will take all data that need for scene eg camera, shader, and so on
+		static void BeginScene(const Ref<PerspectiveCamera>& camera, DirectLight dirLight); // todo: will take all data that need for scene eg camera, shader, and so on
 		static void EndScene();
 
 		static void WindowResize(uint32_t width, uint32_t height);
@@ -28,6 +29,7 @@ namespace Senku
 		{
 			glm::mat4 ViewProjectionMatrix;
 			glm::vec3 m_CameraPosition;
+			DirectLight dirLight;
 		};
 
 		static Scope<SceneData> s_SceneData;

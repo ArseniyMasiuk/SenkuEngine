@@ -14,10 +14,11 @@ namespace Senku
 	void Renderer::ShutDown()
 	{
 	}
-	void Renderer::BeginScene(const Ref<PerspectiveCamera>& camera)
+	void Renderer::BeginScene(const Ref<PerspectiveCamera>& camera, DirectLight dirLight)
 	{
 		s_SceneData->ViewProjectionMatrix = camera->GetViewProjectionMatrix();
 		s_SceneData->m_CameraPosition = camera->GetPosition();
+		s_SceneData->dirLight = dirLight;
 	}
 	void Renderer::EndScene()
 	{
@@ -33,6 +34,15 @@ namespace Senku
 		shader->setUniformMat4("u_ViewProjMat", s_SceneData->ViewProjectionMatrix); // sould be done only once after binding it basicaly while rendering whole scene
 		shader->setUniformMat4("u_Model", transform);
 
+
+		//setup direction light
+		shader->setUniform3fv("dirLight.lightColor", s_SceneData->dirLight.m_LightColor);
+		shader->setUniform3fv("dirLight.direction", s_SceneData->dirLight.m_Direction);
+		shader->setUniform3fv("dirLight.ambient", s_SceneData->dirLight.m_Ambient);
+		shader->setUniform3fv("dirLight.diffuse", s_SceneData->dirLight.m_Diffuse);
+		shader->setUniform3fv("dirLight.specular", s_SceneData->dirLight.m_Specular);
+
+		shader->setUniform3fv("u_ViewPos", s_SceneData->m_CameraPosition);
 
 		vertexArray->Bind();
 		RenderCommand::DrawIndexed(vertexArray);

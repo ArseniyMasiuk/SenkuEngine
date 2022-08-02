@@ -42,7 +42,11 @@ namespace Senku
 
 			// set general material data to uniforms
 			m_Shader->setUniform3fv("u_Material.baseColor", mlt.baseColor);
-			m_Shader->setUniform1f("u_Material.dissolve", mlt.dissolve);
+			//m_Shader->setUniform3fv("u_Material.ambient", mlt.ambient);
+			m_Shader->setUniform3fv("u_Material.diffuse", mlt.diffuse);
+			m_Shader->setUniform3fv("u_Material.specular", mlt.specular);
+			m_Shader->setUniform1f("u_Material.shininess", mlt.specularHighlights);
+			//m_Shader->setUniform1f("u_Material.dissolve", mlt.dissolve);
 		}
 		else
 		{

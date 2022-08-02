@@ -26,7 +26,7 @@ namespace Senku
 		defaultTexture = Texture2D::Create("Sandbox/assets/textures/default.jpg");
 
 		dirLight.m_Direction = glm::vec3(10.0f, 0.0f, 0.0f);
-		dirLight.m_Ambient = glm::vec3(0.3f, 0.3f, 0.3f);
+		dirLight.m_Ambient = glm::vec3(0.5f, 0.5f, 0.5f);
 		dirLight.m_Diffuse= glm::vec3(1.5f, 1.5f, 1.5f);
 		dirLight.m_Specular = glm::vec3(1.5f, 1.5f, 1.5f);
 	}
@@ -66,6 +66,7 @@ namespace Senku
 		entity.mesh = vertexArray;
 		entity.material = CreateRef<MaterialInstance>(m_Shader);
 		entity.material->mlt = model.mlt;
+
 		{
 			// Extract name from filepath
 			auto lastSlash = path.find_last_of("/\\");
@@ -98,7 +99,7 @@ namespace Senku
 		RenderCommand::ClearColor({ 0.1f, 0.2f, 0.2f, 0.0f });
 		RenderCommand::Clear();
 
-		Renderer::BeginScene(m_Camera); // todo:: set up cameras light shaders all stuff that should be common
+		Renderer::BeginScene(m_Camera, dirLight); // todo:: set up cameras light shaders all stuff that should be common
 
 		for (auto it = m_Entities.begin(); it != m_Entities.end(); it++)
 		{
@@ -170,6 +171,22 @@ namespace Senku
 		//show material textures
 		ShotMaterialProperties(item_current_idx);
 
+		ShowEnvironmentPanel();
+
+	}
+
+	void Scene::ShowEnvironmentPanel()
+	{
+		ImGui::Begin("Environment");
+
+		ImGui::ColorEdit3("Light color", (float*)&dirLight.m_LightColor);
+		DrawVec3Control("Direction", dirLight.m_Direction);
+		DrawVec3Control("Ambient", dirLight.m_Ambient);
+		DrawVec3Control("diffuse", dirLight.m_Diffuse);
+		DrawVec3Control("specular", dirLight.m_Specular);
+
+
+		ImGui::End();
 	}
 
 	void Scene::ShotMaterialProperties(unsigned int index)
