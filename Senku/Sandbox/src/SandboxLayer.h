@@ -15,7 +15,7 @@ class SandBoxLayer : public Senku::Layer
 
 	//ImGui controls
 	bool m_ShowDemo = false;
-
+	bool m_bViewPortFocused = false;
 
 private:
 

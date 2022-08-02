@@ -58,6 +58,8 @@ namespace Senku
 		// this should not be here, JUST FOR TESTING!!!
 		void RenderImGui();
 
+		bool OnEvent(Event& event);
+
 	private:
 
 		void ShowMeshProperties(unsigned int index);

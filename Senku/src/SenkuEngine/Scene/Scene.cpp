@@ -18,9 +18,7 @@ namespace Senku
 	{
 		float width = static_cast<float>(Application::Get()->GetWindow().GetWidth());
 		float height = static_cast<float>(Application::Get()->GetWindow().GetHeight());
-		m_Camera = CreateRef<PerspectiveCamera>(45.0f, width / height, 0.01f, 10000.0f);
-
-		m_Camera->SetPosition(glm::vec3(0, 0, -5));
+		m_Camera = CreateRef<PerspectiveCamera>(glm::vec3(0, 0, -5), 45.0f, width / height, 0.01f, 10000.0f);
 
 		m_Shader = Shader::Create("assets/shaders/basicShader.glsl"); // for now hardcoded since i have only one good shader
 	}
@@ -32,6 +30,7 @@ namespace Senku
 
 		Model model = loader.GetModels()[0]; // for now pretendint that there is only one mode
 		ASSERT(loader.GetModels().size());
+		LOG_WARN("Meshes loaded: {}, But readint only first one!!!", loader.GetModels().size());
 
 		Ref<VertexArray> vertexArray = VertexArray::Create();
 
@@ -86,7 +85,7 @@ namespace Senku
 
 	void Scene::Render(float timeStep)
 	{
-		m_Camera->UpdateCameraPosition(timeStep);
+		m_Camera->OnUpdate(timeStep);
 
 		RenderCommand::ClearColor({ 0.1f, 0.2f, 0.2f, 0.0f });
 		RenderCommand::Clear();
@@ -107,6 +106,25 @@ namespace Senku
 	void Scene::RenderImGui()
 	{
 		ShowMeshesTree();
+	}
+
+	bool Scene::OnEvent(Event & event)
+	{
+		// for now leave it commented since for camera resizing i have functuion
+		// but later it would be good to have qeue of events and they will be handled each turn of main loop maybe?? will think a bit more later
+
+		//if (event.GetEventType() == EventType::WindowResize)
+		//{
+		//	WindowResizeEvent& event = (WindowResizeEvent&)e;
+		//	m_Camera->Resize(event.GetWidth(), event.GetHeight());
+
+		//	return false; // return false sine changed view port shoudl be habdled everyhere
+		//}
+
+		if (event.isInCategory(EventCategory::EventCategoryMouse))
+			m_Camera->OnEditorCameraUpdate(event);
+
+		return false;
 	}
 
 	void Scene::ShowMeshesTree()

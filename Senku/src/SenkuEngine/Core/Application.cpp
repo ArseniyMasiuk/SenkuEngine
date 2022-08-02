@@ -73,7 +73,6 @@ namespace Senku
 		}
 
 		// todo: pass events to layers
-
 		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); it++)
 		{
 			if ((*it)->OnEvent(e))

@@ -48,34 +48,24 @@ void SandBoxLayer::OnUpdate(float timeStep)
 
 bool SandBoxLayer::OnEvent(Senku::Event & event)
 {
-
-	/*if (Senku::Input::IsKeyPressed(Senku::Key::D1))
-		m_Material->mlt.baseColor = glm::vec3(1.0f, 0.0f, 0.0f);
-
-
-	if (Senku::Input::IsKeyPressed(Senku::Key::D2))
-		m_Material->mlt.baseColor = glm::vec3(0.0f, 1.0f, 0.0f);
-
-
-	if (Senku::Input::IsKeyPressed(Senku::Key::D3))
-		m_Material->mlt.baseColor = glm::vec3(0.0f, 0.0f, 1.0f);
-
-	if (Senku::Input::IsKeyPressed(Senku::Key::D4))
+	if (m_bViewPortFocused)
 	{
-		if (m_Material->mlt.dissolve < 0.0f)
-			m_Material->mlt.dissolve = 0.0f;
-		else
-			m_Material->mlt.dissolve -= 0.01f;
+		bool handled;
+		handled = m_Scene.OnEvent(event);
+
+		return handled;
 	}
-		
-
-	if (Senku::Input::IsKeyPressed(Senku::Key::D5))
+	else
 	{
-		if (m_Material->mlt.dissolve > 1.0f)
-			m_Material->mlt.dissolve = 1.0f;
-		else
-		m_Material->mlt.dissolve += 0.01f ;
-	}*/
+		ImGuiIO& io = ImGui::GetIO();
+		bool handled = false;
+
+		handled |= event.isInCategory(Senku::EventCategory::EventCategoryMouse) & io.WantCaptureMouse;
+		handled |= event.isInCategory(Senku::EventCategory::EventCategoryKeyboard) & io.WantCaptureKeyboard;
+
+		return handled;
+	}
+	
 
 	return false;
 }
@@ -167,27 +157,30 @@ void SandBoxLayer::OnImGuiRender()
 		ImGui::EndMenuBar();
 	}
 
-	float width = static_cast<float>(Senku::Application::Get()->GetWindow().GetWidth());
-	float height = static_cast<float>(Senku::Application::Get()->GetWindow().GetHeight());
 
-	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-	ImGui::Begin("Viewport");
-	ImGui::PopStyleVar();
+	{
 
-	ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-	if (m_ViewportSize != *((glm::vec2*)(&viewportPanelSize)))
-		m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+		ImGui::Begin("Viewport");
+		ImGui::PopStyleVar();
 
-	unsigned long long id = m_FrameBuffer->GetColorAttachment();
-	ImGui::Image(reinterpret_cast<void*>(id), ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
-	ImGui::End();
+		m_bViewPortFocused = ImGui::IsWindowFocused();
+
+		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
+		if (m_ViewportSize != *((glm::vec2*)(&viewportPanelSize)))
+			m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
+
+		unsigned long long id = m_FrameBuffer->GetColorAttachment();
+		ImGui::Image(reinterpret_cast<void*>(id), ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+		ImGui::End();
+	}
 
 	
 
 	if(m_ShowDemo)
 		ImGui::ShowDemoWindow(&m_ShowDemo);
 
-
+	// should be moved to sandbox layer since it should be responcible for that (also later this part will be called )
 	m_Scene.RenderImGui();
 
 	ImGui::End();

@@ -7,7 +7,7 @@ namespace Senku
 	class PerspectiveCamera
 	{
 	public:
-		PerspectiveCamera(float fieldOfView, float aspectRation, float zNear, float zFar);
+		PerspectiveCamera(glm::vec3 position, float fieldOfView, float aspectRation, float zNear, float zFar);
 		~PerspectiveCamera();
 
 		const glm::vec3& GetPosition() const { return m_Position; }
@@ -16,14 +16,20 @@ namespace Senku
 		const glm::mat4& GetProjectionMatrix() const { return m_ProjectionMatrix; }
 		const glm::mat4& GetViewMatrix() const { return m_ViewMatrix; }
 		const glm::mat4& GetViewProjectionMatrix() const { return m_ViewProjectionMatrix;}
-		void UpdateCameraPosition(float timeStep);
+		
+		
+		void OnUpdate(float timeStep);
 
 		void Resize(uint32_t width, uint32_t height);
 
+		// todo: Camra class should be recreated since i want to use it in qntity component system and there can be situation that camera is attached to some object
+		// so it should have minimal controls or event none of them and script should handle all transformations
+
+		// specially for editor camera
+
+		bool OnEditorCameraUpdate(Event& event);
 	private:
-		void OnMouseEventHandler(Event& e);
-		void ProcessEventWindowResize(Event& e);
-		void OnMouseScrollEvent(Event& e);
+
 
 	private:
 		void RecalculateViewMatrix();
@@ -47,10 +53,13 @@ namespace Senku
 		float yaw = 90.0f;
 		float pitch = 0;
 
+		float xoffset;
+		float yoffset;
+		float delta;
+		glm::vec3 origin{ 0.0f };
 
 
-
-		float cameraSpeed = 2.5f;
+		float cameraSpeed = 1.5f;
 		float lastX, lastY;
 		bool firstMouse = true;
 	};
