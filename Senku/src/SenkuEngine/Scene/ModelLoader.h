@@ -12,6 +12,8 @@ namespace Senku
 		glm::vec3 position{ 0.0f };
 		glm::vec3 normal{ 0.0f };
 		glm::vec2 textureCoordinates{ 0.0f };
+		glm::vec3 tangent;
+		glm::vec3 biTangent;
 	};
 
 	/*struct s_Texture

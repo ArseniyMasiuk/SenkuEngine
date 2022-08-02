@@ -54,6 +54,18 @@ namespace Senku
 			vector.y = mesh->mVertices[i].y;
 			vector.z = mesh->mVertices[i].z;
 			vertex.position = vector;
+
+			// tangent and bitangent
+			if (mesh->HasTangentsAndBitangents())
+			{
+				vertex.tangent.x = mesh->mTangents[i].x;
+				vertex.tangent.y = mesh->mTangents[i].y;
+				vertex.tangent.z = mesh->mTangents[i].z;
+
+				vertex.biTangent.x = mesh->mBitangents[i].x;
+				vertex.biTangent.y = mesh->mBitangents[i].y;
+				vertex.biTangent.z = mesh->mBitangents[i].z;
+			}
 			// normals
 			if (mesh->HasNormals())
 			{
@@ -75,6 +87,8 @@ namespace Senku
 			}
 			else
 				vertex.textureCoordinates = glm::vec2(0.0f);
+
+
 
 			model.vertecies.push_back(vertex);
 		}

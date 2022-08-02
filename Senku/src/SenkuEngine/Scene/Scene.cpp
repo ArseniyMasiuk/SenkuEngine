@@ -51,7 +51,9 @@ namespace Senku
 			{
 				{ShaderDataType::Float3, "aPos"},
 				{ShaderDataType::Float3, "aNormal"},
-				{ShaderDataType::Float2, "aTexCoord"}
+				{ShaderDataType::Float2, "aTexCoord"},
+				{ShaderDataType::Float3, "aTangent"},
+				{ShaderDataType::Float3, "aBitangent"}
 			};
 			vertexBuffer->SetLayout(layout);
 		}

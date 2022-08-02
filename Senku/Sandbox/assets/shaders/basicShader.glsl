@@ -3,21 +3,28 @@
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aNormal;
 layout (location = 2) in vec2 aTexCoord;
+layout (location = 3) in vec3 aTangent;
+layout (location = 4) in vec3 aBitangent;
+
   
 out vec2 texCoord;
 
 out vec3 v_Normal;
 out vec3 v_FragPos;
-
+out mat3 v_TBN;
 
 uniform mat4 u_ViewProjMat;
 uniform mat4 u_Model;
 
 void main()
 {
-	v_Normal = vec3(u_Model * vec4(aNormal, 1.0));
+	v_Normal = aNormal;
 	v_FragPos = vec3(u_Model * vec4(aPos, 1.0));
 
+	vec3 T = normalize(vec3(u_Model * vec4(aTangent,   0.0)));
+	vec3 B = normalize(vec3(u_Model * vec4(aBitangent, 0.0)));
+	vec3 N = normalize(vec3(u_Model * vec4(aNormal,    0.0)));
+	v_TBN = mat3(T, B, N);
 
     gl_Position = u_ViewProjMat * u_Model *vec4(aPos, 1.0);
 	texCoord = aTexCoord;
@@ -67,6 +74,7 @@ struct DirLight {
 in vec3 v_Normal;
 in vec3 v_FragPos;
 
+in mat3 v_TBN;
 
 uniform DirLight dirLight; // basically can be only one (like sun, other lightsh will be point lights or)
 uniform vec3 u_ViewPos;
@@ -98,7 +106,13 @@ void main()
 
 	vec3 resultLight = vec3(0.2, 0.2, 0.2); // in case if any of lights is used, this vector will not affect to color of texture
 
-	vec3 norm = normalize(v_Normal);//normalize(texture(u_TextureNormal, texCoord).xyz * 2.0f - 1.0f);//
+
+	vec3 normal = texture(u_TextureNormal, texCoord).rgb;
+	normal = normal * 2.0 - 1.0;
+	normal = normalize(v_TBN * normal);
+
+
+	vec3 norm = normalize(normal);
 	vec3 viewDir = normalize(u_ViewPos - v_FragPos);
 
 	resultLight += CalcDirLight(dirLight, norm, viewDir);
