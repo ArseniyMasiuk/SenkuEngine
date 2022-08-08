@@ -224,7 +224,7 @@ namespace Senku
 						ImGui::ColorEdit3("Base Color", glm::value_ptr(mlt->mlt.baseColor));
 
 
-						if (ImGui::Button("Browse.."))
+						if (ImGui::Button("Browse..##LoadAlbedoTexure"))
 						{
 							std::string filePath = FileDialog::OpenFile("Texture files (*.jpg, *.png, *.tga)\0*.tga;*.jpg;*.png\0");
 							if (!filePath.empty())
@@ -253,7 +253,7 @@ namespace Senku
 					ImGui::SameLine();
 					{
 						ImGui::BeginGroup();
-						if (ImGui::Button("Browse.."))
+						if (ImGui::Button("Browse..##LoadNormalTexure"))
 						{
 							std::string filePath = FileDialog::OpenFile("Texture files (*.jpg, *.png, *.tga)\0*.tga;*.jpg;*.png\0");
 							if (!filePath.empty())

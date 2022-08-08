@@ -76,7 +76,7 @@ namespace Senku
 
 		if (location == -1)
 		{
-			ASSERT(false);
+			//ASSERT(false);
 			LOG_ERROR("Uniform {0} does not exist", name);
 		}
 

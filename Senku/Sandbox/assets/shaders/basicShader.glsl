@@ -88,12 +88,14 @@ vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir);
 
 void main()
 {
+	int albedoLoaded = (u_TextureMask & 1);
+	int normalLoaded = (u_TextureMask & 2);
+
+
 	vec4 resultColor;
 
 	{
 
-		int albedoLoaded = (u_TextureMask & 1);
-		int normalLoaded = (u_TextureMask & 2);
 
 		if (albedoLoaded == 1)
 			resultColor = texture(u_textureAlbedo, texCoord);
@@ -106,16 +108,20 @@ void main()
 
 	vec3 resultLight = vec3(0.2, 0.2, 0.2); // in case if any of lights is used, this vector will not affect to color of texture
 
+	vec3 normal;
+	if(normalLoaded == 2)
+	{
+		normal = texture(u_TextureNormal, texCoord).rgb;
+		normal = normal * 2.0 - 1.0;
+		normal = normalize(v_TBN * normal);
+	}
+	else
+	{
+		normal = normalize(v_Normal);
+	}
 
-	vec3 normal = texture(u_TextureNormal, texCoord).rgb;
-	normal = normal * 2.0 - 1.0;
-	normal = normalize(v_TBN * normal);
-
-
-	vec3 norm = normalize(normal);
 	vec3 viewDir = normalize(u_ViewPos - v_FragPos);
-
-	resultLight += CalcDirLight(dirLight, norm, viewDir);
+	resultLight += CalcDirLight(dirLight, normal, viewDir);
 
 	///////////////////////////////////////////////////////////////////////
 
