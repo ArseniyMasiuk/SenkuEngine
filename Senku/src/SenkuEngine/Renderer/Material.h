@@ -20,12 +20,16 @@ namespace Senku
 			glm::vec3 diffuse{ 1.0f };			// Kd: specifies diffuse color, which typically contributes most of the color to an object. In this example, Kd represents a grey color, which will get modified by a colored texture map specified in the map_Kd statement
 			glm::vec3 specular{ 1.0f };			// Ks: specifies specular color, the color seen where the surface is shiny and mirror-like
 			float specularHighlights = 1.0f;	// Ns: defines the focus of specular highlights in the material. Ns values normally range from 0 to 1000, with a high value resulting in a tight, concentrated highlight.
-			float refraction = 1.0;				// Ni: defines the optical density (aka index of refraction) in the current material. The values can range from 0.001 to 10. A value of 1.0 means that light does not bend as it passes through an object.
+			float refraction = 1.0f;				// Ni: defines the optical density (aka index of refraction) in the current material. The values can range from 0.001 to 10. A value of 1.0 means that light does not bend as it passes through an object.
 			float dissolve = 1.0f;				//d: specifies a factor for dissolve, how much this material dissolves into the background. A factor of 1.0 is fully opaque. A factor of 0.0 is completely transparent.
 			// int illumination; // docs says that this is ignored but i wilk keep it for now maybe it will be in use later
+
+			float metallic = 0.1f; // i dont understand what value i should load from model loader, since names confuse me, i will add them as separate and will fighre out later
+			float roughness = 0.1f;
+			float ambientOclusion = 0.1f;
 		};
 
-		enum TextureType : uint32_t { eAlbedo = 0, eNormal, eRoughness, eMetalness/*, eHeight, eAmbientOclustion, eRefraction*/ }; // probably will not need all of the but it will be good to have all of them here
+		enum TextureType : uint32_t { eAlbedo = 0, eNormal = 1, eRoughness = 2, eMetalness = 3/*, eHeight, eAmbientOclustion, eRefraction*/ }; // probably will not need all of the but it will be good to have all of them here
 
 	public:
 		MaterialInstance(Ref<Shader>& shader);

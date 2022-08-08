@@ -20,7 +20,7 @@ namespace Senku
 		float height = static_cast<float>(Application::Get()->GetWindow().GetHeight());
 		m_Camera = CreateRef<PerspectiveCamera>(glm::vec3(0, 0, -5), 45.0f, width / height, 0.01f, 10000.0f);
 
-		m_Shader = Shader::Create("Sandbox/assets/shaders/basicShader.glsl"); // for now hardcoded since i have only one good shader
+		m_Shader = Shader::Create("Sandbox/assets/shaders/basicShader.shader"); // for now hardcoded since i have only one good shader
 
 		// create default texture
 		defaultTexture = Texture2D::Create("Sandbox/assets/textures/default.jpg");
@@ -202,7 +202,9 @@ namespace Senku
 			{
 
 				//ImGui::ColorEdit3("Base Color", glm::value_ptr(mlt->mlt.baseColor));
-				ImGui::DragFloat("Transparency (dissolve)", &mlt->mlt.dissolve, 0.005f, 0.0f, 1.0f, "%.3f");
+				ImGui::DragFloat("Metalness", &mlt->mlt.metallic, 0.005f, 0.0f, 1.0f, "%.3f");
+				ImGui::DragFloat("Roughness", &mlt->mlt.roughness, 0.005f, 0.0f, 1.0f, "%.3f");
+				ImGui::DragFloat("Ambient occlusion", &mlt->mlt.ambientOclusion, 0.005f, 0.0f, 1.0f, "%.3f");
 				ImGui::Separator();
 			}
 
@@ -267,7 +269,59 @@ namespace Senku
 					}
 				}
 				//MaterialInstance::TextureType::eMetalness;
+				if (ImGui::CollapsingHeader("Metalness"))
+				{
+					unsigned int id = defaultTexture->GetRendererID();
+
+					Ref<Texture2D> textureNormal;
+					if (mlt->GetTexture(textureNormal, MaterialInstance::TextureType::eMetalness))
+					{
+						id = textureNormal->GetRendererID();
+					}
+					ImGui::Image(reinterpret_cast<void*>(id), ImVec2{ 64.0f, 64.0f }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+					ImGui::SameLine();
+					{
+						ImGui::BeginGroup();
+						if (ImGui::Button("Browse..##LoadMetalnessTexure"))
+						{
+							std::string filePath = FileDialog::OpenFile("Texture files (*.jpg, *.png, *.tga)\0*.tga;*.jpg;*.png\0");
+							if (!filePath.empty())
+							{
+								Ref<Texture2D> newTexture = Texture2D::Create(filePath);
+								mlt->AddTexture(newTexture, MaterialInstance::TextureType::eMetalness);
+
+							}
+						}
+						ImGui::EndGroup();
+					}
+				}
 				//MaterialInstance::TextureType::eRoughness;
+				if (ImGui::CollapsingHeader("Roughness"))
+				{
+					unsigned int id = defaultTexture->GetRendererID();
+
+					Ref<Texture2D> textureNormal;
+					if (mlt->GetTexture(textureNormal, MaterialInstance::TextureType::eRoughness))
+					{
+						id = textureNormal->GetRendererID();
+					}
+					ImGui::Image(reinterpret_cast<void*>(id), ImVec2{ 64.0f, 64.0f }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+					ImGui::SameLine();
+					{
+						ImGui::BeginGroup();
+						if (ImGui::Button("Browse..##LoadRoughnessTexure"))
+						{
+							std::string filePath = FileDialog::OpenFile("Texture files (*.jpg, *.png, *.tga)\0*.tga;*.jpg;*.png\0");
+							if (!filePath.empty())
+							{
+								Ref<Texture2D> newTexture = Texture2D::Create(filePath);
+								mlt->AddTexture(newTexture, MaterialInstance::TextureType::eRoughness);
+
+							}
+						}
+						ImGui::EndGroup();
+					}
+				}
 			}
 
 		}

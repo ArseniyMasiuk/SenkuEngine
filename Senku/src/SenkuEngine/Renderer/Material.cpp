@@ -36,6 +36,7 @@ namespace Senku
 	void MaterialInstance::Bind()
 	{
 		m_Shader->Bind();
+			m_Shader->setUniform1f("u_Material.ambientOclusion", mlt.ambientOclusion);
 
 		if (m_Textures.empty())
 		{
@@ -43,9 +44,11 @@ namespace Senku
 			// set general material data to uniforms
 			m_Shader->setUniform3fv("u_Material.baseColor", mlt.baseColor);
 			//m_Shader->setUniform3fv("u_Material.ambient", mlt.ambient);
-			m_Shader->setUniform3fv("u_Material.diffuse", mlt.diffuse);
-			m_Shader->setUniform3fv("u_Material.specular", mlt.specular);
-			m_Shader->setUniform1f("u_Material.shininess", mlt.specularHighlights);
+			//m_Shader->setUniform3fv("u_Material.diffuse", mlt.diffuse);
+			//m_Shader->setUniform3fv("u_Material.specular", mlt.specular);
+			//m_Shader->setUniform1f("u_Material.shininess", mlt.specularHighlights);
+			m_Shader->setUniform1f("u_Material.metallic", mlt.metallic);
+			m_Shader->setUniform1f("u_Material.roughness", mlt.roughness);
 			//m_Shader->setUniform1f("u_Material.dissolve", mlt.dissolve);
 		}
 		else

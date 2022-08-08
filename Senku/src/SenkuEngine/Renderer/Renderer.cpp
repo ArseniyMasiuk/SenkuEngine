@@ -38,11 +38,11 @@ namespace Senku
 		//setup direction light
 		shader->setUniform3fv("dirLight.lightColor", s_SceneData->dirLight.m_LightColor);
 		shader->setUniform3fv("dirLight.direction", s_SceneData->dirLight.m_Direction);
-		shader->setUniform3fv("dirLight.ambient", s_SceneData->dirLight.m_Ambient);
-		shader->setUniform3fv("dirLight.diffuse", s_SceneData->dirLight.m_Diffuse);
-		shader->setUniform3fv("dirLight.specular", s_SceneData->dirLight.m_Specular);
+		//shader->setUniform3fv("dirLight.ambient", s_SceneData->dirLight.m_Ambient);
+		//shader->setUniform3fv("dirLight.diffuse", s_SceneData->dirLight.m_Diffuse);
+		//shader->setUniform3fv("dirLight.specular", s_SceneData->dirLight.m_Specular);
 
-		shader->setUniform3fv("u_ViewPos", s_SceneData->m_CameraPosition);
+		shader->setUniform3fv("u_CameraPosition", s_SceneData->m_CameraPosition);
 
 		vertexArray->Bind();
 		RenderCommand::DrawIndexed(vertexArray);
