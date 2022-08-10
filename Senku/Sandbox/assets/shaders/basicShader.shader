@@ -41,16 +41,10 @@ in vec2 texCoord;
 
 struct Material
 {
-	vec3 baseColor;
-	//vec3 ambient;
-	//vec3 diffuse;
-	//vec3 specular;
-	//float shininess; //specularHighlights
-	//float dissolve;
-
-	float metallic;
-	float roughness;
-	float ambientOclusion;
+	vec3 baseColor;			// albedo
+	float metallic;			// metalness
+	float roughness;		// roughness
+	float ambientOclusion;	// AO
 };
 
 
@@ -59,10 +53,10 @@ uniform Material u_Material;
 
 // each bit says if texture is binded or not
 
-uniform sampler2D u_textureAlbedo; //    00001
-uniform sampler2D u_TextureNormal; //    00010
-uniform sampler2D u_TextureRoughness; // 00100
-uniform sampler2D u_TextureMetalness; // 01000
+uniform sampler2D u_textureAlbedo;		// 00001
+uniform sampler2D u_TextureNormal;		// 00010
+uniform sampler2D u_TextureRoughness;	// 00100
+uniform sampler2D u_TextureMetalness;	// 01000
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -70,9 +64,6 @@ uniform sampler2D u_TextureMetalness; // 01000
 struct DirLight {
 	vec3 lightColor;
 	vec3 direction;
-	vec3 ambient;
-	vec3 diffuse;
-	vec3 specular;
 };
 
 in vec3 v_Normal;
@@ -114,8 +105,8 @@ void main()
 
 	vec3 albedo;
 	vec3 normal;
-	float metallic = 0.9;
-	float roughness = 0.5;
+	float metallic;
+	float roughness;
 	float ao = 0.1; // ambint occlusion
 	// loading values from textures or from base material 
 	// depends on if certain texture was loaded or not
@@ -154,6 +145,9 @@ void main()
 
 		// todo: add ambient occlusion texture
 		ao = u_Material.ambientOclusion;
+
+		// additional stuff
+		albedo = pow(albedo, vec3(2.2));
 	}
 
 
@@ -163,17 +157,17 @@ void main()
 	vec3 V = normalize(u_CameraPosition - v_FragmentPosition);
 
 	// for directional light
-	vec3 L = normalize(dirLight.direction);
+	vec3 L = normalize(dirLight.direction - v_FragmentPosition);
 
 	// for point lights and spot lights ?? 
 	//vec3 L = normalize(dirLight.direction - v_FragmentPosition);
 	vec3 H = normalize(V + L);
 
-	//float distance = length(dirLight.direction - u_CameraPosition);
-	//float attenuation = 1.0 / (distance * distance);
-	//vec3 radiance = dirLight.direction * attenuation;
+	float distance = length(dirLight.direction - v_FragmentPosition);
+	float attenuation = 1.0 / (distance * distance);
+	vec3 radiance = dirLight.lightColor /** attenuation*/;
 
-	vec3 F0 = vec3(0.04);
+	vec3 F0 = vec3(0.56, 0.57, 0.58);
 	F0 = mix(F0, albedo, metallic);
 
 	vec3 Ks = fresnelSchlick(F0, V, H); // here can be issue since i`m not sure about H parameter
@@ -183,17 +177,17 @@ void main()
 	vec3 lambert = albedo / PI;
 
 	vec3 cookTorranceNumerator = DistributionGGX(roughness, N, H) * GeometrySmith(roughness, N, V, L) * fresnelSchlick(F0, V, H);
-	float cookTorranceDenumerator = 4.0 * max(dot(V, N), 0.0) * max(dot(L, N), 0.0) + 0.0001; // here learnOengl adds 0.0001 to the end
+	float cookTorranceDenumerator = 4.0 * max(dot(N, V), 0.0) * max(dot(N, L), 0.0) + 0.0001; // here learnOengl adds 0.0001 to the end
 	cookTorranceDenumerator = max(cookTorranceDenumerator, 0.000001);
 
-	vec3 cookTorrance = cookTorranceNumerator / cookTorranceDenumerator;
+	vec3 specular = cookTorranceNumerator / cookTorranceDenumerator;
 
-	vec3 BRDF = Kd * lambert + cookTorrance;
+	//vec3 BRDF = Kd * lambert + specular;
 
-	float LdotN = max(dot(L, N),0.0); // learn openGL says dot(N, L)
+	float NdotL= max(dot(N, L),0.0); // learn openGL says dot(N, L)
 	
 
-	vec3 Lo = /*emissivityMesh*/ BRDF * dirLight.lightColor /** radiance*/ * LdotN;
+	vec3 Lo = (Kd * albedo/PI + specular) * radiance * NdotL;
 
 	///////////////////////////////////////////////////////////////////////
 
@@ -201,8 +195,10 @@ void main()
 	vec3 ambient = vec3(0.03) * albedo * ao;
 	vec3 color = ambient + Lo;
 
-	//color = color / (color + vec3(1.0));
-	//color = pow(color, vec3(1.0 / 2.2));
+	// HDR tonemapping
+	color = color / (color + vec3(0.1));
+	// gamma correct
+	color = pow(color, vec3(1.0 / 2.2));
 
 	FragColor = vec4(color, 1.0);
 } 
@@ -210,26 +206,32 @@ void main()
 //////////////////////////////////////////////////////////////////////////////////
 vec3 fresnelSchlick(vec3 F0, vec3 V, vec3 H)
 {
-	return F0 + (vec3(1.0) - F0) * pow(1 - max(dot(V, H), 0.0), 5.0);
+	float cosTheta = max(dot(H, V), 0.0);
+
+	return F0 + (1.0 - F0) * pow(1.0 - cosTheta, 5.0);
 }
 
 float DistributionGGX(float alpha, vec3 N, vec3 H)
 {
-	float numerator = pow(alpha, 2.0);
+	float a = alpha * alpha;
+	float a2 = a * a;
+	
+	float NdotH = max(dot(N, H), 0.0);
 
-	float NdotH = max(dot(N,H), 0.0);
-	float denominator = PI * pow( pow(NdotH, 2.0) * (pow(alpha, 2.0) - 1.0), 2.0);
-	denominator = max(denominator, 0.000001);
+	float denom = NdotH * NdotH * (a2 - 1.0) + 1.0;
+	denom = PI * denom * denom;
 
-	return numerator / denominator;
+	return a2 / max(denom, 0.000001);
 }
 
 float GeometrySchlickGGX(float alpha, vec3 N, vec3 X)
 {
 	float numerator = max(dot(N, X), 0.0);
 
-	float k = alpha / 2.0;
-	float denominator = max(dot(N, X), 0.0) * (1.0 - k) * k;
+	float r = alpha + 1.0;
+
+	float k = (r*r)/ 8.0;
+	float denominator = max(dot(N, X), 0.0) * (1.0 - k) + k;
 	denominator = max(denominator, 0.000001);
 
 	return numerator / denominator;

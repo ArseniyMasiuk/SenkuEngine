@@ -25,7 +25,7 @@ namespace Senku
 		// create default texture
 		defaultTexture = Texture2D::Create("Sandbox/assets/textures/default.jpg");
 
-		dirLight.m_Direction = glm::vec3(10.0f, 0.0f, 0.0f);
+		dirLight.m_Direction = glm::vec3(100.0f, 0.0f, 0.0f);
 		dirLight.m_Ambient = glm::vec3(0.5f, 0.5f, 0.5f);
 		dirLight.m_Diffuse= glm::vec3(1.5f, 1.5f, 1.5f);
 		dirLight.m_Specular = glm::vec3(1.5f, 1.5f, 1.5f);
@@ -183,10 +183,6 @@ namespace Senku
 
 		ImGui::ColorEdit3("Light color", (float*)&dirLight.m_LightColor);
 		DrawVec3Control("Direction", dirLight.m_Direction);
-		DrawVec3Control("Ambient", dirLight.m_Ambient);
-		DrawVec3Control("diffuse", dirLight.m_Diffuse);
-		DrawVec3Control("specular", dirLight.m_Specular);
-
 
 		ImGui::End();
 	}
@@ -198,16 +194,6 @@ namespace Senku
 		if (m_Entities.size())
 		{
 			Ref<MaterialInstance>& mlt = m_Entities[index].material;
-			if (ImGui::CollapsingHeader("Base material properties"))
-			{
-
-				//ImGui::ColorEdit3("Base Color", glm::value_ptr(mlt->mlt.baseColor));
-				ImGui::DragFloat("Metalness", &mlt->mlt.metallic, 0.005f, 0.0f, 1.0f, "%.3f");
-				ImGui::DragFloat("Roughness", &mlt->mlt.roughness, 0.005f, 0.0f, 1.0f, "%.3f");
-				ImGui::DragFloat("Ambient occlusion", &mlt->mlt.ambientOclusion, 0.005f, 0.0f, 1.0f, "%.3f");
-				ImGui::Separator();
-			}
-
 			ImGui::Text("Textures");
 			{
 				if (ImGui::CollapsingHeader("Albedo"))//MaterialInstance::TextureType::eAlbedo;
@@ -282,6 +268,7 @@ namespace Senku
 					ImGui::SameLine();
 					{
 						ImGui::BeginGroup();
+						ImGui::DragFloat("Metalness##floatSliderMetalness", &mlt->mlt.metallic, 0.005f, 0.0f, 1.0f, "%.3f");
 						if (ImGui::Button("Browse..##LoadMetalnessTexure"))
 						{
 							std::string filePath = FileDialog::OpenFile("Texture files (*.jpg, *.png, *.tga)\0*.tga;*.jpg;*.png\0");
@@ -309,6 +296,7 @@ namespace Senku
 					ImGui::SameLine();
 					{
 						ImGui::BeginGroup();
+						ImGui::DragFloat("Roughness##floatSliderRoughness", &mlt->mlt.roughness, 0.005f, 0.0f, 1.0f, "%.3f");
 						if (ImGui::Button("Browse..##LoadRoughnessTexure"))
 						{
 							std::string filePath = FileDialog::OpenFile("Texture files (*.jpg, *.png, *.tga)\0*.tga;*.jpg;*.png\0");
@@ -322,6 +310,13 @@ namespace Senku
 						ImGui::EndGroup();
 					}
 				}
+
+				// todo: add ambient occlusion texture
+				if (ImGui::CollapsingHeader("Ambient Occlusion"))
+				{
+					ImGui::DragFloat("Ambient occlusion##floatSliderAO", &mlt->mlt.ambientOclusion, 0.005f, 0.0f, 1.0f, "%.3f");
+				}
+
 			}
 
 		}
