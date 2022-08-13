@@ -19,9 +19,6 @@ class SandBoxLayer : public Senku::Layer
 
 private:
 
-	void ShowMeshesTree();
-	void ShowMeshProperties(unsigned int index);
-
 
 public:
 	SandBoxLayer();

@@ -41,8 +41,6 @@ void SandBoxLayer::OnUpdate(float timeStep)
 
 	m_Scene.Render(timeStep);
 
-	Senku::Renderer::EndScene();
-
 	m_FrameBuffer->Unbind();
 }
 
@@ -72,19 +70,6 @@ bool SandBoxLayer::OnEvent(Senku::Event & event)
 
 void SandBoxLayer::OnImGuiRender()
 {
-	// If you strip some features of, this demo is pretty much equivalent to calling DockSpaceOverViewport()!
-// In most cases you should be able to just call DockSpaceOverViewport() and ignore all the code below!
-// In this specific demo, we are not using DockSpaceOverViewport() because:
-// - we allow the host window to be floating/moveable instead of filling the viewport (when opt_fullscreen == false)
-// - we allow the host window to have padding (when opt_padding == true)
-// - we have a local menu bar in the host window (vs. you could use BeginMainMenuBar() + DockSpaceOverViewport() in your code!)
-// TL;DR; this demo is more complicated than what you would normally use.
-// If we removed all the options we are showcasing, this demo would become:
-//     void ShowExampleAppDockSpace()
-//     {
-//         ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
-//     }
-
 	static bool p_open = true;
 	static bool opt_fullscreen = true;
 	static bool opt_padding = false;

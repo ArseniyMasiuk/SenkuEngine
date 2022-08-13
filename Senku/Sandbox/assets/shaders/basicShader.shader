@@ -167,7 +167,7 @@ void main()
 	float attenuation = 1.0 / (distance * distance);
 	vec3 radiance = dirLight.lightColor /** attenuation*/;
 
-	vec3 F0 = vec3(0.56, 0.57, 0.58);
+	vec3 F0 = vec3(0.04, 0.04, 0.04);
 	F0 = mix(F0, albedo, metallic);
 
 	vec3 Ks = fresnelSchlick(F0, V, H); // here can be issue since i`m not sure about H parameter
@@ -196,7 +196,7 @@ void main()
 	vec3 color = ambient + Lo;
 
 	// HDR tonemapping
-	color = color / (color + vec3(0.1));
+	color = color / (color + vec3(1.0));
 	// gamma correct
 	color = pow(color, vec3(1.0 / 2.2));
 
