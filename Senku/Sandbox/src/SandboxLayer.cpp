@@ -7,14 +7,82 @@
 
 #include "SenkuEngine\Utils\SystemUtils.h"
 
+void LoadModel(Senku::Entity& enity, const std::string& path);
+void AddTexture(MaterialComponent& material, const std::string path, MaterialInstance::TextureType type);
+
 SandBoxLayer::SandBoxLayer()
 	:Layer("SandBoxLayer")
 {
+	m_Scene.reset(new Scene());
+
 	Senku::FrameBufferSpecification spec;
 	spec.Width = static_cast<float>(Senku::Application::Get()->GetWindow().GetWidth());;
 	spec.Height = static_cast<float>(Senku::Application::Get()->GetWindow().GetHeight());
 
 	m_FrameBuffer = Senku::FrameBuffer::Create(spec);
+
+	m_Shader = Shader::Create("Sandbox/assets/shaders/basicShader.shader"); // for now hardcoded since i have only one good shader
+
+
+	Senku::Entity entity = m_Scene->CreateEntity("Gun");
+
+	LoadModel(entity, "Sandbox/assets/meshes/Cerberus_by_Andrew_Maximov/Cerberus_LP.FBX");
+
+	// add material and textures to it 
+	{
+		MaterialComponent& material = entity.AddComponent<MaterialComponent>(CreateRef<MaterialInstance>(m_Shader));
+
+		AddTexture(material, "Sandbox/assets/meshes/Cerberus_by_Andrew_Maximov/Textures/Cerberus_A.tga", MaterialInstance::TextureType::eAlbedo);
+		AddTexture(material, "Sandbox/assets/meshes/Cerberus_by_Andrew_Maximov/Textures/Cerberus_N.tga", MaterialInstance::TextureType::eNormal);
+		AddTexture(material, "Sandbox/assets/meshes/Cerberus_by_Andrew_Maximov/Textures/Cerberus_R.tga", MaterialInstance::TextureType::eRoughness);
+		AddTexture(material, "Sandbox/assets/meshes/Cerberus_by_Andrew_Maximov/Textures/Cerberus_M.tga", MaterialInstance::TextureType::eMetalness);
+	}
+
+	// example of using EnTT
+#ifdef EXAMPLE_OF_ENTT_USAGE
+	{
+		entt::entity entity = m_Registry.create();
+
+		// add component
+		auto& tag = m_Registry.emplace<TagComponent>(entity, "TestName");
+		auto& transform = m_Registry.emplace<TransformComponent>(entity);
+		tag.Tag = "retreave tag component while emplacing";
+
+		//remove compoent
+		m_Registry.remove<TagComponent>(entity);
+
+		// remove everyting
+		m_Registry.clear();
+
+		// retreive component and how to check if it exist
+		if (m_Registry.has<TagComponent>(entity))
+			TagComponent& tagViaget = m_Registry.get<TagComponent>(entity);
+
+
+		// go over entities that have specific component
+		auto view = m_Registry.view<TagComponent>();
+		for (auto entityIt : view)
+		{
+			TagComponent& tC = view.get<TagComponent>(entityIt);
+		}
+
+		//to get multiple components
+		auto group = m_Registry.group<TagComponent>(entt::get<TransformComponent>);
+		for (auto entityIt : view)
+		{
+			auto [tag, transform] = group.get<TagComponent, TransformComponent>(entityIt);
+			LOG_INFO("Tag {}", tag.Tag);
+			tag.Tag = "new tag";
+
+			auto [tag2, transform2] = group.get<TagComponent, TransformComponent>(entityIt);
+			LOG_INFO("Tag {}", tag2.Tag);
+
+
+		}
+
+	}
+#endif // EXAMPLE_OF_ENTT_USAGE
+
 }
 
 void SandBoxLayer::OnAttach()
@@ -33,13 +101,13 @@ void SandBoxLayer::OnUpdate(float timeStep)
 	if (m_ViewportSize != glm::vec2(spec.Width, spec.Height) && m_ViewportSize.x > 0.0f && m_ViewportSize.y > 0.0f)
 	{
 		m_FrameBuffer->Resize(static_cast<uint32_t>(m_ViewportSize.x), static_cast<uint32_t>(m_ViewportSize.y));
-		m_Scene.Resize(static_cast<uint32_t>(m_ViewportSize.x), static_cast<uint32_t>(m_ViewportSize.y));
+		m_Scene->Resize(static_cast<uint32_t>(m_ViewportSize.x), static_cast<uint32_t>(m_ViewportSize.y));
 	}
 
 
 	m_FrameBuffer->Bind();
 
-	m_Scene.Render(timeStep);
+	m_Scene->Render(timeStep);
 
 	m_FrameBuffer->Unbind();
 }
@@ -49,7 +117,7 @@ bool SandBoxLayer::OnEvent(Senku::Event & event)
 	if (m_bViewPortFocused)
 	{
 		bool handled;
-		handled = m_Scene.OnEvent(event);
+		handled = m_Scene->OnEvent(event);
 
 		return handled;
 	}
@@ -166,7 +234,53 @@ void SandBoxLayer::OnImGuiRender()
 		ImGui::ShowDemoWindow(&m_ShowDemo);
 
 	// should be moved to sandbox layer since it should be responcible for that (also later this part will be called )
-	m_Scene.RenderImGui();
+	m_Scene->RenderImGui();
 
 	ImGui::End();
 }
+
+
+void LoadModel(Senku::Entity& enity, const std::string& path)
+{
+
+	ModelLoader loader;
+	loader.LoadModel(path);//"assets/meshes/Cerberus_by_Andrew_Maximov/Cerberus_LP.FBX"
+
+	Model model = loader.GetModels()[0]; // for now pretendint that there is only one mode
+	ASSERT(loader.GetModels().size());
+	LOG_WARN("Meshes loaded: {}, But readint only first one!!!", loader.GetModels().size());
+
+	Ref<VertexArray> vertexArray = VertexArray::Create();
+
+	Ref<VertexBuffer> vertexBuffer;
+	vertexBuffer = VertexBuffer::Create((float*)(model.vertecies.data()), model.vertecies.size() * sizeof(Vertex));
+
+	vertexBuffer->Bind();
+	{
+		BufferLayout layout =
+		{
+			{ShaderDataType::Float3, "aPos"},
+			{ShaderDataType::Float3, "aNormal"},
+			{ShaderDataType::Float2, "aTexCoord"},
+			{ShaderDataType::Float3, "aTangent"},
+			{ShaderDataType::Float3, "aBitangent"}
+		};
+		vertexBuffer->SetLayout(layout);
+	}
+	vertexArray->AddVertexBuffer(vertexBuffer);
+
+	Ref<IndexBuffer> indexBuffer;
+	indexBuffer = IndexBuffer::Create(model.indices.data(), model.indices.size());
+
+	vertexArray->SetIndexBuffer(indexBuffer);
+
+
+	enity.AddComponent<MeshComponent>(vertexArray);
+}
+
+void AddTexture(MaterialComponent& material, const std::string path, MaterialInstance::TextureType type)
+{
+	Ref<Texture2D> texure = Texture2D::Create(path);
+	material.Material->AddTexture(texure, type);
+}
+

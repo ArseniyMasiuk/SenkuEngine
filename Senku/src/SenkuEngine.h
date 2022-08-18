@@ -18,3 +18,7 @@
 
 #include "SenkuEngine\Renderer\Camera.h"
 #include "SenkuEngine\Scene\Scene.h"
+#include "SenkuEngine\Scene\Entity.h"
+
+// ???? shoud this be here
+#include "SenkuEngine\Scene\Components.h"

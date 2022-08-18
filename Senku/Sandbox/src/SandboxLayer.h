@@ -6,12 +6,19 @@
 #include "glm\gtx\quaternion.hpp"
 
 
+using namespace Senku;
+
+
+
 class SandBoxLayer : public Senku::Layer
 {
 	glm::vec2 m_ViewportSize = { 0.0f, 0.0f };
-	Senku::Ref<Senku::FrameBuffer> m_FrameBuffer;
+	Ref<FrameBuffer> m_FrameBuffer;
 
-	Senku::Scene m_Scene;
+	Ref<Scene> m_Scene;
+
+
+	Ref<Shader> m_Shader; // for now only one shader
 
 	//ImGui controls
 	bool m_ShowDemo = false;

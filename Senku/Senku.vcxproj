@@ -56,7 +56,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Senku\src;$(SolutionDir)Senku\dependencies\GLFW\include;$(SolutionDir)Senku\dependencies\spdlog;$(SolutionDir)Senku\dependencies\glew-2.1.0\include;$(SolutionDir)Senku\dependencies\GLM;$(SolutionDir)\Senku\dependencies\stb;$(SolutionDir)\Senku\dependencies\assimp\include;$(SolutionDir)\Senku\dependencies\ImGui\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Senku\src;$(SolutionDir)Senku\dependencies\GLFW\include;$(SolutionDir)Senku\dependencies\spdlog;$(SolutionDir)Senku\dependencies\glew-2.1.0\include;$(SolutionDir)Senku\dependencies\GLM;$(SolutionDir)\Senku\dependencies\stb;$(SolutionDir)\Senku\dependencies\assimp\include;$(SolutionDir)\Senku\dependencies\ImGui\include;$(SolutionDir)\Senku\dependencies\entt\entt</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>GLEW_STATIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -79,7 +79,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Senku\src;$(SolutionDir)Senku\dependencies\GLFW\include;$(SolutionDir)Senku\dependencies\spdlog;$(SolutionDir)Senku\dependencies\glew-2.1.0\include;$(SolutionDir)Senku\dependencies\GLM;$(SolutionDir)\Senku\dependencies\stb;$(SolutionDir)\Senku\dependencies\assimp\include;$(SolutionDir)\Senku\dependencies\ImGui\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Senku\src;$(SolutionDir)Senku\dependencies\GLFW\include;$(SolutionDir)Senku\dependencies\spdlog;$(SolutionDir)Senku\dependencies\glew-2.1.0\include;$(SolutionDir)Senku\dependencies\GLM;$(SolutionDir)\Senku\dependencies\stb;$(SolutionDir)\Senku\dependencies\assimp\include;$(SolutionDir)\Senku\dependencies\ImGui\include;$(SolutionDir)\Senku\dependencies\entt\entt</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>GLEW_STATIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -141,6 +141,8 @@
     <ClInclude Include="src\SenkuEngine\Renderer\Shader.h" />
     <ClInclude Include="src\SenkuEngine\Renderer\Texture.h" />
     <ClInclude Include="src\SenkuEngine\Renderer\VertexArray.h" />
+    <ClInclude Include="src\SenkuEngine\Scene\Components.h" />
+    <ClInclude Include="src\SenkuEngine\Scene\Entity.h" />
     <ClInclude Include="src\SenkuEngine\Scene\ModelLoader.h" />
     <ClInclude Include="src\SenkuEngine\Scene\Scene.h" />
     <ClInclude Include="src\SenkuEngine\Utils\SystemUtils.h" />
