@@ -100,6 +100,7 @@
     <ClInclude Include="dependencies\stb\stb_image.h" />
     <ClInclude Include="Sandbox\src\SandboxApp.h" />
     <ClInclude Include="Sandbox\src\SandboxLayer.h" />
+    <ClInclude Include="Sandbox\src\ScenePannel\SceneHierarchyPannel.h" />
     <ClInclude Include="src\Platform\OpenGL\DebugAsist.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContrext.h" />
@@ -151,6 +152,7 @@
     <ClCompile Include="dependencies\stb\stb_image.cpp" />
     <ClCompile Include="Sandbox\src\SandboxApp.cpp" />
     <ClCompile Include="Sandbox\src\SandboxLayer.cpp" />
+    <ClCompile Include="Sandbox\src\ScenePannel\SceneHierarchyPannel.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLContrext.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLFrameBuffer.cpp" />

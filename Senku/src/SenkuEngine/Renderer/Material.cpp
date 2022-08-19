@@ -8,7 +8,12 @@ namespace Senku
 	MaterialInstance::MaterialInstance(Ref<Shader>& shader)
 		:m_Shader(shader)
 	{
+		//LOG_INFO("Creating Material");
+	}
 
+	MaterialInstance::~MaterialInstance()
+	{
+		//LOG_WARN("DESTROYING Material");
 	}
 
 	void MaterialInstance::SetShader(const Ref<Shader>& shader)

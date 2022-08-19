@@ -33,6 +33,8 @@ namespace Senku
 
 	public:
 		MaterialInstance(Ref<Shader>& shader);
+		~MaterialInstance();
+
 
 		void SetShader(const Ref<Shader>& shader);
 		const Ref<Shader> GetShader() { return m_Shader; };

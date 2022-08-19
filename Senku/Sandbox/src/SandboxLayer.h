@@ -5,6 +5,7 @@
 #include "glm\ext\matrix_transform.hpp"
 #include "glm\gtx\quaternion.hpp"
 
+#include "ScenePannel\SceneHierarchyPannel.h"
 
 using namespace Senku;
 
@@ -17,8 +18,7 @@ class SandBoxLayer : public Senku::Layer
 
 	Ref<Scene> m_Scene;
 
-
-	Ref<Shader> m_Shader; // for now only one shader
+	SceneHierarchyPanel m_SceneHierarchyPanel;
 
 	//ImGui controls
 	bool m_ShowDemo = false;

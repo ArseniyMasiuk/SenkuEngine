@@ -24,9 +24,9 @@ namespace Senku
 		float height = static_cast<float>(Application::Get()->GetWindow().GetHeight());
 		m_Camera = CreateRef<PerspectiveCamera>(glm::vec3(50, 50, 50), 45.0f, width / height, 0.01f, 10000.0f);
 
+		m_Shader = Shader::Create("Sandbox/assets/shaders/basicShader.shader"); // for now hardcoded since i have only one good shader
 
-		// create default texture
-		defaultTexture = Texture2D::Create("Sandbox/assets/textures/default.jpg");
+
 
 		dirLight.m_Direction = glm::vec3(100.0f, 0.0f, 0.0f);
 

@@ -49,9 +49,13 @@ namespace Senku
 		Entity CreateEntity(const std::string& name);
 		void DestroyEntity(Entity& entity);
 
-	private:
+	public:
+		// temporary
+		Ref<Shader> m_Shader; // for now only one shader
 
 		entt::registry m_Registry;
+	private:
+
 
 		
 		
@@ -61,9 +65,8 @@ namespace Senku
 		Ref<PerspectiveCamera> m_Camera;
 		DirectLight dirLight;
 
-		Ref<Texture2D> defaultTexture;
 
 		friend class Entity;
-		friend class SceneHierarchyPanel;
+		//friend class SceneHierarchyPanel;
 	};
 }

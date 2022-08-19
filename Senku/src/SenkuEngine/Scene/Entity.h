@@ -18,17 +18,7 @@ namespace Senku
 			:m_EntityHandle(ent), m_Scene(scene) {}
 
 		// todo: investigate - should i add move assigment too ?? 
-		Entity(const Entity& other)
-		{
-			this->m_Scene = other.m_Scene;
-			this->m_EntityHandle = other.m_EntityHandle;
-		}
-
-		Entity(const Entity&& other)
-		{
-			this->m_Scene = other.m_Scene;
-			this->m_EntityHandle = other.m_EntityHandle;
-		}
+		Entity(const Entity& other) = default;
 		
 		template<typename T, typename... Args>
 		T& AddComponent(Args&&... args)
@@ -68,6 +58,16 @@ namespace Senku
 		operator bool() const { return m_EntityHandle != entt::null; }
 		operator entt::entity() const { return m_EntityHandle; }
 		operator uint32_t() const { return (uint32_t)m_EntityHandle; }
+
+		bool operator==(const Entity& other) const
+		{
+			return m_EntityHandle == other.m_EntityHandle && m_Scene == other.m_Scene;
+		}
+
+		bool operator!=(const Entity& other) const
+		{
+			return !(*this == other);
+		}
 
 	};
 

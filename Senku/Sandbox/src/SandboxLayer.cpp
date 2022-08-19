@@ -5,15 +5,15 @@
 #include "ImGui\imgui.h"
 #include "ImGui\imgui_internal.h"
 
-#include "SenkuEngine\Utils\SystemUtils.h"
 
-void LoadModel(Senku::Entity& enity, const std::string& path);
-void AddTexture(MaterialComponent& material, const std::string path, MaterialInstance::TextureType type);
+
 
 SandBoxLayer::SandBoxLayer()
 	:Layer("SandBoxLayer")
 {
 	m_Scene.reset(new Scene());
+
+	m_SceneHierarchyPanel.SetCurrentScene(m_Scene);
 
 	Senku::FrameBufferSpecification spec;
 	spec.Width = static_cast<float>(Senku::Application::Get()->GetWindow().GetWidth());;
@@ -21,22 +21,8 @@ SandBoxLayer::SandBoxLayer()
 
 	m_FrameBuffer = Senku::FrameBuffer::Create(spec);
 
-	m_Shader = Shader::Create("Sandbox/assets/shaders/basicShader.shader"); // for now hardcoded since i have only one good shader
 
 
-	Senku::Entity entity = m_Scene->CreateEntity("Gun");
-
-	LoadModel(entity, "Sandbox/assets/meshes/Cerberus_by_Andrew_Maximov/Cerberus_LP.FBX");
-
-	// add material and textures to it 
-	{
-		MaterialComponent& material = entity.AddComponent<MaterialComponent>(CreateRef<MaterialInstance>(m_Shader));
-
-		AddTexture(material, "Sandbox/assets/meshes/Cerberus_by_Andrew_Maximov/Textures/Cerberus_A.tga", MaterialInstance::TextureType::eAlbedo);
-		AddTexture(material, "Sandbox/assets/meshes/Cerberus_by_Andrew_Maximov/Textures/Cerberus_N.tga", MaterialInstance::TextureType::eNormal);
-		AddTexture(material, "Sandbox/assets/meshes/Cerberus_by_Andrew_Maximov/Textures/Cerberus_R.tga", MaterialInstance::TextureType::eRoughness);
-		AddTexture(material, "Sandbox/assets/meshes/Cerberus_by_Andrew_Maximov/Textures/Cerberus_M.tga", MaterialInstance::TextureType::eMetalness);
-	}
 
 	// example of using EnTT
 #ifdef EXAMPLE_OF_ENTT_USAGE
@@ -229,6 +215,8 @@ void SandBoxLayer::OnImGuiRender()
 	}
 
 	
+	m_SceneHierarchyPanel.OnImGuiRender();
+
 
 	if(m_ShowDemo)
 		ImGui::ShowDemoWindow(&m_ShowDemo);
@@ -240,47 +228,4 @@ void SandBoxLayer::OnImGuiRender()
 }
 
 
-void LoadModel(Senku::Entity& enity, const std::string& path)
-{
-
-	ModelLoader loader;
-	loader.LoadModel(path);//"assets/meshes/Cerberus_by_Andrew_Maximov/Cerberus_LP.FBX"
-
-	Model model = loader.GetModels()[0]; // for now pretendint that there is only one mode
-	ASSERT(loader.GetModels().size());
-	LOG_WARN("Meshes loaded: {}, But readint only first one!!!", loader.GetModels().size());
-
-	Ref<VertexArray> vertexArray = VertexArray::Create();
-
-	Ref<VertexBuffer> vertexBuffer;
-	vertexBuffer = VertexBuffer::Create((float*)(model.vertecies.data()), model.vertecies.size() * sizeof(Vertex));
-
-	vertexBuffer->Bind();
-	{
-		BufferLayout layout =
-		{
-			{ShaderDataType::Float3, "aPos"},
-			{ShaderDataType::Float3, "aNormal"},
-			{ShaderDataType::Float2, "aTexCoord"},
-			{ShaderDataType::Float3, "aTangent"},
-			{ShaderDataType::Float3, "aBitangent"}
-		};
-		vertexBuffer->SetLayout(layout);
-	}
-	vertexArray->AddVertexBuffer(vertexBuffer);
-
-	Ref<IndexBuffer> indexBuffer;
-	indexBuffer = IndexBuffer::Create(model.indices.data(), model.indices.size());
-
-	vertexArray->SetIndexBuffer(indexBuffer);
-
-
-	enity.AddComponent<MeshComponent>(vertexArray);
-}
-
-void AddTexture(MaterialComponent& material, const std::string path, MaterialInstance::TextureType type)
-{
-	Ref<Texture2D> texure = Texture2D::Create(path);
-	material.Material->AddTexture(texure, type);
-}
 
