@@ -7,7 +7,7 @@ layout (location = 3) in vec3 aTangent;
 layout (location = 4) in vec3 aBitangent;
 
   
-out vec2 texCoord;
+out vec2 v_texCoord;
 
 out vec3 v_Normal;
 out vec3 v_FragmentPosition;
@@ -18,7 +18,8 @@ uniform mat4 u_Model;
 
 void main()
 {
-	v_Normal = aNormal;
+	v_texCoord = aTexCoord;
+	v_Normal = vec3(u_Model * vec4(aNormal, 1.0));
 	v_FragmentPosition = vec3(u_Model * vec4(aPos, 1.0));
 
 	vec3 T = normalize(vec3(u_Model * vec4(aTangent,   0.0)));
@@ -27,7 +28,6 @@ void main()
 	v_TBN = mat3(T, B, N);
 
     gl_Position = u_ViewProjMat * u_Model *vec4(aPos, 1.0);
-	texCoord = aTexCoord;
 }
 
 
@@ -36,7 +36,7 @@ void main()
 #version 330 core
 out vec4 FragColor;
   
-in vec2 texCoord;
+in vec2 v_texCoord;
 
 
 struct Material
@@ -118,13 +118,13 @@ void main()
 		int metalnessLoaded = (u_TextureMask & 8);
 
 		if (albedoLoaded == 1)
-			albedo = texture(u_textureAlbedo, texCoord).rgb;
+			albedo = texture(u_textureAlbedo, v_texCoord).rgb;
 		else
 			albedo = u_Material.baseColor;
 
 		if (normalLoaded == 2)
 		{
-			normal = texture(u_TextureNormal, texCoord).rgb;
+			normal = texture(u_TextureNormal, v_texCoord).rgb;
 			normal = normal * 2.0 - 1.0;
 			normal = normalize(v_TBN * normal);
 		}
@@ -134,12 +134,12 @@ void main()
 		}
 
 		if (roughnessLoaded == 4)
-			roughness = texture(u_TextureRoughness, texCoord).r;
+			roughness = texture(u_TextureRoughness, v_texCoord).r;
 		else
 			roughness = u_Material.roughness;
 
 		if (metalnessLoaded == 8)
-			metallic = texture(u_TextureMetalness, texCoord).r;
+			metallic = texture(u_TextureMetalness, v_texCoord).r;
 		else
 			metallic = u_Material.metallic;
 
