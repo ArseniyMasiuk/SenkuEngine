@@ -38,6 +38,8 @@ namespace Senku
 		//setup direction light
 		shader->setUniform3fv("dirLight.lightColor", s_SceneData->dirLight.m_LightColor);
 		shader->setUniform3fv("dirLight.direction", s_SceneData->dirLight.m_Direction);
+		shader->setUniform1f("dirLight.distance", s_SceneData->dirLight.m_Distance);
+		shader->setUniform1f("dirLight.intencisty", s_SceneData->dirLight.m_Intensity);
 		//shader->setUniform3fv("dirLight.ambient", s_SceneData->dirLight.m_Ambient);
 		//shader->setUniform3fv("dirLight.diffuse", s_SceneData->dirLight.m_Diffuse);
 		//shader->setUniform3fv("dirLight.specular", s_SceneData->dirLight.m_Specular);

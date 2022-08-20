@@ -13,6 +13,7 @@ namespace Senku
 		virtual void UnBind() const = 0;
 
 		virtual const std::string& GetName() = 0;
+		virtual void ReloadShader(const std::string& path) = 0;
 
 	public:
 

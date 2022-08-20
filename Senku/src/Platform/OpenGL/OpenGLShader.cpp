@@ -8,7 +8,6 @@ namespace Senku
 	OpenGLShader::OpenGLShader(const std::string & filepath)
 	{
 		LOG_INFO("Loading Shader Path: {}", filepath);
-
 		{
 			// Extract name from filepath
 			auto lastSlash = filepath.find_last_of("/\\");
@@ -42,6 +41,22 @@ namespace Senku
 	const std::string & OpenGLShader::GetName()
 	{
 		return m_Name;
+	}
+
+	void OpenGLShader::ReloadShader(const std::string& path)
+	{
+		ShaderPrograSource source = parseShader(path);
+		unsigned int newShader = createShader(source.vertexSource, source.fragmentSource);
+
+		if (newShader)
+		{
+			GLCall(glDeleteProgram(m_rendererID));
+			m_rendererID = newShader;
+		}
+		else
+		{
+			LOG_ERROR("Shader compilation failed. Using old one");
+		}
 	}
 
 	void OpenGLShader::setUniform4f(const std::string & name, float v1, float v2, float v3, float v4)

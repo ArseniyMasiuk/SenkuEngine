@@ -9,6 +9,8 @@ namespace Senku
 	public:
 		glm::vec3 m_LightColor{ 1.0f };
 		glm::vec3 m_Direction;
+		float m_Distance = 500.0f;
+		float m_Intensity = 1.0f;
 		//glm::vec3 m_Ambient;
 		//glm::vec3 m_Diffuse;
 		//glm::vec3 m_Specular;

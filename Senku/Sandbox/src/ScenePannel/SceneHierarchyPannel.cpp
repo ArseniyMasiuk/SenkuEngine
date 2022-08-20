@@ -58,7 +58,6 @@ void SceneHierarchyPanel::OnImGuiRender()
 	ImGui::Begin("Properties");
 	if (m_SelectionContext)
 	{
-		ImGui::Text("Here would be properties of entity");
 		DrawEntityComponents(m_SelectionContext);
 	}
 
@@ -249,7 +248,8 @@ void SceneHierarchyPanel::DrawEntityComponents(Entity entity)
 				ImGui::SameLine();
 				{
 					ImGui::BeginGroup();
-					ImGui::ColorEdit3("Base Color", glm::value_ptr(mlt.Material->mlt.baseColor));
+					ImGuiColorEditFlags flags = ImGuiColorEditFlags_NoInputs;
+					ImGui::ColorEdit3("Base Color", glm::value_ptr(mlt.Material->mlt.baseColor), flags);
 
 
 					if (ImGui::Button("Browse..##LoadAlbedoTexure"))

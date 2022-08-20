@@ -64,6 +64,8 @@ uniform sampler2D u_TextureMetalness;	// 01000
 struct DirLight {
 	vec3 lightColor;
 	vec3 direction;
+	float distance;
+	float intencisty;
 };
 
 in vec3 v_Normal;
@@ -99,6 +101,14 @@ float GeometrySchlickGGX(float alpha, vec3 N, vec3 X);
 // Smith model
 float GeometrySmith(float alpha, vec3 N, vec3 V, vec3 L);
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+float CalculateAtenuatin(float distance)
+{
+	// that is funny since it works. i did it almost accidentally
+	// wanted to add intensity but added also distance of spreadness
+	float attenuation = (dirLight.distance - distance) / (max(distance, 0.0001)/max(dirLight.intencisty, 0.0001));
+	return max(attenuation, 0.0001);
+}
 
 void main()
 {
@@ -164,8 +174,8 @@ void main()
 	vec3 H = normalize(V + L);
 
 	float distance = length(dirLight.direction - v_FragmentPosition);
-	float attenuation = 1.0 / (distance * distance);
-	vec3 radiance = dirLight.lightColor /** attenuation*/;
+	float attenuation = CalculateAtenuatin(distance);//1.0 / distance * distance;//(1.0 + (dirLight.param1 * distance) + (dirLight.param2 * distance * distance)); //1.0/(c1 + c2*d + c3*d^2)
+	vec3 radiance = dirLight.lightColor * attenuation;
 
 	vec3 F0 = vec3(0.04, 0.04, 0.04);
 	F0 = mix(F0, albedo, metallic);
@@ -182,12 +192,12 @@ void main()
 
 	vec3 specular = cookTorranceNumerator / cookTorranceDenumerator;
 
-	//vec3 BRDF = Kd * lambert + specular;
+	vec3 BRDF = Kd * lambert + specular;
 
-	float NdotL= max(dot(N, L),0.0); // learn openGL says dot(N, L)
+	float NdotL= max(dot(L, N),0.0);
 	
 
-	vec3 Lo = (Kd * albedo/PI + specular) * radiance * NdotL;
+	vec3 Lo = /*emissivityMesh +*/ BRDF * radiance * NdotL;
 
 	///////////////////////////////////////////////////////////////////////
 
@@ -208,7 +218,7 @@ vec3 fresnelSchlick(vec3 F0, vec3 V, vec3 H)
 {
 	float cosTheta = max(dot(H, V), 0.0);
 
-	return F0 + (1.0 - F0) * pow(1.0 - cosTheta, 5.0);
+	return F0 + (1.0 - F0) * pow(clamp(1.0 - cosTheta, 0.0, 1.0), 5.0);
 }
 
 float DistributionGGX(float alpha, vec3 N, vec3 H)

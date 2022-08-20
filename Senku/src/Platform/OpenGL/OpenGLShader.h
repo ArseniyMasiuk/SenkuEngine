@@ -21,6 +21,9 @@ namespace Senku
 		virtual void UnBind() const override;
 
 		virtual const std::string& GetName() override;
+
+		virtual void ReloadShader(const std::string& path) override;
+
 	public:
 
 		// set uniform
@@ -47,7 +50,7 @@ namespace Senku
 	private:
 		std::string m_Name;
 
-		std::string filepath;
+		//std::string filepath;
 		unsigned int m_rendererID = 0;
 
 		std::unordered_map<std::string, int> m_UniformLocationCache;

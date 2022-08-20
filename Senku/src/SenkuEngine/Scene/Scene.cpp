@@ -65,6 +65,8 @@ namespace Senku
 
 	bool Scene::OnEvent(Event & event)
 	{
+		if (Input::IsKeyPressed(Key::R))
+			m_Shader->ReloadShader("Sandbox/assets/shaders/basicShader.shader");
 		// for now leave it commented since for camera resizing i have functuion
 		// but later it would be good to have qeue of events and they will be handled each turn of main loop maybe?? will think a bit more later
 
@@ -97,53 +99,6 @@ namespace Senku
 		m_Registry.destroy(entity);
 	}
 
-	//void Scene::ShowMeshesTree()
-	//{
-	//	ImGui::Begin("Meshes");
-	//	
-	//	if (ImGui::Button("Add new mesh"))
-	//	{
-	//		std::string filePath = FileDialog::OpenFile("Meshes files (*.obj, *.FBX)\0*.obj;*.FBX\0");
-	//		if(!filePath.empty())
-	//			AddMesh(filePath);
-	//	}
-	//	static entt::entity item_current_idx = 0;
-
-	//	ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-
-	//	if (ImGui::BeginListBox("##listbox", ImVec2(-FLT_MIN, viewportPanelSize.y)))
-	//	{
-	//		auto view = m_Registry.view<TagComponent>();
-
-	//		static std::map<entt::entity, int> tempMap;
-	//		static int index = 0;
-	//		for (auto entityIt : view)
-	//		{
-	//			TagComponent& tag = view.get<TagComponent>(entityIt);
-	//			auto pair = tempMap.insert(std::make_pair(entityIt, index));
-
-	//			const bool is_selected = (item_current_idx == pair.second);
-
-	//			if (ImGui::Selectable(tag.Tag.c_str(), is_selected))
-	//				item_current_idx = pair.first;
-
-	//			// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
-	//			if (is_selected)
-	//				ImGui::SetItemDefaultFocus();
-	//		}
-
-	//		ImGui::EndListBox();
-	//	}
-	//	ImGui::End();
-
-	//	ShowMeshProperties(item_current_idx);
-
-	//	//show material textures
-	//	ShotMaterialProperties(item_current_idx);
-
-	//	ShowEnvironmentPanel();
-
-	//}
 
 	void Scene::ShowEnvironmentPanel()
 	{
@@ -152,163 +107,11 @@ namespace Senku
 		ImGui::ColorEdit3("Light color", (float*)&dirLight.m_LightColor);
 		DrawVec3Control("Direction", dirLight.m_Direction);
 
+		ImGui::DragFloat("Light distance", &dirLight.m_Distance, 0.1f, 0.0f, 1000.0f, "%.2f");
+		ImGui::DragFloat("Light Intensity", &dirLight.m_Intensity, 0.1f, 0.0f, 60.0f, "%.2f");
+
 		ImGui::End();
 	}
-
-	//void Scene::ShotMaterialProperties(entt::entity entity)
-	//{
-	//	ImGui::Begin("Material");
-
-	//	if (m_Registry.has<MaterialComponent>(entity))
-	//	{
-	//		MaterialComponent& material = m_Registry.get<MaterialComponent>(entity);
-
-	//		Ref<MaterialInstance>& mlt = material.Material;
-	//		ImGui::Text("Textures");
-	//		{
-	//			if (ImGui::CollapsingHeader("Albedo"))//MaterialInstance::TextureType::eAlbedo;
-	//			{
-	//				unsigned int id = defaultTexture->GetRendererID();
-
-	//				Ref<Texture2D> textureAlbedo;
-	//				if (mlt->GetTexture(textureAlbedo, MaterialInstance::TextureType::eAlbedo))
-	//				{
-	//					id = textureAlbedo->GetRendererID();
-	//				}
-	//				ImGui::Image(reinterpret_cast<void*>(id), ImVec2{ 64.0f, 64.0f }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
-	//				ImGui::SameLine();
-	//				{
-	//					ImGui::BeginGroup();
-	//					ImGui::ColorEdit3("Base Color", glm::value_ptr(mlt->mlt.baseColor));
-
-
-	//					if (ImGui::Button("Browse..##LoadAlbedoTexure"))
-	//					{
-	//						std::string filePath = FileDialog::OpenFile("Texture files (*.jpg, *.png, *.tga)\0*.tga;*.jpg;*.png\0");
-	//						if (!filePath.empty())
-	//						{
-	//							Ref<Texture2D> newTexture = Texture2D::Create(filePath);
-	//							mlt->AddTexture(newTexture, MaterialInstance::TextureType::eAlbedo);
-
-	//						}
-	//					}
-	//					
-	//					ImGui::EndGroup();
-	//				}
-
-	//			}
-	//			//MaterialInstance::TextureType::eNormal
-	//			if (ImGui::CollapsingHeader("Normals"))
-	//			{
-	//				unsigned int id = defaultTexture->GetRendererID();
-
-	//				Ref<Texture2D> textureNormal;
-	//				if (mlt->GetTexture(textureNormal, MaterialInstance::TextureType::eNormal))
-	//				{
-	//					id = textureNormal->GetRendererID();
-	//				}
-	//				ImGui::Image(reinterpret_cast<void*>(id), ImVec2{ 64.0f, 64.0f }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
-	//				ImGui::SameLine();
-	//				{
-	//					ImGui::BeginGroup();
-	//					if (ImGui::Button("Browse..##LoadNormalTexure"))
-	//					{
-	//						std::string filePath = FileDialog::OpenFile("Texture files (*.jpg, *.png, *.tga)\0*.tga;*.jpg;*.png\0");
-	//						if (!filePath.empty())
-	//						{
-	//							Ref<Texture2D> newTexture = Texture2D::Create(filePath);
-	//							mlt->AddTexture(newTexture, MaterialInstance::TextureType::eNormal);
-
-	//						}
-	//					}
-	//					ImGui::EndGroup();
-	//				}
-	//			}
-	//			//MaterialInstance::TextureType::eMetalness;
-	//			if (ImGui::CollapsingHeader("Metalness"))
-	//			{
-	//				unsigned int id = defaultTexture->GetRendererID();
-
-	//				Ref<Texture2D> textureNormal;
-	//				if (mlt->GetTexture(textureNormal, MaterialInstance::TextureType::eMetalness))
-	//				{
-	//					id = textureNormal->GetRendererID();
-	//				}
-	//				ImGui::Image(reinterpret_cast<void*>(id), ImVec2{ 64.0f, 64.0f }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
-	//				ImGui::SameLine();
-	//				{
-	//					ImGui::BeginGroup();
-	//					ImGui::DragFloat("Metalness##floatSliderMetalness", &mlt->mlt.metallic, 0.005f, 0.0f, 1.0f, "%.3f");
-	//					if (ImGui::Button("Browse..##LoadMetalnessTexure"))
-	//					{
-	//						std::string filePath = FileDialog::OpenFile("Texture files (*.jpg, *.png, *.tga)\0*.tga;*.jpg;*.png\0");
-	//						if (!filePath.empty())
-	//						{
-	//							Ref<Texture2D> newTexture = Texture2D::Create(filePath);
-	//							mlt->AddTexture(newTexture, MaterialInstance::TextureType::eMetalness);
-
-	//						}
-	//					}
-	//					ImGui::EndGroup();
-	//				}
-	//			}
-	//			//MaterialInstance::TextureType::eRoughness;
-	//			if (ImGui::CollapsingHeader("Roughness"))
-	//			{
-	//				unsigned int id = defaultTexture->GetRendererID();
-
-	//				Ref<Texture2D> textureNormal;
-	//				if (mlt->GetTexture(textureNormal, MaterialInstance::TextureType::eRoughness))
-	//				{
-	//					id = textureNormal->GetRendererID();
-	//				}
-	//				ImGui::Image(reinterpret_cast<void*>(id), ImVec2{ 64.0f, 64.0f }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
-	//				ImGui::SameLine();
-	//				{
-	//					ImGui::BeginGroup();
-	//					ImGui::DragFloat("Roughness##floatSliderRoughness", &mlt->mlt.roughness, 0.005f, 0.0f, 1.0f, "%.3f");
-	//					if (ImGui::Button("Browse..##LoadRoughnessTexure"))
-	//					{
-	//						std::string filePath = FileDialog::OpenFile("Texture files (*.jpg, *.png, *.tga)\0*.tga;*.jpg;*.png\0");
-	//						if (!filePath.empty())
-	//						{
-	//							Ref<Texture2D> newTexture = Texture2D::Create(filePath);
-	//							mlt->AddTexture(newTexture, MaterialInstance::TextureType::eRoughness);
-
-	//						}
-	//					}
-	//					ImGui::EndGroup();
-	//				}
-	//			}
-
-	//			// todo: add ambient occlusion texture
-	//			if (ImGui::CollapsingHeader("Ambient Occlusion"))
-	//			{
-	//				ImGui::DragFloat("Ambient occlusion##floatSliderAO", &mlt->mlt.ambientOclusion, 0.005f, 0.0f, 1.0f, "%.3f");
-	//			}
-
-	//		}
-
-	//	}
-	//	ImGui::End();
-	//}
-
-	//void Scene::ShowMeshProperties(entt::entity entity)
-	//{
-	//	ImGui::Begin("Properties");
-
-	//	if (m_Entities.size())
-	//	{
-	//		Transform& tr = m_Entities[index].transform;
-
-	//		DrawVec3Control("Translation", tr.m_Translation);
-	//		glm::vec3 rotation = glm::degrees(tr.m_Rotation);
-	//		DrawVec3Control("Rotation", rotation);
-	//		tr.m_Rotation = glm::radians(rotation);
-	//		DrawVec3Control("Scale", tr.m_Scale, 1.0f);
-	//	}
-	//	ImGui::End();
-	//}
 
 	static void DrawVec3Control(const std::string& label, glm::vec3& values, float resetValue /*= 0.0f*/, float columnWidth /*= 100.0f*/)
 	{
