@@ -126,10 +126,7 @@
     <ClInclude Include="dependencies\stb\stb_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Sandbox\src\SandboxLayer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Sandbox\src\SandboxApp.h">
+    <ClInclude Include="SenkuEditor\src\SenkuEditorLayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\SenkuEngine\Renderer\Material.h">
@@ -162,7 +159,7 @@
     <ClInclude Include="src\SenkuEngine\Scene\Entity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Sandbox\src\ScenePannel\SceneHierarchyPannel.h">
+    <ClInclude Include="SenkuEditor\src\ScenePannel\SceneHierarchyPannel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -242,10 +239,10 @@
     <ClCompile Include="dependencies\stb\stb_image.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Sandbox\src\SandboxApp.cpp">
+    <ClCompile Include="SenkuEditor\src\SenkuEditorApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Sandbox\src\SandboxLayer.cpp">
+    <ClCompile Include="SenkuEditor\src\SenkuEditorLayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\SenkuEngine\Renderer\Material.cpp">
@@ -272,7 +269,7 @@
     <ClCompile Include="src\SenkuEngine\Renderer\Light.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Sandbox\src\ScenePannel\SceneHierarchyPannel.cpp">
+    <ClCompile Include="SenkuEditor\src\ScenePannel\SceneHierarchyPannel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

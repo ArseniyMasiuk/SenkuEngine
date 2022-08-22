@@ -1,6 +1,8 @@
 #include "PrecompiledHeader.h"
 #include "Scene.h"
 
+#include "SenkuEngine\Renderer\Renderer.h"
+
 #include "ModelLoader.h"
 #include "SenkuEngine\Core\Application.h"
 
@@ -25,7 +27,7 @@ namespace Senku
 		float height = static_cast<float>(Application::Get()->GetWindow().GetHeight());
 		m_Camera = CreateRef<PerspectiveCamera>(glm::vec3(50, 50, 50), 45.0f, width / height, 0.01f, 10000.0f);
 
-		m_Shader = Shader::Create("Sandbox/assets/shaders/basicShader.shader"); // for now hardcoded since i have only one good shader
+		m_Shader = Shader::Create("SenkuEditor/assets/shaders/basicShader.shader"); // for now hardcoded since i have only one good shader
 
 		dirLight.m_Direction = glm::vec3(100.0f, 0.0f, 0.0f);
 
@@ -65,7 +67,7 @@ namespace Senku
 	bool Scene::OnEvent(Event & event)
 	{
 		if (Input::IsKeyPressed(Key::R))
-			m_Shader->ReloadShader("Sandbox/assets/shaders/basicShader.shader");
+			m_Shader->ReloadShader("SenkuEditor/assets/shaders/basicShader.shader");
 		// for now leave it commented since for camera resizing i have functuion
 		// but later it would be good to have qeue of events and they will be handled each turn of main loop maybe?? will think a bit more later
 
