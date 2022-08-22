@@ -52,6 +52,7 @@ namespace Senku
 		{
 			GLCall(glDeleteProgram(m_rendererID));
 			m_rendererID = newShader;
+			m_UniformLocationCache.clear();
 		}
 		else
 		{

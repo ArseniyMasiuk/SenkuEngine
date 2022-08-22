@@ -13,13 +13,28 @@ out vec3 v_Normal;
 out vec3 v_FragmentPosition;
 out mat3 v_TBN;
 
+flat out int v_TextureMask;
+
 uniform mat4 u_ViewProjMat;
 uniform mat4 u_Model;
 
+uniform int u_TextureMask; // each bit represent binded slot for texture
+
+
 void main()
 {
+	{
+		int normalLoaded = (u_TextureMask & 2);
+		if (normalLoaded == 2)
+			v_Normal = aNormal;
+		else
+			v_Normal = vec3(u_Model * vec4(aNormal, 1.0)); // if we use TBN matrix, its mistake to convert normal to model space, sonce it will be calculated in this matrix
+
+		v_TextureMask = u_TextureMask;
+	}
+
 	v_texCoord = aTexCoord;
-	v_Normal = vec3(u_Model * vec4(aNormal, 1.0));
+	
 	v_FragmentPosition = vec3(u_Model * vec4(aPos, 1.0));
 
 	vec3 T = normalize(vec3(u_Model * vec4(aTangent,   0.0)));
@@ -38,7 +53,8 @@ out vec4 FragColor;
   
 in vec2 v_texCoord;
 
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Material
 struct Material
 {
 	vec3 baseColor;			// albedo
@@ -48,7 +64,7 @@ struct Material
 };
 
 
-uniform int u_TextureMask; // each bit represent binded slot for texture
+flat in int v_TextureMask; // each bit represent binded slot for texture
 uniform Material u_Material;
 
 // each bit says if texture is binded or not
@@ -65,7 +81,7 @@ struct DirLight {
 	vec3 lightColor;
 	vec3 direction;
 	float distance;
-	float intencisty;
+	float intensity;
 };
 
 in vec3 v_Normal;
@@ -93,22 +109,16 @@ uniform vec3 u_CameraPosition;
 const float PI = 3.14159265359;
 
 vec3 fresnelSchlick(vec3 F0, vec3 V, vec3 H);
+
 // GGX/ throwbridge-Reitz Normal distribution function
 float DistributionGGX(float alpha, vec3 N, vec3 H);
 
 // Schlick-Beckmann Geometry Shadowing Function (G1)
 float GeometrySchlickGGX(float alpha, vec3 N, vec3 X);
+
 // Smith model
 float GeometrySmith(float alpha, vec3 N, vec3 V, vec3 L);
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-float CalculateAtenuatin(float distance)
-{
-	// that is funny since it works. i did it almost accidentally
-	// wanted to add intensity but added also distance of spreadness
-	float attenuation = (dirLight.distance - distance) / (max(distance, 0.0001)/max(dirLight.intencisty, 0.0001));
-	return max(attenuation, 0.0001);
-}
 
 void main()
 {
@@ -122,10 +132,10 @@ void main()
 	// depends on if certain texture was loaded or not
 	// so after that we can freely use values to calculate stuff
 	{
-		int albedoLoaded = (u_TextureMask & 1);
-		int normalLoaded = (u_TextureMask & 2);
-		int roughnessLoaded = (u_TextureMask & 4);
-		int metalnessLoaded = (u_TextureMask & 8);
+		int albedoLoaded = (v_TextureMask & 1);
+		int normalLoaded = (v_TextureMask & 2);
+		int roughnessLoaded = (v_TextureMask & 4);
+		int metalnessLoaded = (v_TextureMask & 8);
 
 		if (albedoLoaded == 1)
 			albedo = texture(u_textureAlbedo, v_texCoord).rgb;
@@ -174,7 +184,7 @@ void main()
 	vec3 H = normalize(V + L);
 
 	float distance = length(dirLight.direction - v_FragmentPosition);
-	float attenuation = CalculateAtenuatin(distance);//1.0 / distance * distance;//(1.0 + (dirLight.param1 * distance) + (dirLight.param2 * distance * distance)); //1.0/(c1 + c2*d + c3*d^2)
+	float attenuation = clamp(dirLight.distance / distance, 0.0, dirLight.intensity);
 	vec3 radiance = dirLight.lightColor * attenuation;
 
 	vec3 F0 = vec3(0.04, 0.04, 0.04);
