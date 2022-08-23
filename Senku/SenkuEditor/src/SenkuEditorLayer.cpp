@@ -128,6 +128,7 @@ namespace Senku
 		static bool p_open = true;
 		static bool opt_fullscreen = true;
 		static bool opt_padding = false;
+
 		static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
 
 		// We are using the ImGuiWindowFlags_NoDocking flag to make the parent window not dockable into,
@@ -160,7 +161,7 @@ namespace Senku
 		// We cannot preserve the docking relationship between an active window and an inactive docking, otherwise
 		// any change of dockspace/settings would lead to windows being stuck in limbo and never being visible.
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-		ImGui::Begin("DockSpace Demo", &p_open, window_flags);
+		ImGui::Begin("DockSpace", &p_open, window_flags);
 		ImGui::PopStyleVar();
 
 		if (opt_fullscreen)
@@ -170,23 +171,42 @@ namespace Senku
 		ImGuiIO& io = ImGui::GetIO();
 		if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
 		{
-			ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
+			ImGuiID dockspace_id = ImGui::GetID("SenkuEngineEditorDockSpace");
 			ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
 		}
 
 
 		if (ImGui::BeginMenuBar())
 		{
-			if (ImGui::BeginMenu("Options"))
+			if (ImGui::BeginMenu("File"))
 			{
 				// Disabling fullscreen would allow the window to be moved to the front of other windows,
 				// which we can't undo at the moment without finer window depth/z control.
-				ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen);
-				ImGui::MenuItem("ShowDemo", NULL, &m_ShowDemo);
+// 
+				//ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen);
+				if (ImGui::MenuItem("New", "Ctrl+N"))
+					//NewScene();
+					LOG_INFO("""New"" button pressed");
+
+				if (ImGui::MenuItem("Open...", "Ctrl+O"))
+					//OpenScene();
+					LOG_INFO("""Open..."" button pressed");
+
+				if (ImGui::MenuItem("Save", "Ctrl+S"))
+					//SaveScene();
+					LOG_INFO("""Save"" button pressed");
+
+
+				if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S"))
+					//SaveSceneAs();
+					LOG_INFO("""Save As..."" button pressed");
+
 
 				ImGui::Separator();
+				ImGui::MenuItem("ShowDemo", NULL, &m_ShowDemo);
+				ImGui::Separator();
 
-				if (ImGui::MenuItem("Close", NULL, false, p_open != NULL))
+				if (ImGui::MenuItem("Exit", NULL, false, p_open != NULL))
 				{
 					p_open = false;
 					Application::Get()->Close();
@@ -197,9 +217,7 @@ namespace Senku
 			ImGui::EndMenuBar();
 		}
 
-
 		{
-
 			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
 			ImGui::Begin("Viewport");
 			ImGui::PopStyleVar();
